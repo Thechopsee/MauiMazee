@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMaze.MazeMenu"
+             Title="Hello XAML Page">
+    <VerticalStackLayout
+        Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+        
+        <Label Text="Hello, XAML!"
+           VerticalOptions="Center"
+           HorizontalTextAlignment="Center"
+           Rotation="-15"
+           FontSize="18"
+           FontAttributes="Bold"
+           TextColor="Blue" />
+        <Slider VerticalOptions="Center" 
+                ValueChanged="OnSliderValueChanged"/>
+        <Label Text="A simple Label"
+               x:Name="valueLabel"
+               FontSize="18"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+              
+        <Button
+                x:Name="Classic"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                HorizontalOptions="Center" />
+        <Button
+                x:Name="Rouded"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                HorizontalOptions="Center" />
+        <Button
+                x:Name="Hexa"
+                Text="Click me"
+                SemanticProperties.Hint="Counts the number of times you click"
+                HorizontalOptions="Center" />
+        </VerticalStackLayout>   
+</ContentPage>
