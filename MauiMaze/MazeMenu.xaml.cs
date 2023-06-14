@@ -11,4 +11,9 @@ public partial class MazeMenu : ContentPage
     {
         valueLabel.Text = ((Slider)sender).Value.ToString("F3");
     }
+
+    private async void mazeMenuNavigate(object sender, EventArgs e)
+    {
+       await Navigation.PushAsync(new MazePage());
+    }
 }

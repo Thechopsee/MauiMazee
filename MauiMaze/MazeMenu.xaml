@@ -22,10 +22,10 @@
                FontSize="18"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
-              
         <Button
                 x:Name="Classic"
                 Text="Click me"
+                Clicked="mazeMenuNavigate"
                 SemanticProperties.Hint="Counts the number of times you click"
                 HorizontalOptions="Center" />
         <Button
