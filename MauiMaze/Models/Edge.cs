@@ -17,6 +17,23 @@ namespace MauiMaze.Models
             Cell2 = cell2;
         }
 
+        public static List<Edge> GenerateCircularEdges(Size size)
+        {
+            var edges = new List<Edge>();
+
+            int numCells = (int)(size.Width * Math.PI);
+
+            int cell = 0;
+            for (int i = 0; i < numCells; i++)
+            {
+                edges.Add(new Edge(cell, (cell + 1) % numCells));
+                edges.Add(new Edge(cell, (cell + (int)size.Width) % numCells));
+                cell++;
+            }
+
+            return edges;
+        }
+
         public static List<Edge> Generate(Size size)
         {
             var edges = new List<Edge>();

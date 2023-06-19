@@ -16,4 +16,8 @@ public partial class MazeMenu : ContentPage
     {
        await Navigation.PushAsync(new MazePage());
     }
+    private async void roundedMazeMenuNavigate(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new RoundedMazePage());
+    }
 }

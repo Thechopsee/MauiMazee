@@ -1,0 +1,228 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MauiMaze.Models
+{
+    public class Maze
+    {
+        public Edge[] Edges { get; }
+        public Size Size { get; }
+
+        public Maze(Size size)
+        {
+            var edgesToCheck = Edge.Generate(size);
+            var sets = new DisjointSets(Convert.ToInt32(size.Height * size.Width));
+            var mazeEdges = new List<Edge>();
+
+            var random = new Random();
+
+            while (sets.Count > 1 && edgesToCheck.Count > 0)
+            {
+                // Pick a random edge
+                var edgeIndex = random.Next(edgesToCheck.Count);
+                var edge = edgesToCheck[edgeIndex];
+
+                // Find the two sets seperated by the edge
+                var set1 = sets.Find(edge.Cell1);
+                var set2 = sets.Find(edge.Cell2);
+
+                if (set1 != set2) sets.Union(set1, set2);
+                else mazeEdges.Add(edge);
+
+                // Remove edge, so it won't be checked again
+                edgesToCheck.RemoveAt(edgeIndex);
+            }
+
+            // Set maze properties
+            Edges = edgesToCheck.Concat(mazeEdges).ToArray();
+            Size = size;
+        }
+
+        public Maze(Size size, bool neco)
+        {
+            var edgesToCheck = Edge.GenerateCircularEdges(size);
+            var sets = new DisjointSets(edgesToCheck.Count);
+            var mazeEdges = new List<Edge>();
+
+            var random = new Random();
+
+            while (sets.Count > 1 && edgesToCheck.Count > 0)
+            {
+                // Pick a random edge
+                var edgeIndex = random.Next(edgesToCheck.Count);
+                var edge = edgesToCheck[edgeIndex];
+
+                // Find the two sets separated by the edge
+                var set1 = sets.Find(edge.Cell1);
+                var set2 = sets.Find(edge.Cell2);
+
+                if (set1 != set2)
+                    sets.Union(set1, set2);
+                else
+                    mazeEdges.Add(edge);
+
+                // Remove edge, so it won't be checked again
+                edgesToCheck.RemoveAt(edgeIndex);
+            }
+
+            // Set maze properties
+            Edges = edgesToCheck.Concat(mazeEdges).ToArray();
+            Size = size;
+        }
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MauiMaze.Models
+{
+    public class Edge : IEquatable<Edge>
+    {
+        public int Cell1 { get; }
+        public int Cell2 { get; }
+
+        public Edge(int cell1, int cell2)
+        {
+            Cell1 = cell1;
+            Cell2 = cell2;
+        }
+
+        public static List<Edge> GenerateCircularEdges(Size size)
+        {
+            var edges = new List<Edge>();
+
+            int numCells = (int)(size.Width * Math.PI);
+
+            int cell = 0;
+            for (int i = 0; i < numCells; i++)
+            {
+                edges.Add(new Edge(cell, (cell + 1) % numCells));
+                edges.Add(new Edge(cell, (cell + (int)size.Width) % numCells));
+                cell++;
+            }
+
+            return edges;
+        }
+
+        public static List<Edge> Generate(Size size)
+        {
+            var edges = new List<Edge>();
+
+            var cell = 0;
+            for (var row = 0; row < size.Height; row++)
+            {
+                for (var column = 0; column < size.Width; column++)
+                {
+                    // Create edge on the right
+                    if (column != size.Width - 1)
+                    {
+                        edges.Add(new Edge(cell, cell + 1));
+                    }
+
+                    // Create edge on the bottom
+                    if (row != size.Height - 1)
+                    {
+                        edges.Add(new Edge(cell, cell + Convert.ToInt32(size.Width)));
+                    }
+
+                    cell++;
+                }
+            }
+
+            return edges;
+        }
+
+        public bool Equals(Edge other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Cell1 == other.Cell1 && Cell2 == other.Cell2;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((Edge)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Cell1 * 397) ^ Cell2;
+            }
+        }
+
+        public static bool operator ==(Edge left, Edge right) => Equals(left, right);
+        public static bool operator !=(Edge left, Edge right) => !Equals(left, right);
+
+
+    }
+}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MauiMaze.Models
+{
+
+    /// <summary>
+    ///     A collection of cells not seperated by an <see cref="Edge" />
+    /// </summary>
+    public class DisjointSets
+    {
+        /// <summary>
+        ///     Array implementation of an Up-Tree
+        /// </summary>
+        private readonly int[] _cells;
+
+        public DisjointSets(int cells)
+        {
+            _cells = new int[cells];
+            for (var id = 0; id < cells; id++)
+            {
+                _cells[id] = -1;
+            }
+        }
+
+        /// <summary>
+        ///     Finds the root of the given cell
+        /// </summary>
+        public int Find(int cell)
+        {
+            var parent = _cells[cell];
+            return parent < 0 ? cell : Find(parent);
+        }
+
+        public int Size(int set) => _cells[Find(set)] * -1;
+
+        /// <summary>
+        ///     Merges two sets by attaching the root of
+        ///     the smallest set to the root of the biggest
+        /// </summary>
+        public void Union(int set1, int set2)
+        {
+            set1 = Find(set1);
+            set2 = Find(set2);
+
+            if (Size(set1) > Size(set2))
+            {
+                _cells[set2] = set1;
+            }
+            else _cells[set1] = set2;
+        }
+
+        public int Count => _cells.Count(cell => cell < 0);
+    }
+}

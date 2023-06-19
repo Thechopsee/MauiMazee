@@ -24,18 +24,19 @@
                VerticalOptions="Center" />
         <Button
                 x:Name="Classic"
-                Text="Click me"
+                Text="Classic"
                 Clicked="mazeMenuNavigate"
                 SemanticProperties.Hint="Counts the number of times you click"
                 HorizontalOptions="Center" />
         <Button
                 x:Name="Rouded"
-                Text="Click me"
+                Text="Rounded"
                 SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="roundedMazeMenuNavigate"
                 HorizontalOptions="Center" />
         <Button
                 x:Name="Hexa"
-                Text="Click me"
+                Text="Hexa"
                 SemanticProperties.Hint="Counts the number of times you click"
                 HorizontalOptions="Center" />
         </VerticalStackLayout>   
