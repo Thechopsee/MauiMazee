@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MauiMaze.Engine;
 using MauiMaze.Models;
 using Microsoft.Maui.Graphics;
 
@@ -11,7 +12,19 @@ namespace MauiMaze.Drawables
     public class MazeDrawable : IDrawable
     {
         private Maze maze;
-        public Maze GetMaze(Maze maze)
+        private Player player;
+
+        public double cellWidth { get; set; }
+        public double cellHeight { get; set; }
+        public Player GetPlayer()
+        {
+            return player;
+        }
+        public void setPlayer(Player player)
+        {
+            this.player = player;
+        }
+        public Maze GetMaze()
         {
             return maze;
         }
@@ -32,10 +45,10 @@ namespace MauiMaze.Drawables
             Console.WriteLine(right + " " + bottom);
             canvas.DrawRectangle(left, top, right, bottom);
 
-            Maze maze = new Maze(new Size(10, 10));
-
             var cellWidth = dirtyRect.Width / maze.Size.Width;
             var cellHeight = dirtyRect.Height / maze.Size.Height;
+            this.cellWidth = cellWidth;
+            this.cellHeight = cellHeight;
 
             var cellSize = Math.Min(dirtyRect.Width / maze.Size.Width, dirtyRect.Height / maze.Size.Height);
 
@@ -68,12 +81,19 @@ namespace MauiMaze.Drawables
             float endY = (float)(Math.Floor((double)maze.End / maze.Size.Width) * cellHeight + cellHeight / 2);
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle(endX, endY, (float)Math.Min(cellWidth, cellHeight) / 3);
+
+            // Vykreslení plného oranžového kolečka na pozici hráče
+            float plX = (float)(player.positionX + cellWidth / 2);
+            float plY = (float)(player.positionY +cellHeight/2);
+            canvas.StrokeColor = Colors.Orange; // Nastavení barvy na oranžovou, případně FillColor pro plné kolečko
+            canvas.DrawCircle(plX, plY, (float)Math.Min(cellWidth, cellHeight) / 3);
+
             if (maze.path is not null)
             {
                 // Vykreslení cesty
                 if (maze.path != null)
                 {
-                    Application.Current.MainPage.DisplayAlert("Upozornění", "idn " + maze.path.Count + " " + maze.path, "OK");
+                    //Application.Current.MainPage.DisplayAlert("Upozornění", "idn " + maze.path.Count + " " + maze.path, "OK");
                     canvas.StrokeColor = Colors.Yellow;
                     canvas.StrokeSize = 6;
                     for (int i = 0; i < maze.path.Count - 1; i++)

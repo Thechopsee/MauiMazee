@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Engine
 {
-    internal class Player
+    public class Player
     {
-        public int positionX { get; set; }
-        public int positionY { get; set; }
+        public float positionX { get; set; }
+        public float positionY { get; set; }
 
-        public Player(int positionx,int positiony)
+        public double playerSizeX { get; set; }
+        public double playerSizeY { get; set; }
+
+        public Player(int positionx,int positiony,double playerSizeX,double SizeY)
         {
             this.positionX = positionx;
             this.positionY = positiony;
+            this.playerSizeX = playerSizeX;
+            this.playerSizeY = playerSizeY;
         }
     }
 }
