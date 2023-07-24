@@ -32,12 +32,16 @@ namespace MauiMaze.Drawables
         {
             this.maze = maze;
         }
+        public bool checkCollision(int x,int y,int x2,int y2)
+        {
+            return maze.isThereWall(x, y, x2, y2);
+           
+        }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             canvas.StrokeColor = Colors.Green;
             canvas.StrokeSize = 4;
-
             float left = dirtyRect.Left;
             float top = dirtyRect.Top;
             float right = dirtyRect.Right;

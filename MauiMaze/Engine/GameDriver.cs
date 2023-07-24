@@ -43,10 +43,14 @@ namespace MauiMaze.Engine
             // Pokud vzdálenost je menší než poloměr, uživatel klikl na kolečko hráče
             if (distance < player.playerSizeX)
             {
-                player.positionX = (float)(x - (player.playerSizeX ));
-                player.positionY = (float)(y - (player.playerSizeY ));
-                mazeDrawable.setPlayer(player);
-                graphicsView.Invalidate();
+                if (!mazeDrawable.checkCollision((int)player.positionX, (int)player.positionY, (int)(player.positionX + player.playerSizeX), (int)(player.positionY+ player.playerSizeY)))
+                {
+                    //TODO test
+                    player.positionX = (float)(x - (player.playerSizeX));
+                    player.positionY = (float)(y - (player.playerSizeY));
+                    mazeDrawable.setPlayer(player);
+                    graphicsView.Invalidate();
+                }
             }
         }
 
