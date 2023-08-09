@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Engine
 {
-    internal class MoveRecord
+    public class MoveRecord
     {
         public int positionx;
         public int positiony;

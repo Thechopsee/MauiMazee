@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:drawables="clr-namespace:MauiMaze.Drawables"
              x:Class="MauiMaze.MazeMenu"
-             Title="Hello XAML Page">
+             Title="Maze Menu">
+    <ContentPage.Resources>
+        <drawables:MazeDrawable x:Key="MazeDrawable"/>
+    </ContentPage.Resources>
     <VerticalStackLayout
         Spacing="25"
             Padding="30,0"
@@ -16,28 +20,56 @@
            FontAttributes="Bold"
            TextColor="Blue" />
         <Slider VerticalOptions="Center" 
-                ValueChanged="OnSliderValueChanged"/>
-        <Label Text="A simple Label"
+                x:Name="sizeSlider"
+                Minimum="10"
+                Maximum="35"
+                Value="10"
+                ValueChanged="OnSliderValueChanged"
+                />
+        <Label Text="10"
                x:Name="valueLabel"
                FontSize="18"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
-        <Button
+        <Frame BorderColor="Red">
+            <Grid  Margin="45,0,45,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Tlačítka v prvním sloupci -->
+                <StackLayout 
+            Grid.Column="0"
+            VerticalOptions="CenterAndExpand">
+                    <Button
                 x:Name="Classic"
                 Text="Classic"
                 Clicked="mazeMenuNavigate"
                 SemanticProperties.Hint="Counts the number of times you click"
                 HorizontalOptions="Center" />
-        <Button
-                x:Name="Rouded"
+                    <Button
+                x:Name="Rounded"
                 Text="Rounded"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="roundedMazeMenuNavigate"
                 HorizontalOptions="Center" />
-        <Button
+                    <Button
                 x:Name="Hexa"
                 Text="Hexa"
                 SemanticProperties.Hint="Counts the number of times you click"
                 HorizontalOptions="Center" />
-        </VerticalStackLayout>   
+                </StackLayout>
+
+                <!-- GraphicsView v druhém sloupci -->
+                <GraphicsView 
+            x:Name="canvas"
+            Grid.Column="1"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+            Drawable="{StaticResource MazeDrawable}" />
+            </Grid>
+        </Frame>
+    </VerticalStackLayout>
+    
 </ContentPage>

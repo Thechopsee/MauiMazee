@@ -13,6 +13,7 @@ namespace MauiMaze.Drawables
     {
         private Maze maze;
         private Player player;
+        public End end { get; set; }
 
         public double cellWidth { get; set; }
         public double cellHeight { get; set; }
@@ -74,6 +75,8 @@ namespace MauiMaze.Drawables
                     canvas.DrawLine(x, y, x, y + (float)cellHeight);
                 }
             }
+            if (player is not null)
+            {
             // Vykreslení červeného kolečka na začatku
             float startX = (float)(maze.Start % maze.Size.Width * cellWidth + cellWidth / 2);
             float startY = (float)(Math.Floor((double)maze.Start / maze.Size.Width) * cellHeight + cellHeight / 2);
@@ -85,14 +88,16 @@ namespace MauiMaze.Drawables
             float endY = (float)(Math.Floor((double)maze.End / maze.Size.Width) * cellHeight + cellHeight / 2);
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle(endX, endY, (float)Math.Min(cellWidth, cellHeight) / 3);
-
+            this.end = new End((int)endX-((int)cellWidth/2),(int)endY-((int)cellHeight/2),(int)endX, (int)endY);
+            
             // Vykreslení plného oranžového kolečka na pozici hráče
-            float plX = (float)(player.positionX + cellWidth / 2);
-            float plY = (float)(player.positionY +cellHeight/2);
-            canvas.StrokeColor = Colors.Orange; // Nastavení barvy na oranžovou, případně FillColor pro plné kolečko
-            canvas.DrawCircle(plX, plY, (float)Math.Min(cellWidth, cellHeight) / 3);
-
-            if (maze.path is not null)
+            
+                float plX = (float)(player.positionX + cellWidth / 2);
+                float plY = (float)(player.positionY + cellHeight / 2);
+                canvas.StrokeColor = Colors.Orange; // Nastavení barvy na oranžovou, případně FillColor pro plné kolečko
+                canvas.DrawCircle(plX, plY, (float)Math.Min(cellWidth, cellHeight) / 3);
+            }
+            if (maze.path is not null &&  player is not null)
             {
                 // Vykreslení cesty
                 if (maze.path != null)

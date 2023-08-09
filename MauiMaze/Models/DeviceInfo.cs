@@ -25,7 +25,7 @@ namespace MauiMaze.Models
         public void getDeviceInfo()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
+            /*
             sb.AppendLine($"Model: {DeviceInfo.Current.Model}");
             sb.AppendLine($"Manufacturer: {DeviceInfo.Current.Manufacturer}");
             sb.AppendLine($"Name: {DeviceInfo.Current.Name}");
@@ -43,6 +43,7 @@ namespace MauiMaze.Models
             sb.AppendLine($"Virtual device? {isVirtual}");
 
             DisplayDeviceLabel.Text = sb.ToString();
+            */
         }
 
     }

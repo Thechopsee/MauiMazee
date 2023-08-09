@@ -10,11 +10,11 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <Image
+             <!--<Image 
                 Source="dotnet_bot.png"
                 SemanticProperties.Description="Cute dot net bot waving hi to you!"
                 HeightRequest="200"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center" />-->
 
             <Label
                 Text="Hello, World!"
@@ -47,21 +47,21 @@
                 HorizontalOptions="CenterAndExpand">
 
                     <Entry
-                    x:Name="NameEntry"
+                    x:Name="EmailEntry"
                     Placeholder="Enter your name"
                     HorizontalOptions="FillAndExpand" />
 
                     <!-- Příklad vstupního pole pro zadání emailu -->
                     <Entry
-                    x:Name="EmailEntry"
+                    x:Name="PassEntry"
+                    IsPassword="true"
                     Placeholder="Enter your email"
                     HorizontalOptions="FillAndExpand" />
 
-                    <!-- Příklad tlačítka pro odeslání formuláře -->
                     <Button
                     x:Name="SubmitButton"
                     Text="Submit"
-
+                    Clicked="tryToLogin"
                     HorizontalOptions="Center" />
                 </VerticalStackLayout>
 
@@ -100,7 +100,7 @@
 
                 <Button
                     x:Name="Settings"
-                    Text="Button 3"
+                    Text="⚙"
                     
                     HorizontalOptions="CenterAndExpand" />
 

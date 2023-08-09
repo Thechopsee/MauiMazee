@@ -1,8 +1,10 @@
 ﻿
 using MauiMaze.Drawables;
 using MauiMaze.Models;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,22 +17,30 @@ namespace MauiMaze.Engine
         List<MoveRecord> moveRecords;
         public GraphicsView graphicsView { get; set; }
         Player player;
+        End end;
+        public bool ended {get;set;}
+        public GameRecord gameRecord { get; set; }
+        int counter = 300;
 
-        public GameDriver(MazeDrawable md,GraphicsView gv)
+        public GameDriver(MazeDrawable md,GraphicsView gv,int size)
         {
+            ended = false;
             graphicsView = gv;
             mazeDrawable = md;
             mazeDrawable.setPlayer(new Player(0, 0,md.cellWidth,md.cellHeight));
             this.moveRecords = new List<MoveRecord>();
             player = mazeDrawable.GetPlayer();
-            Maze maze = new Maze(new Size(10, 10));
+            Maze maze = new Maze(new Size(size, size));
             mazeDrawable.setNewMaze(maze);
             graphicsView.Invalidate();
+            gameRecord = new GameRecord("test"+1,1); //TODO
+            
 
         }
 
         public void movePlayerToPosition(float x, float y)
         {
+            end = mazeDrawable.end;
             if (player.playerSizeX != mazeDrawable.cellWidth/2) {
                 player.playerSizeX = mazeDrawable.cellWidth/2;
                 player.playerSizeY =mazeDrawable.cellHeight/2;
@@ -48,74 +58,35 @@ namespace MauiMaze.Engine
                     //TODO test
                     player.positionX = (float)(x - (player.playerSizeX));
                     player.positionY = (float)(y - (player.playerSizeY));
+                    if (checkEnd())
+                    { 
+                        Application.Current.MainPage.DisplayAlert("Upozornění", "Konec hry", "OK");
+                        endGameprocedure();
+                    }
                     mazeDrawable.setPlayer(player);
+                    gameRecord.addMoveRecord(new MoveRecord((int)player.positionX, (int)player.positionY,false));
                     graphicsView.Invalidate();
                 }
             }
         }
+        private bool checkEnd()
+        {   
+            if (player.positionX > end.X && player.positionY > end.Y && player.positionX < end.bottomX && player.positionY < end.bottomY)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private void endGameprocedure()
+        {
+            gameRecord.stopMeasuremnt();
+            RecordRepository.GetInstance().addRecord(gameRecord);
+            ended = true;
+            //go out
 
-        /*
-        public void movePlayerTop()
-        {
-            if(player.positionY>0)
-            {
-                if (maze.isThereWall(player.positionX, player.positionY, player.positionX, player.positionY - 1))
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX, player.positionY, true));
-                }
-                else
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX,player.positionY-1,false));
-                    player.positionY = player.positionY-1;
-                }
-            }
         }
-        public void movePlayerBottom()
-        {
-            if (player.positionY < maze.Size.Height-1)
-            {
-                if (maze.isThereWall(player.positionX, player.positionY, player.positionX, player.positionY + 1))
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX, player.positionY, true));
-                }
-                else
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX, player.positionY + 1, false));
-                    player.positionY = player.positionY + 1;
-                }
-            }
-        }
-        public void movePlayerLeft()
-        {
-            if (player.positionX >0)
-            {
-                if (maze.isThereWall(player.positionX, player.positionY, player.positionX-1, player.positionY))
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX, player.positionY, true));
-                }
-                else
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX-1, player.positionY, false));
-                    player.positionX = player.positionX - 1;
-                }
-            }
-        }
-        public void movePlayerRight()
-        {
-            if (player.positionX < maze.Size.Width - 1)
-            {
-                if (maze.isThereWall(player.positionX, player.positionY, player.positionX+1, player.positionY))
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX, player.positionY, true));
-                }
-                else
-                {
-                    moveRecords.Add(new MoveRecord(player.positionX + 1, player.positionY, false));
-                    player.positionX = player.positionX + 1;
-                }
-            }
-        }
-        */
-
     }
 }

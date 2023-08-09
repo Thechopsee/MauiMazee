@@ -139,14 +139,14 @@ namespace MauiMaze.Models
                     strpath += " " + path[i];
                 }
             }
-            Application.Current.MainPage.DisplayAlert("Upozornění", ms.VisitedCells.Count + "pocet", "OK");
+            //Application.Current.MainPage.DisplayAlert("Upozornění", ms.VisitedCells.Count + "pocet", "OK");
             string uznevim = "";
             for (int i = 0; i < ms.VisitedCells.Count; i++)
             {
                 uznevim += " " + ms.VisitedCells[i];
             }
-            Application.Current.MainPage.DisplayAlert("Upozornění", uznevim + "prostlo", "OK");
-            Application.Current.MainPage.DisplayAlert("Upozornění", strpath + "path", "OK");
+            //Application.Current.MainPage.DisplayAlert("Upozornění", uznevim + "prostlo", "OK");
+            //Application.Current.MainPage.DisplayAlert("Upozornění", strpath + "path", "OK");
             /*
             for (int i = 0; i < PassableEdges.Count; i++)
             {

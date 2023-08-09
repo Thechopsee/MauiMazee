@@ -1,4 +1,5 @@
 
+using CommunityToolkit.Maui.Views;
 using MauiMaze.Drawables;
 using MauiMaze.Engine;
 
@@ -8,43 +9,35 @@ public partial class MazePage : ContentPage
 {
     MazeDrawable mazeDrawable;
     GameDriver driver;
-    void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
+    bool hardend = false;
+    //TODO SAVE PROCEDURE ON EXIT PASE ETC...
+    async void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
         var touch = e.Touches.First();
         //Application.Current.MainPage.DisplayAlert("Upozornìní", "Touch" + e.Touches.Length, "OK");
-        driver.movePlayerToPosition(touch.X, touch.Y);
-        /*double deltaX = touch.X - touch.StartX;
-        double deltaY = touch.Y - touch.StartY;
-
-        if (Math.Abs(deltaX) > Math.Abs(deltaY)) // Posun v ose X je vìtší než v ose Y
+        if (driver.ended)
         {
-            if (deltaX > 0) // Posunul se doprava
-            {
-                // Provést akci pro posun doprava
-            }
-            else if (deltaX < 0) // Posunul se doleva
-            {
-                // Provést akci pro posun doleva
-            }
+            await Navigation.PushAsync(new RecordFullPage(driver.gameRecord));
         }
-        else // Posun v ose Y je vìtší než v ose X
-        {
-            if (deltaY > 0) // Posunul se nahoru
-            {
-                // Provést akci pro posun nahoru
-            }
-            else if (deltaY < 0) // Posunul se dolù
-            {
-                // Provést akci pro posun dolù
-            }
-        }*/
+        driver.movePlayerToPosition(touch.X, touch.Y);
+       
     }
-    public MazePage()
+    public MazePage(int size)
 	{
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        driver = new GameDriver(mazeDrawable,canvas);
+        driver = new GameDriver(mazeDrawable,canvas,size);
     }
 
-
+    private async void goBackPop(object sender, EventArgs e)
+    {
+        AreUSurePopUp areUSurePopUp = new AreUSurePopUp();
+        var result = await this.ShowPopupAsync(areUSurePopUp);
+        if ((bool)result)
+        {
+            //TODO :Save procedure
+            await Navigation.PopAsync();
+        }
+        
+    }
 }
