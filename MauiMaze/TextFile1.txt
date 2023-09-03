@@ -3,226 +3,126 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MauiMaze.Engine;
+using MauiMaze.Models;
+using Microsoft.Maui.Graphics;
 
-namespace MauiMaze.Models
+namespace MauiMaze.Drawables
 {
-    public class Maze
+    public class MazeDrawable : IDrawable
     {
-        public Edge[] Edges { get; }
-        public Size Size { get; }
+        private Maze maze;
+        private Player player;
+        public End end { get; set; }
 
-        public Maze(Size size)
+        public double cellWidth { get; set; }
+        public double cellHeight { get; set; }
+        public Player GetPlayer()
         {
-            var edgesToCheck = Edge.Generate(size);
-            var sets = new DisjointSets(Convert.ToInt32(size.Height * size.Width));
-            var mazeEdges = new List<Edge>();
-
-            var random = new Random();
-
-            while (sets.Count > 1 && edgesToCheck.Count > 0)
-            {
-                // Pick a random edge
-                var edgeIndex = random.Next(edgesToCheck.Count);
-                var edge = edgesToCheck[edgeIndex];
-
-                // Find the two sets seperated by the edge
-                var set1 = sets.Find(edge.Cell1);
-                var set2 = sets.Find(edge.Cell2);
-
-                if (set1 != set2) sets.Union(set1, set2);
-                else mazeEdges.Add(edge);
-
-                // Remove edge, so it won't be checked again
-                edgesToCheck.RemoveAt(edgeIndex);
-            }
-
-            // Set maze properties
-            Edges = edgesToCheck.Concat(mazeEdges).ToArray();
-            Size = size;
+            return player;
+        }
+        public void setPlayer(Player player)
+        {
+            this.player = player;
+        }
+        public Maze GetMaze()
+        {
+            return maze;
+        }
+        public void setNewMaze(Maze maze)
+        {
+            this.maze = maze;
+        }
+        public bool checkCollision(int x,int y,int x2,int y2)
+        {
+            return maze.isThereWall(x, y, x2, y2);
+           
         }
 
-        public Maze(Size size, bool neco)
+        public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            var edgesToCheck = Edge.GenerateCircularEdges(size);
-            var sets = new DisjointSets(edgesToCheck.Count);
-            var mazeEdges = new List<Edge>();
+            canvas.StrokeColor = Colors.Green;
+            canvas.StrokeSize = 4;
+            float left = dirtyRect.Left;
+            float top = dirtyRect.Top;
+            float right = dirtyRect.Right;
+            float bottom = dirtyRect.Bottom;
+            Console.WriteLine(right + " " + bottom);
+            canvas.DrawRectangle(left, top, right, bottom);
 
-            var random = new Random();
+            var cellWidth = dirtyRect.Width / maze.Size.Width;
+            var cellHeight = dirtyRect.Height / maze.Size.Height;
+            this.cellWidth = cellWidth;
+            this.cellHeight = cellHeight;
 
-            while (sets.Count > 1 && edgesToCheck.Count > 0)
+            var cellSize = Math.Min(dirtyRect.Width / maze.Size.Width, dirtyRect.Height / maze.Size.Height);
+
+            foreach (var edge in maze.Edges)
             {
-                // Pick a random edge
-                var edgeIndex = random.Next(edgesToCheck.Count);
-                var edge = edgesToCheck[edgeIndex];
-
-                // Find the two sets separated by the edge
-                var set1 = sets.Find(edge.Cell1);
-                var set2 = sets.Find(edge.Cell2);
-
-                if (set1 != set2)
-                    sets.Union(set1, set2);
-                else
-                    mazeEdges.Add(edge);
-
-                // Remove edge, so it won't be checked again
-                edgesToCheck.RemoveAt(edgeIndex);
-            }
-
-            // Set maze properties
-            Edges = edgesToCheck.Concat(mazeEdges).ToArray();
-            Size = size;
-        }
-    }
-}
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MauiMaze.Models
-{
-    public class Edge : IEquatable<Edge>
-    {
-        public int Cell1 { get; }
-        public int Cell2 { get; }
-
-        public Edge(int cell1, int cell2)
-        {
-            Cell1 = cell1;
-            Cell2 = cell2;
-        }
-
-        public static List<Edge> GenerateCircularEdges(Size size)
-        {
-            var edges = new List<Edge>();
-
-            int numCells = (int)(size.Width * Math.PI);
-
-            int cell = 0;
-            for (int i = 0; i < numCells; i++)
-            {
-                edges.Add(new Edge(cell, (cell + 1) % numCells));
-                edges.Add(new Edge(cell, (cell + (int)size.Width) % numCells));
-                cell++;
-            }
-
-            return edges;
-        }
-
-        public static List<Edge> Generate(Size size)
-        {
-            var edges = new List<Edge>();
-
-            var cell = 0;
-            for (var row = 0; row < size.Height; row++)
-            {
-                for (var column = 0; column < size.Width; column++)
+                if (Math.Abs(edge.Cell1 - edge.Cell2) > 1)
                 {
-                    // Create edge on the right
-                    if (column != size.Width - 1)
-                    {
-                        edges.Add(new Edge(cell, cell + 1));
-                    }
+                    // Draw a horizontal line
+                    float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
+                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width + 1) *
+                            cellHeight);
+                    canvas.DrawLine(x, y, (float)(x + cellWidth), y);
+                }
+                else
+                {
+                    // Draw a vertical line
+                    float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
+                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width) * cellHeight);
+                    canvas.DrawLine(x, y, x, y + (float)cellHeight);
+                }
+            }
+            if (player is not null)
+            {
+            // Vykreslení červeného kolečka na začatku
+            float startX = (float)(maze.Start % maze.Size.Width * cellWidth + cellWidth / 2);
+            float startY = (float)(Math.Floor((double)maze.Start / maze.Size.Width) * cellHeight + cellHeight / 2);
+            canvas.StrokeColor = Colors.Red;
+            canvas.DrawCircle(startX, startY, (float)Math.Min(cellWidth, cellHeight) / 3);
 
-                    // Create edge on the bottom
-                    if (row != size.Height - 1)
+            // Vykreslení modrého kolečka na konci
+            float endX = (float)(maze.End % maze.Size.Width * cellWidth + cellWidth / 2);
+            float endY = (float)(Math.Floor((double)maze.End / maze.Size.Width) * cellHeight + cellHeight / 2);
+            canvas.StrokeColor = Colors.Blue;
+            canvas.DrawCircle(endX, endY, (float)Math.Min(cellWidth, cellHeight) / 3);
+            this.end = new End((int)endX-((int)cellWidth/2),(int)endY-((int)cellHeight/2),(int)endX, (int)endY);
+            
+            // Vykreslení plného oranžového kolečka na pozici hráče
+            
+                float plX = (float)(player.positionX + cellWidth / 2);
+                float plY = (float)(player.positionY + cellHeight / 2);
+                canvas.StrokeColor = Colors.Orange; // Nastavení barvy na oranžovou, případně FillColor pro plné kolečko
+                canvas.DrawCircle(plX, plY, (float)Math.Min(cellWidth, cellHeight) / 3);
+            }
+            if (maze.path is not null &&  player is not null)
+            {
+                // Vykreslení cesty
+                if (maze.path != null)
+                {
+                    //Application.Current.MainPage.DisplayAlert("Upozornění", "idn " + maze.path.Count + " " + maze.path, "OK");
+                    canvas.StrokeColor = Colors.Yellow;
+                    canvas.StrokeSize = 6;
+                    for (int i = 0; i < maze.path.Count - 1; i++)
                     {
-                        edges.Add(new Edge(cell, cell + Convert.ToInt32(size.Width)));
-                    }
+                        int cell1 = maze.path[i];
+                        int cell2 = maze.path[i + 1];
 
-                    cell++;
+                        float x1 = (float)(cell1 % maze.Size.Width * cellWidth + cellWidth / 2);
+                        float y1 = (float)(Math.Floor((double)cell1 / maze.Size.Width) * cellHeight + cellHeight / 2);
+                        float x2 = (float)(cell2 % maze.Size.Width * cellWidth + cellWidth / 2);
+                        float y2 = (float)(Math.Floor((double)cell2 / maze.Size.Width) * cellHeight + cellHeight / 2);
+
+                        canvas.DrawLine(x1, y1, x2, y2);
+                    }
                 }
             }
 
-            return edges;
         }
-
-        public bool Equals(Edge other)
-        {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Cell1 == other.Cell1 && Cell2 == other.Cell2;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Edge)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (Cell1 * 397) ^ Cell2;
-            }
-        }
-
-        public static bool operator ==(Edge left, Edge right) => Equals(left, right);
-        public static bool operator !=(Edge left, Edge right) => !Equals(left, right);
+       
 
 
-    }
-}
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MauiMaze.Models
-{
-
-    /// <summary>
-    ///     A collection of cells not seperated by an <see cref="Edge" />
-    /// </summary>
-    public class DisjointSets
-    {
-        /// <summary>
-        ///     Array implementation of an Up-Tree
-        /// </summary>
-        private readonly int[] _cells;
-
-        public DisjointSets(int cells)
-        {
-            _cells = new int[cells];
-            for (var id = 0; id < cells; id++)
-            {
-                _cells[id] = -1;
-            }
-        }
-
-        /// <summary>
-        ///     Finds the root of the given cell
-        /// </summary>
-        public int Find(int cell)
-        {
-            var parent = _cells[cell];
-            return parent < 0 ? cell : Find(parent);
-        }
-
-        public int Size(int set) => _cells[Find(set)] * -1;
-
-        /// <summary>
-        ///     Merges two sets by attaching the root of
-        ///     the smallest set to the root of the biggest
-        /// </summary>
-        public void Union(int set1, int set2)
-        {
-            set1 = Find(set1);
-            set2 = Find(set2);
-
-            if (Size(set1) > Size(set2))
-            {
-                _cells[set2] = set1;
-            }
-            else _cells[set1] = set2;
-        }
-
-        public int Count => _cells.Count(cell => cell < 0);
-    }
+    }   
 }

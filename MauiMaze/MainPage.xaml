@@ -10,14 +10,8 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-             <!--<Image 
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />-->
-
             <Label
-                Text="Hello, World!"
+                Text="MauiMaze"
                 SemanticProperties.HeadingLevel="Level1"
                 FontSize="32"
                 HorizontalOptions="Center" />
@@ -28,51 +22,30 @@
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand" />
-
-            <StackLayout
-                Orientation="Horizontal"
-                HorizontalOptions="FillAndExpand"
-                Margin="0,20,0,0">
-
-                <Label
-                Text=" "
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand" />
-                <VerticalStackLayout
-                Spacing="25"
-                Padding="30,0"
-                VerticalOptions="Center"
-                HorizontalOptions="CenterAndExpand">
-
-                    <Entry
+            <Entry
                     x:Name="EmailEntry"
                     Placeholder="Enter your name"
+                    MinimumWidthRequest="200"
+                    MaximumWidthRequest="350"
+                    MinimumHeightRequest="50"
                     HorizontalOptions="FillAndExpand" />
 
-                    <!-- Příklad vstupního pole pro zadání emailu -->
-                    <Entry
+                <Entry
                     x:Name="PassEntry"
+                    MinimumWidthRequest="200"
+                    MaximumWidthRequest="350"
+                    MinimumHeightRequest="50"
                     IsPassword="true"
                     Placeholder="Enter your email"
                     HorizontalOptions="FillAndExpand" />
 
-                    <Button
+                <Button
                     x:Name="SubmitButton"
+                    MinimumWidthRequest="200"
                     Text="Submit"
                     Clicked="tryToLogin"
                     HorizontalOptions="Center" />
-                </VerticalStackLayout>
 
-                <Label
-                Text=" "
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand" />
-
-            </StackLayout>
             
 
             <Button
@@ -89,19 +62,19 @@
                 <Button
                     x:Name="About"
                     Text="Button 1"
-                    
+                    MinimumWidthRequest="100" 
                     HorizontalOptions="CenterAndExpand" />
 
                 <Label
                     x:Name="Button2"
-                    Text="Button 2"
-                    
+                    Text="2023"
+                    FontSize="18"
                     HorizontalOptions="CenterAndExpand" />
 
                 <Button
                     x:Name="Settings"
                     Text="⚙"
-                    
+                    MinimumWidthRequest="100"
                     HorizontalOptions="CenterAndExpand" />
 
             </StackLayout>

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.UserManagment
 {
-    public class User
+    public class PersonalData
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public PersonalData personalData { get; set; }
-
+        public string fullName { get; set; }
+        public int Email { get; set; }
     }
 }

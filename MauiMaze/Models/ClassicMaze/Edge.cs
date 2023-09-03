@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Models
+namespace MauiMaze.Models.ClassicMaze
 {
     public class Edge : IEquatable<Edge>
     {
@@ -80,7 +80,7 @@ namespace MauiMaze.Models
         {
             unchecked
             {
-                return (Cell1 * 397) ^ Cell2;
+                return Cell1 * 397 ^ Cell2;
             }
         }
 

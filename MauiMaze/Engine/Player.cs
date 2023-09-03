@@ -14,7 +14,7 @@ namespace MauiMaze.Engine
         public double playerSizeX { get; set; }
         public double playerSizeY { get; set; }
 
-        public Player(int positionx,int positiony,double playerSizeX,double SizeY)
+        public Player(int positionx,int positiony,double playerSizeX,double playerSizeY)
         {
             this.positionX = positionx;
             this.positionY = positiony;

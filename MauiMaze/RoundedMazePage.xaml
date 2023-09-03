@@ -13,17 +13,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Label 
-            x:Name="sizes"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-
         <GraphicsView 
             x:Name="Canvas"
-            Grid.Row="1"
+            Grid.Row="2"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
+            DragInteraction="GameView_DragInteraction"
             Drawable="{StaticResource MazeDrawable}" />
     </Grid>
 </ContentPage>

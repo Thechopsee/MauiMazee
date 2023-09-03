@@ -1,29 +1,51 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiMaze.UserMenu"
-             Title="UserMenu">
+             x:Class="MauiMaze.UserMenu">
 
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
     <VerticalStackLayout>
         <Label 
-            Text="Welcome to .NET MAUI!"
+            Text="Welcome {{user}}!"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="Go to Maze"
+            FontSize="20"
+            HorizontalOptions="Center" 
+            Margin="0,20,0,45"/>
+        
+        <Button Text="Daily Maze"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Clicked="GoToMaze"
-                />
+                MinimumWidthRequest="200"
+                Margin="0,0,0,20"/>
+        <Button Text="Go to Maze"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                MinimumWidthRequest="200"
+                Clicked="GoToMaze"
+                Margin="0,0,0,20"/>
         <Button Text="Maze Records"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="GoToRecords"/>
-        <Button Text="Logout"
+                MinimumWidthRequest="200"
+                Clicked="GoToRecords"
+                Margin="0,0,0,20"/>
+        <Button Text="Settings ⚙"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
+            MinimumWidthRequest="200"
+            BackgroundColor="Gray"
+            Clicked="GoToRecords"
+            Margin="0,0,0,20"/>
+
+        <Button Text="Logout 🚪"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                BackgroundColor="#a2b223"
+                MinimumWidthRequest="200"
+                Margin="0,60,0,20"
                 />
     </VerticalStackLayout>
 </ContentPage>

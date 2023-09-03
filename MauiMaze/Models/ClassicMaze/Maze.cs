@@ -1,30 +1,20 @@
-﻿
+﻿using MauiMaze.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Models
+namespace MauiMaze.Models.ClassicMaze
 {
-    public class Maze
+    public class Maze : GameMaze
     {
         public Edge[] Edges { get; }
-        public Size Size { get; }
-        public int Start { get; } // Počáteční bod
-        public int End { get; } // Koncový bod
-        public List<List<Edge>> PassableEdges { get; }
+        public List<List<Edge>> PassableEdges { get; set; }
 
-        public List<int> path { get;}
+        public List<int> path { get; }
 
-        public int[] getPositionsOfStart()
-        {
-            int[] positions = new int[2];
-            positions[0] = Convert.ToInt32(Start / Convert.ToInt32(Size.Width));
-            positions[1] = Convert.ToInt32(Start % Convert.ToInt32(Size.Height));
-            return positions;
-        }
-        public bool isThereWall(int x1 ,int y1,int x2,int y2)
+        public bool isThereWall(int x1, int y1, int x2, int y2)
         {
             int currentCellIndex = Convert.ToInt32(y1 * Size.Width + x1);
             int nextCellIndex = Convert.ToInt32(y2 * Size.Width + x2);
@@ -124,27 +114,9 @@ namespace MauiMaze.Models
                 PassableEdges.Add(rowEdges.SelectMany(edges => edges).ToList());
             }
 
-
-
-            Start = 0; // Počáteční bod (můžete upravit dle potřeby)
-            End = edgesToCheck.Count - 1; // Koncový bod (můžete upravit dle potřeby)
-            MazeSolver ms = new MazeSolver(PassableEdges, Start, End, size);
-            this.path = ms.FindPath();
-            String strpath = "";
-            if (path is not null)
-            {
-               
-                for (int i = 0; i < path.Count; i++)
-                {
-                    strpath += " " + path[i];
-                }
-            }
-            //Application.Current.MainPage.DisplayAlert("Upozornění", ms.VisitedCells.Count + "pocet", "OK");
-            string uznevim = "";
-            for (int i = 0; i < ms.VisitedCells.Count; i++)
-            {
-                uznevim += " " + ms.VisitedCells[i];
-            }
+            //MazeSolver ms = new MazeSolver(PassableEdges, Start, End, size);
+            //path = ms.FindPath();
+            
             //Application.Current.MainPage.DisplayAlert("Upozornění", uznevim + "prostlo", "OK");
             //Application.Current.MainPage.DisplayAlert("Upozornění", strpath + "path", "OK");
             /*
@@ -157,7 +129,7 @@ namespace MauiMaze.Models
                 }
                 Application.Current.MainPage.DisplayAlert("Upozornění", str+ "", "OK");
             }*/
-           
+
         }
 
         public Maze(Size size, bool neco)

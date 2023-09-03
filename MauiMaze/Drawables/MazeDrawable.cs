@@ -4,40 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MauiMaze.Engine;
-using MauiMaze.Models;
+using MauiMaze.Models.ClassicMaze;
 using Microsoft.Maui.Graphics;
+
 
 namespace MauiMaze.Drawables
 {
-    public class MazeDrawable : IDrawable
+    public class MazeDrawable : BaseMazeDrawable,IDrawable
     {
-        private Maze maze;
-        private Player player;
-        public End end { get; set; }
-
-        public double cellWidth { get; set; }
-        public double cellHeight { get; set; }
-        public Player GetPlayer()
-        {
-            return player;
-        }
-        public void setPlayer(Player player)
-        {
-            this.player = player;
-        }
-        public Maze GetMaze()
-        {
-            return maze;
-        }
-        public void setNewMaze(Maze maze)
-        {
-            this.maze = maze;
-        }
-        public bool checkCollision(int x,int y,int x2,int y2)
-        {
-            return maze.isThereWall(x, y, x2, y2);
-           
-        }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
@@ -47,77 +21,65 @@ namespace MauiMaze.Drawables
             float top = dirtyRect.Top;
             float right = dirtyRect.Right;
             float bottom = dirtyRect.Bottom;
-            Console.WriteLine(right + " " + bottom);
             canvas.DrawRectangle(left, top, right, bottom);
 
-            var cellWidth = dirtyRect.Width / maze.Size.Width;
-            var cellHeight = dirtyRect.Height / maze.Size.Height;
-            this.cellWidth = cellWidth;
-            this.cellHeight = cellHeight;
-
-            var cellSize = Math.Min(dirtyRect.Width / maze.Size.Width, dirtyRect.Height / maze.Size.Height);
-
+            this.cellWidth = dirtyRect.Width / this.maze.Size.Width;
+            this.cellHeight = dirtyRect.Height / this.maze.Size.Height;
+            walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
+            Maze maze = (Maze)this.maze;
+            int Start = 0;
+            int End = maze.Edges.Length - 1;
             foreach (var edge in maze.Edges)
             {
                 if (Math.Abs(edge.Cell1 - edge.Cell2) > 1)
                 {
-                    // Draw a horizontal line
                     float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
                     float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width + 1) *
                             cellHeight);
                     canvas.DrawLine(x, y, (float)(x + cellWidth), y);
+                    double movefor = x+cellWidth;
+                    if (movefor > dirtyRect.Width)
+                    {
+                        movefor = dirtyRect.Width;
+                    }
+                    for (int i = (int)x; i < movefor-1; i++)
+                    {
+                        walls[i, (int)y] = true;
+                    }
                 }
                 else
                 {
-                    // Draw a vertical line
                     float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
                     float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width) * cellHeight);
                     canvas.DrawLine(x, y, x, y + (float)cellHeight);
+                    double movefor = y + cellHeight;
+                    if (movefor > dirtyRect.Height)
+                    {
+                        movefor = dirtyRect.Height;
+                    }
+                    for (int i = (int)y; i < movefor-1; i++)
+                    {
+                        walls[(int)x, i] = true;
+                    }
                 }
             }
             if (player is not null)
             {
-            // Vykreslení červeného kolečka na začatku
-            float startX = (float)(maze.Start % maze.Size.Width * cellWidth + cellWidth / 2);
-            float startY = (float)(Math.Floor((double)maze.Start / maze.Size.Width) * cellHeight + cellHeight / 2);
-            canvas.StrokeColor = Colors.Red;
-            canvas.DrawCircle(startX, startY, (float)Math.Min(cellWidth, cellHeight) / 3);
+                float startX = (float)(Start % maze.Size.Width * cellWidth + cellWidth / 2);
+                float startY = (float)(Math.Floor((double)Start / maze.Size.Width) * cellHeight + cellHeight / 2);
+                maze.start = new Start((int)startX, (int)startY);
 
-            // Vykreslení modrého kolečka na konci
-            float endX = (float)(maze.End % maze.Size.Width * cellWidth + cellWidth / 2);
-            float endY = (float)(Math.Floor((double)maze.End / maze.Size.Width) * cellHeight + cellHeight / 2);
-            canvas.StrokeColor = Colors.Blue;
-            canvas.DrawCircle(endX, endY, (float)Math.Min(cellWidth, cellHeight) / 3);
-            this.end = new End((int)endX-((int)cellWidth/2),(int)endY-((int)cellHeight/2),(int)endX, (int)endY);
-            
-            // Vykreslení plného oranžového kolečka na pozici hráče
-            
-                float plX = (float)(player.positionX + cellWidth / 2);
-                float plY = (float)(player.positionY + cellHeight / 2);
-                canvas.StrokeColor = Colors.Orange; // Nastavení barvy na oranžovou, případně FillColor pro plné kolečko
-                canvas.DrawCircle(plX, plY, (float)Math.Min(cellWidth, cellHeight) / 3);
-            }
-            if (maze.path is not null &&  player is not null)
-            {
-                // Vykreslení cesty
-                if (maze.path != null)
-                {
-                    //Application.Current.MainPage.DisplayAlert("Upozornění", "idn " + maze.path.Count + " " + maze.path, "OK");
-                    canvas.StrokeColor = Colors.Yellow;
-                    canvas.StrokeSize = 6;
-                    for (int i = 0; i < maze.path.Count - 1; i++)
-                    {
-                        int cell1 = maze.path[i];
-                        int cell2 = maze.path[i + 1];
+                float endX = (float)(End % maze.Size.Width * cellWidth + cellWidth / 2);
+                float endY = (float)(Math.Floor((double)End / maze.Size.Width) * cellHeight + cellHeight / 2);
+                maze.end = new End((int)endX,(int)endY,(int)endX-((int)cellWidth/2),(int)endY-((int)cellHeight/2));
+                drawStartAndEnd(canvas);
 
-                        float x1 = (float)(cell1 % maze.Size.Width * cellWidth + cellWidth / 2);
-                        float y1 = (float)(Math.Floor((double)cell1 / maze.Size.Width) * cellHeight + cellHeight / 2);
-                        float x2 = (float)(cell2 % maze.Size.Width * cellWidth + cellWidth / 2);
-                        float y2 = (float)(Math.Floor((double)cell2 / maze.Size.Width) * cellHeight + cellHeight / 2);
+                drawPlayer(canvas);                
 
-                        canvas.DrawLine(x1, y1, x2, y2);
-                    }
-                }
+                 canvas.StrokeColor = Colors.Magenta; 
+                 canvas.StrokeSize = 2; 
+                 canvas.DrawRectangle(player.positionX+ (float)player.playerSizeX/1.5f, player.positionY+ (float)player.playerSizeY/2, (float)player.playerSizeX/2, (float)player.playerSizeY);
+                 inicialized = true;
             }
 
         }

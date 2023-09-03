@@ -1,44 +1,59 @@
-﻿using MauiMaze.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
+using MauiMaze.Models;
+using System.Drawing;
+using MauiMaze.Models.RoundedMaze;
+using MauiMaze.Engine;
 
 namespace MauiMaze.Drawables
 {
-    public class RoundedMazeDrawable : IDrawable
+    public class RoundedMazeDrawable : BaseMazeDrawable,IDrawable
     {
-        private Maze maze;
-        public Maze GetMaze(Maze maze)
+        public RoundedMazeDrawable()
         {
-            return maze;
+            if (maze is null)
+            {
+                maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(25,25));
+            }
         }
-        public void setNewMaze(Maze maze)
-        {
-            this.maze = maze;
-        }
+
+
+         
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            canvas.StrokeColor = Colors.Green;
+            
+            canvas.StrokeColor = Colors.Black;
             canvas.StrokeSize = 4;
+            float left = dirtyRect.Left;
+            float top = dirtyRect.Top;
+            float right = dirtyRect.Right;
+            float bottom = dirtyRect.Bottom;
+            walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
 
-            Maze maze = new Maze(new Size(25, 25),true);
-            float centerX = dirtyRect.Center.X;
-            float centerY = dirtyRect.Center.Y;
-            float radius = Math.Min(dirtyRect.Width, dirtyRect.Height) / 2;
-
-            foreach (var edge in maze.Edges)
+            canvas.DrawRectangle(left, top, right, bottom);
+            if (!maze.firstrun)
             {
-                float angle1 = (float)(edge.Cell1 * 2 * Math.PI / maze.Size.Width);
-                float angle2 = (float)(edge.Cell2 * 2 * Math.PI / maze.Size.Width);
+                maze.generateProcedure((int)dirtyRect.Height, (int)dirtyRect.Width);
+                maze.SolveAndDraw(canvas);
+            }
+            else {
+                maze.JustDraw(canvas);
+            }
+            cellHeight = 80;
+            cellWidth = 80;
 
-                float x1 = centerX + (float)(Math.Cos(angle1) * radius);
-                float y1 = centerY + (float)(Math.Sin(angle1) * radius);
-                float x2 = centerX + (float)(Math.Cos(angle2) * radius);
-                float y2 = centerY + (float)(Math.Sin(angle2) * radius);
-
-                canvas.DrawLine(x1, y1, x2, y2);
+            if (player is null)
+            {
+                cellHeight = 80;
+                cellWidth = 80;
+                player = new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
+            }
+            else
+            {
+                drawPlayer(canvas);
             }
         }
 

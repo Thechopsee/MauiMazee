@@ -1,4 +1,4 @@
-﻿namespace MauiMaze.Models
+﻿namespace MauiMaze.Models.ClassicMaze
 {
     public class MazeSolver
     {

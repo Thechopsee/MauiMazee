@@ -11,65 +11,101 @@
         Spacing="25"
             Padding="30,0"
             VerticalOptions="Center">
-        
-        <Label Text="Hello, XAML!"
+        <HorizontalStackLayout
+            HorizontalOptions="Center">
+        <VerticalStackLayout
+    Spacing="25"
+        Padding="30,0"
+        >
+
+            <Label Text="Hello, XAML!"
            VerticalOptions="Center"
            HorizontalTextAlignment="Center"
-           Rotation="-15"
            FontSize="18"
-           FontAttributes="Bold"
-           TextColor="Blue" />
-        <Slider VerticalOptions="Center" 
+           FontAttributes="Bold"/>
+            <Slider VerticalOptions="Center" 
                 x:Name="sizeSlider"
                 Minimum="10"
                 Maximum="35"
                 Value="10"
                 ValueChanged="OnSliderValueChanged"
                 />
-        <Label Text="10"
+            <Label Text="10"
                x:Name="valueLabel"
                FontSize="18"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
-        <Frame BorderColor="Red">
-            <Grid  Margin="45,0,45,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+        </VerticalStackLayout>
+            <VerticalStackLayout
+                Spacing="25"
+                Padding="30,0"
+                VerticalOptions="Center">       
 
-                <!-- Tlačítka v prvním sloupci -->
-                <StackLayout 
+                <Label Text="Hello, XAML!"
+       VerticalOptions="Center"
+       HorizontalTextAlignment="Center"
+       FontSize="18"
+       FontAttributes="Bold"/>
+                <Slider VerticalOptions="Center" 
+            
+            Minimum="10"
+            Maximum="35"
+            Value="10"
+            ValueChanged="OnSliderValueChanged"
+            />
+                <Label Text="10"
+           
+           FontSize="18"
+           HorizontalOptions="Center"
+           VerticalOptions="Center" />
+            </VerticalStackLayout>
+        </HorizontalStackLayout>
+        <Grid  Margin="45,0,45,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout 
             Grid.Column="0"
+            MinimumWidthRequest="120"
             VerticalOptions="CenterAndExpand">
-                    <Button
-                x:Name="Classic"
+                <Button
+                x:Name="classicButton"
                 Text="Classic"
-                Clicked="mazeMenuNavigate"
+                Clicked="classicClick"
+                MinimumWidthRequest="100"
                 SemanticProperties.Hint="Counts the number of times you click"
+                BackgroundColor="#a2b223"
                 HorizontalOptions="Center" />
-                    <Button
-                x:Name="Rounded"
+                <Button
+                x:Name="roundedButton"
                 Text="Rounded"
+                MinimumWidthRequest="100"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="roundedMazeMenuNavigate"
+                Clicked="roundedClick"
                 HorizontalOptions="Center" />
-                    <Button
-                x:Name="Hexa"
+                <Button
+                x:Name="hexaButton"
                 Text="Hexa"
-                SemanticProperties.Hint="Counts the number of times you click"
+                MinimumWidthRequest="100"
+                Clicked="hexaClick"
                 HorizontalOptions="Center" />
-                </StackLayout>
+            </StackLayout>
 
-                <!-- GraphicsView v druhém sloupci -->
-                <GraphicsView 
+            <!-- GraphicsView v druhém sloupci -->
+            <GraphicsView 
             x:Name="canvas"
             Grid.Column="1"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
             Drawable="{StaticResource MazeDrawable}" />
-            </Grid>
-        </Frame>
+        </Grid>
+        <Button
+        x:Name="OkButton"
+        Text="Ok"
+        Clicked="mazeMenuNavigate"
+        HorizontalOptions="Center" />   
     </VerticalStackLayout>
     
 </ContentPage>

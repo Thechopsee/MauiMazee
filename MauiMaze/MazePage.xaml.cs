@@ -26,7 +26,7 @@ public partial class MazePage : ContentPage
 	{
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        driver = new GameDriver(mazeDrawable,canvas,size);
+        driver = new GameDriver(mazeDrawable,canvas,size,0);
     }
 
     private async void goBackPop(object sender, EventArgs e)
