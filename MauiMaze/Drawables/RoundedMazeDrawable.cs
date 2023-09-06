@@ -19,12 +19,9 @@ namespace MauiMaze.Drawables
                 maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(25,25));
             }
         }
-
-
          
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            
             canvas.StrokeColor = Colors.Black;
             canvas.StrokeSize = 4;
             float left = dirtyRect.Left;

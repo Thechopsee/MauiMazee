@@ -12,18 +12,6 @@ namespace MauiMaze.Models.ClassicMaze
         public Edge[] Edges { get; }
         public List<List<Edge>> PassableEdges { get; set; }
 
-        public List<int> path { get; }
-
-        public bool isThereWall(int x1, int y1, int x2, int y2)
-        {
-            int currentCellIndex = Convert.ToInt32(y1 * Size.Width + x1);
-            int nextCellIndex = Convert.ToInt32(y2 * Size.Width + x2);
-            if (Edges.Contains(new Edge(currentCellIndex, nextCellIndex)) || Edges.Contains(new Edge(nextCellIndex, currentCellIndex)))
-            {
-                return true;
-            }
-            return false;
-        }
         public Maze(Size size)
         {
             var edgesToCheck = Edge.Generate(size);
@@ -56,7 +44,6 @@ namespace MauiMaze.Models.ClassicMaze
             Size = size;
             // Set start and end points
 
-            // Set maze properties
             PassableEdges = new List<List<Edge>>();
             for (int row = 0; row < size.Height; row++)
             {
@@ -114,22 +101,6 @@ namespace MauiMaze.Models.ClassicMaze
                 PassableEdges.Add(rowEdges.SelectMany(edges => edges).ToList());
             }
 
-            //MazeSolver ms = new MazeSolver(PassableEdges, Start, End, size);
-            //path = ms.FindPath();
-            
-            //Application.Current.MainPage.DisplayAlert("Upozornění", uznevim + "prostlo", "OK");
-            //Application.Current.MainPage.DisplayAlert("Upozornění", strpath + "path", "OK");
-            /*
-            for (int i = 0; i < PassableEdges.Count; i++)
-            {
-                String str = "";
-                for (int j = 0; j < PassableEdges[i].Count; j++)
-                { 
-                    str+=PassableEdges[i][j].Cell1+" "+ PassableEdges[i][j].Cell2 +"\n" ;    
-                }
-                Application.Current.MainPage.DisplayAlert("Upozornění", str+ "", "OK");
-            }*/
-
         }
 
         public Maze(Size size, bool neco)
@@ -159,7 +130,6 @@ namespace MauiMaze.Models.ClassicMaze
                 edgesToCheck.RemoveAt(edgeIndex);
             }
 
-            // Set maze properties
             Edges = edgesToCheck.Concat(mazeEdges).ToArray();
             Size = size;
         }

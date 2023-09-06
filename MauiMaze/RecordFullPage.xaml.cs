@@ -16,6 +16,6 @@ public partial class RecordFullPage : ContentPage
 
     private async void backToMenu(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new UserMenu(ViewModel.NameRecord.userID));
+        await Navigation.PushAsync(new UserMenu());
     }
 }

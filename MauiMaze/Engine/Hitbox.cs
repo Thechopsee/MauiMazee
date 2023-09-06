@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Models.RoundedMaze
+namespace MauiMaze.Engine
 {
-    internal class Link
+    public class Hitbox
     {
-        public int Row { get; set; }
-        public int Col { get; set; }
+        public float X;
+        public float Y;
+        public float size;
     }
 }

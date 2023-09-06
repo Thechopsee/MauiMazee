@@ -9,6 +9,7 @@
     <VerticalStackLayout>
         <Label 
             Text="Welcome {{user}}!"
+            x:Name="welcomelabel"
             VerticalOptions="Center" 
             FontSize="20"
             HorizontalOptions="Center" 
@@ -45,6 +46,7 @@
                 HorizontalOptions="Center"
                 BackgroundColor="#a2b223"
                 MinimumWidthRequest="200"
+                Clicked="Logout"
                 Margin="0,60,0,20"
                 />
     </VerticalStackLayout>

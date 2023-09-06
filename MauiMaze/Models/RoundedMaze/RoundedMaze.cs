@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.RoundedMaze
 {
+    internal class Link
+    {
+        public int Row { get; set; }
+        public int Col { get; set; }
+    }
     public class RoundedMaze :GameMaze
     {
         private List<List<Cell>> grid = new List<List<Cell>>();

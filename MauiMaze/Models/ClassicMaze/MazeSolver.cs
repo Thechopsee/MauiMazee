@@ -78,7 +78,6 @@
 
             Application.Current.MainPage.DisplayAlert("Upozornění", "curentcells\n" +strpath + "", "OK"); 
             */
-            // Top neighbor
             if (row > 0 && currentCellEdges.Any())
             {
                 int topCellIndex = Convert.ToInt32((row - 1) * Size.Width + column);
@@ -88,7 +87,6 @@
                 }
             }
 
-            // Bottom neighbor
             if (row < Size.Height - 1 && currentCellEdges.Any())
             {
                 int bottomCellIndex = Convert.ToInt32((row + 1) * Size.Width + column);
@@ -98,7 +96,6 @@
                 }
             }
 
-            // Left neighbor
             if (column > 0 && currentCellEdges.Any())
             {
                 int leftCellIndex = Convert.ToInt32(row * Size.Width + (column - 1));
@@ -108,7 +105,6 @@
                 }
             }
 
-            // Right neighbor
             if (column < Size.Width - 1 && currentCellEdges.Any())
             {
                 int rightCellIndex = Convert.ToInt32(row * Size.Width + (column + 1));

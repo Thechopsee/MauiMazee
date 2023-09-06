@@ -77,8 +77,10 @@ namespace MauiMaze.Drawables
                 drawPlayer(canvas);                
 
                  canvas.StrokeColor = Colors.Magenta; 
-                 canvas.StrokeSize = 2; 
-                 canvas.DrawRectangle(player.positionX+ (float)player.playerSizeX/1.5f, player.positionY+ (float)player.playerSizeY/2, (float)player.playerSizeX/2, (float)player.playerSizeY);
+                 canvas.StrokeSize = 2;
+                 float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));
+                 player.recalculateHitbox();
+                 canvas.DrawRectangle(player.positionX+(float)player.playerSizeX-(minsize / 1.5f) /2, player.positionY+ (float)player.playerSizeY-(minsize / 1.5f) /2,minsize/1.5f ,minsize/1.5f);
                  inicialized = true;
             }
 

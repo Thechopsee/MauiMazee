@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:MainPageViewModel"
              x:Class="MauiMaze.MainPage"
              Title="">
 
@@ -24,6 +26,7 @@
                 HorizontalOptions="CenterAndExpand" />
             <Entry
                     x:Name="EmailEntry"
+                    Text="{Binding Email}"
                     Placeholder="Enter your name"
                     MinimumWidthRequest="200"
                     MaximumWidthRequest="350"
@@ -32,18 +35,20 @@
 
                 <Entry
                     x:Name="PassEntry"
+                    Text="{Binding Password}"
                     MinimumWidthRequest="200"
                     MaximumWidthRequest="350"
                     MinimumHeightRequest="50"
                     IsPassword="true"
                     Placeholder="Enter your email"
                     HorizontalOptions="FillAndExpand" />
-
+                
                 <Button
+                    IsEnabled="{Binding NameisValid}"
                     x:Name="SubmitButton"
                     MinimumWidthRequest="200"
                     Text="Submit"
-                    Clicked="tryToLogin"
+                    Command="{Binding tryToLoginnCommand}"
                     HorizontalOptions="Center" />
 
             

@@ -56,9 +56,9 @@ namespace MauiMaze.Engine
 
                 player = mazeDrawable.reinitPlayer();
             }
-            if (player.playerSizeX != mazeDrawable.cellWidth/2) {
-                player.playerSizeX = mazeDrawable.cellWidth/2;
-                player.playerSizeY =mazeDrawable.cellHeight/2;
+            if (player.playerSizeX != mazeDrawable.cellWidth) {
+                player.playerSizeX = mazeDrawable.cellWidth;
+                player.playerSizeY =mazeDrawable.cellHeight;
             }
             float oldPlayerX = player.positionX;
             float oldPlayery = player.positionY;
@@ -70,10 +70,28 @@ namespace MauiMaze.Engine
             {
                 player.positionX = (float)(x - (player.playerSizeX));
                 player.positionY = (float)(y - (player.playerSizeY));
-                if (mazeDrawable.checkCollision((int)(player.positionX + (player.playerSizeX / 1.5)), (int)player.positionY+ (int)(player.playerSizeY / 2), (int)(player.positionX + ((player.playerSizeX/2)+player.playerSizeX/1.5)), (int)(player.positionY + player.playerSizeY)+(int)(player.playerSizeY / 2)) )
+                player.recalculateHitbox();
+                if (mazeDrawable.checkCollision((int)player.hitbox.X,(int)player.hitbox.Y,(int)(player.hitbox.X+player.hitbox.size),(int)(player.hitbox.Y+player.hitbox.size )))
                 {
-                    player.positionX = oldPlayerX;
-                    player.positionY = oldPlayery;
+
+
+                    if (player.positionX > oldPlayerX)
+                    {
+                        player.positionX = oldPlayerX ;
+                    }
+                    else
+                    {
+                        player.positionX = oldPlayerX ;
+                    }
+                    if (player.positionY > oldPlayery)
+                    {
+                        player.positionY = oldPlayery ;
+                    }
+                    else
+                    {
+                        player.positionY = oldPlayery ;
+                    }
+
                     return;
                 }
                 if (checkEnd())
@@ -87,8 +105,9 @@ namespace MauiMaze.Engine
             }
         }
         private bool checkEnd()
-        {   
-            if (player.positionX > end.bottomX && player.positionY > end.bottomY && player.positionX < end.X && player.positionY < end.Y)
+        {
+            player.recalculateHitbox();
+            if (player.hitbox.X> end.bottomX && player.hitbox.Y > end.bottomY && player.hitbox.X < end.X && player.hitbox.Y < end.Y)
             {
                 return true;
             }

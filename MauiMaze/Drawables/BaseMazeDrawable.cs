@@ -28,7 +28,7 @@ namespace MauiMaze.Drawables
             float plX = (float)(player.positionX + player.playerSizeX);
             float plY = (float)(player.positionY + player.playerSizeY);
             canvas.StrokeColor = Colors.Orange;
-            canvas.DrawCircle(plX, plY, MathF.Max((float)player.playerSizeX, ((float)player.playerSizeY))/4);
+            canvas.DrawCircle(plX, plY, MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY))/3);
         }
         protected void drawStartAndEnd(ICanvas canvas)
         {

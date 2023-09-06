@@ -17,7 +17,7 @@ namespace MauiMaze.Engine
         public int userID { get; set; } 
         public string name { get; set; }
         Stopwatch stopwatch = new Stopwatch();
-        private int timeInMilliSeconds { get; set; }
+        public int timeInMilliSeconds { get; set; }
 
         public GameRecord(String mazeID,int numOfTry)
         {

@@ -6,15 +6,8 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.ClassicMaze
 {
-
-    /// <summary>
-    ///     A collection of cells not seperated by an <see cref="Edge" />
-    /// </summary>
     public class DisjointSets
     {
-        /// <summary>
-        ///     Array implementation of an Up-Tree
-        /// </summary>
         private readonly int[] _cells;
 
         public DisjointSets(int cells)
@@ -26,9 +19,6 @@ namespace MauiMaze.Models.ClassicMaze
             }
         }
 
-        /// <summary>
-        ///     Finds the root of the given cell
-        /// </summary>
         public int Find(int cell)
         {
             var parent = _cells[cell];
@@ -37,10 +27,6 @@ namespace MauiMaze.Models.ClassicMaze
 
         public int Size(int set) => _cells[Find(set)] * -1;
 
-        /// <summary>
-        ///     Merges two sets by attaching the root of
-        ///     the smallest set to the root of the biggest
-        /// </summary>
         public void Union(int set1, int set2)
         {
             set1 = Find(set1);
