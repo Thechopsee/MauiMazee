@@ -9,7 +9,7 @@ namespace MauiMaze.Models.ClassicMaze
 {
     public class Maze : GameMaze
     {
-        public Edge[] Edges { get; }
+        public Edge[] Edges { get; set; }
         public List<List<Edge>> PassableEdges { get; set; }
 
         public Maze(Size size)

@@ -33,6 +33,12 @@
                 MinimumWidthRequest="200"
                 Clicked="GoToRecords"
                 Margin="0,0,0,20"/>
+        <Button Text="Maze History"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                MinimumWidthRequest="200"
+                Clicked="GoToHistory"
+                Margin="0,0,0,20"/>
         <Button Text="Settings ⚙"
             VerticalOptions="Center"
             HorizontalOptions="Center"

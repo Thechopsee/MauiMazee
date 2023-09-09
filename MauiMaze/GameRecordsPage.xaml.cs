@@ -1,3 +1,4 @@
+
 using MauiMaze.Engine;
 using MauiMaze.Services;
 
@@ -13,4 +14,6 @@ public partial class GameRecordsPage : ContentPage
         recordsList.ItemsSource = records;
         this.userID = userID;
     }
+
+
 }

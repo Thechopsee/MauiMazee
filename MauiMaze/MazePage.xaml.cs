@@ -2,6 +2,7 @@
 using CommunityToolkit.Maui.Views;
 using MauiMaze.Drawables;
 using MauiMaze.Engine;
+using MauiMaze.Models.ClassicMaze;
 
 namespace MauiMaze;
 
@@ -27,6 +28,12 @@ public partial class MazePage : ContentPage
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
         driver = new GameDriver(mazeDrawable,canvas,size,0);
+    }
+    public MazePage(Maze maze)
+    {
+        InitializeComponent();
+        mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
+        driver = new GameDriver(mazeDrawable, canvas, (int)(maze.Size.Width), 0,maze); //todo doupravit
     }
 
     private async void goBackPop(object sender, EventArgs e)

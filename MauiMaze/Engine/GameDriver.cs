@@ -45,6 +45,18 @@ namespace MauiMaze.Engine
             graphicsView.Invalidate();
             gameRecord = new GameRecord("test"+1,1); //TODO
         }
+        public GameDriver(BaseMazeDrawable md, GraphicsView gv, int size, int mazetype,Maze maze)
+        {
+            ended = false;
+            graphicsView = gv;
+            mazeDrawable = md;
+            mazeDrawable.player = new Player(0, 0, md.cellWidth, md.cellHeight);
+            this.moveRecords = new List<MoveRecord>();
+            player = mazeDrawable.player;
+            mazeDrawable.maze = maze;
+            graphicsView.Invalidate();
+            gameRecord = new GameRecord("test" + 1, 1); //TODO
+        }
 
         public void movePlayerToPosition(float x, float y)
         {

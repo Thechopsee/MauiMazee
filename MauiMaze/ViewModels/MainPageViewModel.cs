@@ -21,7 +21,7 @@ namespace MauiMaze.ViewModels
         [ObservableProperty]
         bool nameisValid;
         [RelayCommand]
-        void tryToLoginn()
+        async Task tryToLoginn()
         {
             NameisValid = true;
             isBusy = true;
@@ -30,17 +30,17 @@ namespace MauiMaze.ViewModels
                 var current = Connectivity.NetworkAccess;
                 if (current == NetworkAccess.Internet)
                 {
-
-                    if (UserDataProvider.GetInstance().LoginUser(Email,Password))
+                    bool vysl = await UserDataProvider.GetInstance().LoginUser(Email, Password);
+                    if (vysl)
                     {
                         //await Navigation.PushAsync(new UserMenu(userID));
                         Password = "";
-                        Shell.Current.Navigation.PushAsync(new UserMenu());
+                        await Shell.Current.Navigation.PushAsync(new UserMenu());
                         
                     }
                     else
                     {
-                        Shell.Current.DisplayAlert("Chyba", "Špatné jméno nebo heslo", "OK");
+                        await Shell.Current.DisplayAlert("Chyba", "Špatné jméno nebo heslo", "OK");
                     }
                 }
                 else if (current == NetworkAccess.Local || current == NetworkAccess.None)

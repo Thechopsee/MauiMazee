@@ -1,6 +1,8 @@
 using MauiMaze.Drawables;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Services;
 using MauiMaze.ViewModels;
+using Newtonsoft.Json;
 
 namespace MauiMaze;
 public enum MazeTypeButtons { 
@@ -14,11 +16,14 @@ public partial class MazeMenu : ContentPage
     Color native;
     Color clicked;
     MazeTypeButtons actual;
+    Maze maze;
     public MazeMenu()
 	{
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        Maze maze=new Maze(new Size(10, 10));
+        maze=new Maze(new Size(10, 10));
+        MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID());
+        
         mazeDrawable.maze=maze;
         canvas.Invalidate();
         clicked = classicButton.BackgroundColor;
@@ -37,6 +42,7 @@ public partial class MazeMenu : ContentPage
 
     private async void mazeMenuNavigate(object sender, EventArgs e)
     {
+        //await UserComunicator.tryToSaveMaze(UserDataProvider.GetInstance().getUserID(), maze.Edges);
         int size = Convert.ToInt32(sizeSlider.Value);
         switch (actual)
         {

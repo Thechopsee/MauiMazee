@@ -29,4 +29,9 @@ public partial class UserMenu : ContentPage
 		UserDataProvider.GetInstance().LogoutUser();
 		await Navigation.PopToRootAsync();
     }
+
+    private async void GoToHistory(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MazeHistoryPage());
+    }
 }

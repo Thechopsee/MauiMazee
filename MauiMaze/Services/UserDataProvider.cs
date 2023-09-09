@@ -17,17 +17,38 @@ namespace MauiMaze.Services
         {
             return user.Name;
         }
+        public int getUserID()
+        {
+            return user.Id;
+        }
         DateTime expireDate;
         //TODO add refresh token
         private bool isExpired => checkExpiration();
 
         public void LogoutUser()
         {
-            user.Dispose();
+            if (user is not null)
+            {
+                user.Dispose();
+            }
             expireDate = DateTime.MinValue;
         }
-        public bool LoginUser(string name,string password)
+        public async Task<bool> LoginUser(string name,string password)
         {
+            int vysl=await UserComunicator.tryToLogin(name, password);
+            if (vysl>0)
+            {
+                expireDate = DateTime.Now;
+                expireDate.AddMonths(1);
+                user = new User(vysl, "Admin");
+                //TODO set with Token
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            /*
             if (name == "admin" && password == "admin")
             {
                 expireDate = DateTime.Now;
@@ -40,6 +61,7 @@ namespace MauiMaze.Services
             {
                 return false;
             }
+            */
             //TODO connect with UserFetcher
         }
 
