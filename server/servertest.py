@@ -2,11 +2,7 @@ from flask import Flask, request, jsonify
 import sqlite3 
 app = Flask(__name__)
 
-# Simulovaná databáze uživatelů pro ověření
-users = {
-    'admin': 'admin',
-    'user2@example.com': 'heslo456',
-}
+
 def trytoLoginDatabase(email,password):
     con = sqlite3.connect("test.db")
     cur = con.cursor()
@@ -34,7 +30,7 @@ def getMaze(id):
 def getMazeList(id):
     con = sqlite3.connect("test.db")
     cur = con.cursor()
-    res = cur.execute("SELECT ID FROM Maze WHERE UserID="+str(id))
+    res = cur.execute("SELECT * FROM Maze WHERE UserID="+str(id))
     if(res is None):
         return []
     else:
@@ -70,7 +66,7 @@ def loadMazeList():
     data = request.get_json()
     id = data.get('userID')
     res=getMazeList(id)
-    response =  {'message': str(res)}
+    response =  {'descriptions': res}
     status_code = 200
     return jsonify(response), status_code
 
@@ -94,4 +90,4 @@ def login():
 
 if __name__ == '__main__':
     
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8085)

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:UserMenuViewModel"
              x:Class="MauiMaze.UserMenu">
 
     <Shell.BackButtonBehavior>
@@ -8,51 +10,61 @@
     </Shell.BackButtonBehavior>
     <VerticalStackLayout>
         <Label 
-            Text="Welcome {{user}}!"
+            Text="{Binding WelcomeText}"
             x:Name="welcomelabel"
+            
             VerticalOptions="Center" 
             FontSize="20"
             HorizontalOptions="Center" 
             Margin="0,20,0,45"/>
         
         <Button Text="Daily Maze"
+                x:Name="DailyMaze"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="GoToMaze"
+                Command="{Binding GoToMazeCommand}"
                 MinimumWidthRequest="200"
                 Margin="0,0,0,20"/>
         <Button Text="Go to Maze"
+                x:Name="GotoMaze"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 MinimumWidthRequest="200"
-                Clicked="GoToMaze"
+                Command="{Binding GoToMazeCommand}"
                 Margin="0,0,0,20"/>
         <Button Text="Maze Records"
+                IsVisible="{Binding IsRecordsButtonVisible}"
+                x:Name="MazeRecords"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 MinimumWidthRequest="200"
-                Clicked="GoToRecords"
+                Command="{Binding GoToRecordsCommand}"
                 Margin="0,0,0,20"/>
         <Button Text="Maze History"
                 VerticalOptions="Center"
+                x:Name="MazeHistory"
                 HorizontalOptions="Center"
                 MinimumWidthRequest="200"
-                Clicked="GoToHistory"
+                IsVisible="{Binding IsHistoryButtonVisible}"
+                Command="{Binding GoToHistoryCommand}"
                 Margin="0,0,0,20"/>
         <Button Text="Settings ⚙"
+                x:Name="Settings"
             VerticalOptions="Center"
             HorizontalOptions="Center"
             MinimumWidthRequest="200"
             BackgroundColor="Gray"
-            Clicked="GoToRecords"
+            Command="{Binding GoToSettingsCommand}"
             Margin="0,0,0,20"/>
 
-        <Button Text="Logout 🚪"
+        <Button Text="{Binding ExitText}"
+                x:Name="Logout"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 BackgroundColor="#a2b223"
                 MinimumWidthRequest="200"
-                Clicked="Logout"
+                
+                Command="{Binding LogoutCommand}"
                 Margin="0,60,0,20"
                 />
     </VerticalStackLayout>

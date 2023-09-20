@@ -1,4 +1,6 @@
 using MauiMaze.Engine;
+using MauiMaze.Models;
+using MauiMaze.Services;
 using MauiMaze.ViewModels;
 
 namespace MauiMaze;
@@ -16,6 +18,13 @@ public partial class RecordFullPage : ContentPage
 
     private async void backToMenu(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new UserMenu());
+        if (UserDataProvider.GetInstance().isUserValid)
+        {
+            await Navigation.PushAsync(new UserMenu(LoginCases.Online));
+        }
+        else
+        {
+            await Navigation.PushAsync(new UserMenu(LoginCases.Offline));
+        }
     }
 }

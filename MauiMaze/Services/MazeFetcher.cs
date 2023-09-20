@@ -14,7 +14,7 @@ namespace MauiMaze.Services
     {
         public static async Task<MazeDescription[]> getMazeList(int userid)
         {
-            string apiUrl = "http://localhost:8080/loadMazeList";
+            string apiUrl = "http://localhost:8085/loadMazeList";
 
             var userData = new
             {
@@ -30,30 +30,31 @@ namespace MauiMaze.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string ids = responseContent.Split("(")[1];
-                    string id = ids.Split(")")[0];
-                    
-                    string[] nums = id.Split(",");
-                    MazeDescription[] final = new MazeDescription[nums.Length];
-                    for(int i= 0;i < final.Length-1;i++)
+                   // await Application.Current.MainPage.DisplayAlert("Upozornění", "run " + JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
+                    MazeDescriptionDTO mm = JsonConvert.DeserializeObject<MazeDescriptionDTO>(responseContent);
+                    MazeDescription[] mazeDescriptions = new MazeDescription[mm.descriptions.Count];
+                   // await Application.Current.MainPage.DisplayAlert("Upozornění", "count" + mm.descriptions.Count, "OK");
+                    for (int i = 0; i < mazeDescriptions.Length; i++)
                     {
                         MazeDescription md = new MazeDescription();
-                        md.name = nums[i];
-                        md.ID= Int32.Parse(nums[i]);
-                        final[i]= md;
+                        md.ID = Int32.Parse(mm.descriptions[i][0]);
+                        md.mazeType = (MazeType)Enum.Parse(typeof(MazeType),mm.descriptions[i][2]);
+                        md.creationDate = DateTime.Parse(mm.descriptions[i][3]);
+                        md.description=(md.ID)+" " + mm.descriptions[i][2] + " " + mm.descriptions[i][3];
+                        mazeDescriptions[i] = md;
                     }
-                    return final;
+                    return mazeDescriptions;
                 }
                 else
                 {
-                    return new MazeDescription[1];
+                    return new MazeDescription[2];
                 }
             }
         }
 
         public static async Task<Maze> getMaze(int userid)
         {
-            string apiUrl = "http://localhost:8080/loadMaze";
+            string apiUrl = "http://localhost:8085/loadMaze";
 
             var userData = new
             {

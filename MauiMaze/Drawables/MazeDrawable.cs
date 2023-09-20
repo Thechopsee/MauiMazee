@@ -7,6 +7,14 @@ using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
 using Microsoft.Maui.Graphics;
 
+using System.Reflection;
+using IImage = Microsoft.Maui.Graphics.IImage;
+#if IOS || ANDROID || MACCATALYST
+using Microsoft.Maui.Graphics.Platform;
+#elif WINDOWS
+using Microsoft.Maui.Graphics.Win2D;
+#endif
+
 
 namespace MauiMaze.Drawables
 {

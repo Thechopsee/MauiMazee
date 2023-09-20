@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Services
+namespace MauiMaze.Models
 {
-    public class UserFetcher
+    public enum LoginCases
     {
-
+        Online,
+        Offline
     }
 }

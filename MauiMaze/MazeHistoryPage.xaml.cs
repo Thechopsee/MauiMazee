@@ -18,8 +18,8 @@ public partial class MazeHistoryPage : ContentPage
     public async void downasda()
     {
         MazeDescription[] records = await MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID());
-        await Application.Current.MainPage.DisplayAlert("Upozornìní", "run " + records.Length, "OK");
         recordsList.ItemsSource = records.ToList();
+        loading.IsRunning = false;
     }
 
     private async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)

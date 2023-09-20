@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMaze.Settings"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:SettingViewModel"
+             Title="Settings">
+    <VerticalStackLayout>
+        <ActivityIndicator IsRunning="True" 
+                           x:Name="loading"
+                           />
+        <Label 
+            Text="{Binding Valuee}"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Slider VerticalOptions="Center" 
+            x:Name="sizeSlider"
+            Minimum="10"
+            Maximum="35"
+            MaximumWidthRequest="200"
+            DragCompletedCommand ="{Binding dragEndedCommand}"
+            Value="{Binding Valuee}"
+            
+            />
+        <Button
+    x:Name="changeCzech"
+    MaximumWidthRequest="200"
+    Text="Česky"
+            
+    IsEnabled="{Binding CzechLanguage}"
+    Command="{Binding changeCzechCommand}"
+    MinimumWidthRequest="200"
+    />
+        <Button
+x:Name="changeEnglish"
+MaximumWidthRequest="200"
+Text="English"
+
+IsEnabled="{Binding EnglishLanguage}"
+Command="{Binding changeEnglishCommand}"
+MinimumWidthRequest="200"
+/>
+        <Button
+            x:Name="Save"
+            MaximumWidthRequest="200"
+            Text="{Binding ButtonSaveText}"
+            Command="{Binding saveSettingsCommand}"
+            MinimumWidthRequest="200"
+            />
+    </VerticalStackLayout>
+</ContentPage>

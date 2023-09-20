@@ -4,6 +4,13 @@ using MauiMaze.Drawables;
 using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
 
+using IImage = Microsoft.Maui.Graphics.IImage;
+#if IOS || ANDROID || MACCATALYST
+using Microsoft.Maui.Graphics.Platform;
+#elif WINDOWS
+using Microsoft.Maui.Graphics.Win2D;
+#endif
+
 namespace MauiMaze;
 
 public partial class MazePage : ContentPage

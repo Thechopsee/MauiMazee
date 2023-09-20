@@ -1,37 +1,23 @@
+using MauiMaze.Models;
 using MauiMaze.Services;
+using MauiMaze.ViewModels;
 
 namespace MauiMaze;
 
 public partial class UserMenu : ContentPage
 {
-	private int userID;
-	public UserMenu()
+	public UserMenu(LoginCases login)
 	{
 		InitializeComponent();
-		if (UserDataProvider.GetInstance().isUserValid)
-		{
-			welcomelabel.Text = $"Welcome {UserDataProvider.GetInstance().getUserName()}!";
-		}
+		UserMenuViewModel view= new UserMenuViewModel();
+        if (login != LoginCases.Offline)
+        {
+            view.setWelcomeText(UserDataProvider.GetInstance().getUserName());
+        }
+        else {
+
+            view.UserOfflineProcedure();
+        }
+        BindingContext = view;
 	}
-
-	private async void GoToMaze(object sender, EventArgs e)
-	{
-        await Navigation.PushAsync(new MazeMenu());
-    }
-
-	private async void GoToRecords(object sender, EventArgs e)
-	{
-        await Navigation.PushAsync(new GameRecordsPage(userID));
-    }
-
-    private async void Logout(object sender, EventArgs e)
-    {
-		UserDataProvider.GetInstance().LogoutUser();
-		await Navigation.PopToRootAsync();
-    }
-
-    private async void GoToHistory(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new MazeHistoryPage());
-    }
 }

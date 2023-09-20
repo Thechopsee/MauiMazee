@@ -5,7 +5,7 @@ using MauiMaze.ViewModels;
 using Newtonsoft.Json;
 
 namespace MauiMaze;
-public enum MazeTypeButtons { 
+public enum MazeType { 
     Classic,
     Rounded,
     Hexa
@@ -15,20 +15,18 @@ public partial class MazeMenu : ContentPage
     MazeDrawable mazeDrawable;
     Color native;
     Color clicked;
-    MazeTypeButtons actual;
+    MazeType actual;
     Maze maze;
     public MazeMenu()
 	{
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
         maze=new Maze(new Size(10, 10));
-        MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID());
-        
         mazeDrawable.maze=maze;
         canvas.Invalidate();
         clicked = classicButton.BackgroundColor;
         native = hexaButton.BackgroundColor;
-        actual = MazeTypeButtons.Classic;
+        actual = MazeType.Classic;
     }
 
     void OnSliderValueChanged(object sender, ValueChangedEventArgs args)
@@ -46,13 +44,13 @@ public partial class MazeMenu : ContentPage
         int size = Convert.ToInt32(sizeSlider.Value);
         switch (actual)
         {
-            case MazeTypeButtons.Classic:
+            case MazeType.Classic:
                 await Navigation.PushAsync(new MazePage(size));
                 return;
-            case MazeTypeButtons.Rounded:
+            case MazeType.Rounded:
                 await Navigation.PushAsync(new RoundedMazePage(25));
                 return;
-            case MazeTypeButtons.Hexa:
+            case MazeType.Hexa:
                 await Navigation.PushAsync(new HexagonalMazePage());
                 return;
         }
@@ -70,7 +68,7 @@ public partial class MazeMenu : ContentPage
 
     private void hexaClick(object sender, EventArgs e)
     {
-        actual = MazeTypeButtons.Hexa;
+        actual = MazeType.Hexa;
         hexaButton.BackgroundColor = clicked;
         classicButton.BackgroundColor = native;
         roundedButton.BackgroundColor = native;
@@ -79,7 +77,7 @@ public partial class MazeMenu : ContentPage
     private void roundedClick(object sender, EventArgs e)
     {
         canvas.Drawable = new RoundedMazeDrawable();
-        actual = MazeTypeButtons.Rounded;
+        actual = MazeType.Rounded;
         hexaButton.BackgroundColor = native;
         classicButton.BackgroundColor = native;
         roundedButton.BackgroundColor = clicked;
@@ -90,7 +88,7 @@ public partial class MazeMenu : ContentPage
         MazeDrawable md = new MazeDrawable();
         md.maze = new Maze(new Size(10, 10),false);
         canvas.Drawable = md;
-        actual = MazeTypeButtons.Classic;
+        actual = MazeType.Classic;
         hexaButton.BackgroundColor = native;
         classicButton.BackgroundColor = clicked;
         roundedButton.BackgroundColor = native;

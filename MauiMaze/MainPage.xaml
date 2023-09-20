@@ -50,8 +50,15 @@
                     Text="Submit"
                     Command="{Binding tryToLoginnCommand}"
                     HorizontalOptions="Center" />
+            <Button
+                IsVisible="{Binding OfflineButton}"
+                x:Name="OfflineButon"
+                MinimumWidthRequest="200"
+                Text="Go offline"
+                Command="{Binding GoOfflineCommand}"
+                HorizontalOptions="Center" />   
 
-            
+
 
             <Button
                 x:Name="Mazes"
@@ -80,7 +87,8 @@
                     x:Name="Settings"
                     Text="⚙"
                     MinimumWidthRequest="100"
-                    HorizontalOptions="CenterAndExpand" />
+                    HorizontalOptions="CenterAndExpand"
+                    Command="{Binding GoToSettingsCommand }"/>
 
             </StackLayout>
 
