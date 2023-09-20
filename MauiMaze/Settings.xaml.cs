@@ -12,10 +12,6 @@ public partial class Settings : ContentPage
 		
 		BindingContext = swm;
 		
-		while (!swm.isloaded)
-		{ 
-		
-		}
 		swm.CzechLanguage = !swm.CzechLanguage;
         swm.CzechLanguage = !swm.CzechLanguage;
         swm.EnglishLanguage = !swm.EnglishLanguage;

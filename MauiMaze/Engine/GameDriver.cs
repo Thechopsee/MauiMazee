@@ -1,4 +1,5 @@
 ﻿
+
 using MauiMaze.Drawables;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace MauiMaze.Engine
 {
     internal class GameDriver
@@ -22,7 +24,6 @@ namespace MauiMaze.Engine
         End end;
         public bool ended {get;set;}
         public GameRecord gameRecord { get; set; }
-        int counter = 300;
 
         public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype)
         {
@@ -74,7 +75,7 @@ namespace MauiMaze.Engine
             }
             float oldPlayerX = player.positionX;
             float oldPlayery = player.positionY;
-            // Vypočítání vzdálenosti mezi pozicí kliku (x, y) a středem hráče (player.positionX, player.positionY)
+            
             double distance = Math.Sqrt(Math.Pow((x - (player.playerSizeX/2)) - player.positionX, 2) + Math.Pow((y-(player.playerSizeY/2)) - player.positionY, 2));
 
             // Pokud vzdálenost je menší než poloměr, uživatel klikl na kolečko hráče
@@ -83,7 +84,7 @@ namespace MauiMaze.Engine
                 player.positionX = (float)(x - (player.playerSizeX));
                 player.positionY = (float)(y - (player.playerSizeY));
                 player.recalculateHitbox();
-                if (mazeDrawable.checkCollision((int)player.hitbox.X,(int)player.hitbox.Y,(int)(player.hitbox.X+player.hitbox.size),(int)(player.hitbox.Y+player.hitbox.size )))
+                if (mazeDrawable.checkCollision((int)player.hitbox.X, (int)player.hitbox.Y, (int)(player.hitbox.X + player.hitbox.size), (int)(player.hitbox.Y + player.hitbox.size)))
                 {
 
 
@@ -135,6 +136,42 @@ namespace MauiMaze.Engine
             ended = true;
             //go out
 
+        }
+        private bool checkFlush(float oldPlayerX, float oldPlayerY)
+        {
+            int xnew = (int)player.positionX;
+            int ynew = (int)player.positionY;
+            int xorigin = (int)oldPlayerX ;
+            int yorigin = (int)oldPlayerY ;
+            if (player.positionY < 0 || player.positionX<0)
+            {
+                return false;
+                
+            }
+
+            float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
+
+            int numberOfDots = (int)(distance);
+            if (numberOfDots == 0)
+            {
+                return false;
+            }
+            float stepX = (xnew - xorigin)/numberOfDots;
+            float stepY = (ynew - yorigin)/numberOfDots;
+
+            for (int i = 0; i <= numberOfDots; i++)
+            {
+                int x = (int)(xorigin + i * stepX);
+                int y = (int)(yorigin + i * stepY);
+                if (mazeDrawable.checkCollision(x, y, (int)(x + player.hitbox.size), (int)(y + player.hitbox.size)))
+                {
+                    //Application.Current.MainPage.DisplayAlert("Upozornění", "x" + x + " y" + y + "dista" + distance + "\nnew"+xnew+" "+ynew+"\norigin"+xorigin+" "+yorigin+"\n"+stepX+" "+stepY, "OK"); ;
+                    return true;
+                }
+
+            }
+            return false;
+           
         }
     }
 }
