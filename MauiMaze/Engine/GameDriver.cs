@@ -19,6 +19,7 @@ namespace MauiMaze.Engine
     {
         BaseMazeDrawable mazeDrawable;
         List<MoveRecord> moveRecords;
+       public  bool isReady = true;
         public GraphicsView graphicsView { get; set; }
         Player player;
         End end;
@@ -61,6 +62,7 @@ namespace MauiMaze.Engine
 
         public void movePlayerToPosition(float x, float y)
         {
+            isReady = false;
             end = mazeDrawable.maze.end;
             mazeDrawable.maze.firstrun = true;
             //Application.Current.MainPage.DisplayAlert("Upozornění", "Touch" +player.playerSizeX+" "+player.playerSizeY+" "+player.positionX+" "+player.positionY, "OK");
@@ -75,6 +77,8 @@ namespace MauiMaze.Engine
             }
             float oldPlayerX = player.positionX;
             float oldPlayery = player.positionY;
+            float oldHitbox = player.hitbox.X;
+            float oldHitboy = player.hitbox.Y;
             
             double distance = Math.Sqrt(Math.Pow((x - (player.playerSizeX/2)) - player.positionX, 2) + Math.Pow((y-(player.playerSizeY/2)) - player.positionY, 2));
 
@@ -84,7 +88,8 @@ namespace MauiMaze.Engine
                 player.positionX = (float)(x - (player.playerSizeX));
                 player.positionY = (float)(y - (player.playerSizeY));
                 player.recalculateHitbox();
-                if (mazeDrawable.checkCollision((int)player.hitbox.X, (int)player.hitbox.Y, (int)(player.hitbox.X + player.hitbox.size), (int)(player.hitbox.Y + player.hitbox.size)))
+                //mazeDrawable.checkCollision((int)player.hitbox.X, (int)player.hitbox.Y, (int)(player.hitbox.X + player.hitbox.size), (int)(player.hitbox.Y + player.hitbox.size))
+                if ( checkFlush(oldHitbox,oldHitboy))
                 {
 
 
@@ -104,7 +109,9 @@ namespace MauiMaze.Engine
                     {
                         player.positionY = oldPlayery ;
                     }
-
+                    isReady = true;
+                    player.recalculateHitbox();
+                    graphicsView.Invalidate();
                     return;
                 }
                 if (checkEnd())
@@ -114,7 +121,8 @@ namespace MauiMaze.Engine
                 }
                 mazeDrawable.player = player;
                 gameRecord.addMoveRecord(new MoveRecord((int)player.positionX, (int)player.positionY,false));
-                graphicsView.Invalidate(); 
+                graphicsView.Invalidate();
+                isReady = true;
             }
         }
         private bool checkEnd()
@@ -139,37 +147,62 @@ namespace MauiMaze.Engine
         }
         private bool checkFlush(float oldPlayerX, float oldPlayerY)
         {
-            int xnew = (int)player.positionX;
-            int ynew = (int)player.positionY;
-            int xorigin = (int)oldPlayerX ;
-            int yorigin = (int)oldPlayerY ;
-            if (player.positionY < 0 || player.positionX<0)
-            {
-                return false;
-                
-            }
+            float xnew = player.hitbox.X;
+            float ynew = player.hitbox.Y;
+            float xorigin = oldPlayerX ;
+            float yorigin = oldPlayerY ;
+
 
             float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
 
             int numberOfDots = (int)(distance);
             if (numberOfDots == 0)
             {
-                return false;
+                numberOfDots = 1;
             }
-            float stepX = (xnew - xorigin)/numberOfDots;
-            float stepY = (ynew - yorigin)/numberOfDots;
+            float xdiv = xnew - xorigin;
+            float ydiv= ynew - yorigin;
+            // float stepX=xdiv / distance;
+            // float stepY= ydiv / distance;
+            float stepX;
+            float stepY;
+            if (xdiv / distance < 0)
+            {
+                stepX = -1;
+            }
+            else if (xdiv / distance == 0)
+            {
+                stepX = 0;
+            }
+            else
+            {
+                stepX = 1;
+            }
+            if (ydiv / distance < 0)
+            {
+                stepY = -1;
+            }
+            else if (ydiv / distance == 0)
+            {
+                stepY = 0;
+            }
+            else
+            {
+                stepY = 1;
+            }
 
             for (int i = 0; i <= numberOfDots; i++)
             {
                 int x = (int)(xorigin + i * stepX);
                 int y = (int)(yorigin + i * stepY);
+               // Application.Current.MainPage.DisplayAlert("Upozornění", "x" + x + " y" + y + "dista" + distance + "\nnew" + xnew + " " + ynew + "\norigin" + xorigin + " " + yorigin + "\n" + stepX + " " + stepY, "OK"); ;
                 if (mazeDrawable.checkCollision(x, y, (int)(x + player.hitbox.size), (int)(y + player.hitbox.size)))
                 {
-                    //Application.Current.MainPage.DisplayAlert("Upozornění", "x" + x + " y" + y + "dista" + distance + "\nnew"+xnew+" "+ynew+"\norigin"+xorigin+" "+yorigin+"\n"+stepX+" "+stepY, "OK"); ;
                     return true;
                 }
 
             }
+
             return false;
            
         }

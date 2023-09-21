@@ -35,6 +35,7 @@
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
             DragInteraction="GameView_DragInteraction"
+            
             Drawable="{StaticResource MazeDrawable}" />
         
     </Grid>

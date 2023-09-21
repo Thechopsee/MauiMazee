@@ -54,6 +54,7 @@ namespace MauiMaze.Drawables
                     {
                         walls[i, (int)y] = true;
                     }
+                   
                 }
                 else
                 {
