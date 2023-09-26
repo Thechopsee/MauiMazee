@@ -17,7 +17,7 @@ public partial class MazePage : ContentPage
 {
     MazeDrawable mazeDrawable;
     GameDriver driver;
-    bool hardend = false;
+
     //TODO SAVE PROCEDURE ON EXIT PASE ETC...
      void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
@@ -42,9 +42,9 @@ public partial class MazePage : ContentPage
         driver = new GameDriver(mazeDrawable, canvas, (int)(maze.Size.Width), 0,maze); //todo doupravit
     }
 
-    private async void goBackPop(object sender, EventArgs e)
+    private async void GoBackPop(object sender, EventArgs e)
     {
-        AreUSurePopUp areUSurePopUp = new AreUSurePopUp();
+        AreUSurePopUp areUSurePopUp = new();
         var result = await this.ShowPopupAsync(areUSurePopUp);
         if ((bool)result)
         {

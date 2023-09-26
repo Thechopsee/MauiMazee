@@ -26,7 +26,7 @@
                 x:Name="Back"
                 Text="Back"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="goBackPop"
+                Clicked="GoBackPop"
                 HorizontalOptions="Center" />
 
         <GraphicsView 
