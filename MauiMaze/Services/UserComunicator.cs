@@ -13,7 +13,7 @@ namespace MauiMaze.Services
     {
         public static async Task<int> tryToLogin(string emaill,string pas)
         {
-            string apiUrl = "http://127.0.0.1:8085/login";
+            string apiUrl = ServiceConfig.serverAdress + "login";
 
             var userData = new
             {
@@ -40,9 +40,9 @@ namespace MauiMaze.Services
                 }
             }
         }
-        public static async Task<bool> tryToSaveMaze(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)
+        public static async Task<bool> TryToSaveMaze(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)
         {
-            string apiUrl = "http://localhost:8085/saveMaze";
+            string apiUrl = ServiceConfig.serverAdress + "saveMaze";
 
             var userData = new
             {

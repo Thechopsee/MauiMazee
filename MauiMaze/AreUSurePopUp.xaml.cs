@@ -4,11 +4,14 @@ namespace MauiMaze;
 
 public partial class AreUSurePopUp : Popup
 {
-    public bool clicked = false;
-    public bool result = false;
-    public bool closed = false;
-	public AreUSurePopUp()
+    public bool clicked { get; set; }
+    public bool result { get; set; }
+    public bool closed { get; set; }
+    public AreUSurePopUp()
 	{
+        clicked = false;
+        result = false;
+        closed = false;
 		InitializeComponent();
 	}
 

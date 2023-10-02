@@ -10,7 +10,7 @@ namespace MauiMaze.Services
 {
     public class RecordFetcher
     {
-        public static List<GameRecord> fetchRecords(int uid)
+        public static List<GameRecord> FetchRecords(int uid)
         {
            return RecordRepository.GetInstance().getRecords();
         }

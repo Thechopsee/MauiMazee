@@ -31,8 +31,7 @@ namespace MauiMaze.Models.ClassicMaze
                     sets.Union(set1, set2);
                 else
                     mazeEdges.Add(edge);
-
-                // Remove edge, so it won't be checked again
+                
                 edgesToCheck.RemoveAt(edgeIndex);
             }
 

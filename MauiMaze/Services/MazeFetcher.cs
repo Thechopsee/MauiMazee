@@ -14,7 +14,7 @@ namespace MauiMaze.Services
     {
         public static async Task<MazeDescription[]> getMazeList(int userid)
         {
-            string apiUrl = "http://localhost:8085/loadMazeList";
+            string apiUrl = ServiceConfig.serverAdress+"loadMazeList";
 
             var userData = new
             {
@@ -36,7 +36,7 @@ namespace MauiMaze.Services
                    // await Application.Current.MainPage.DisplayAlert("Upozornění", "count" + mm.descriptions.Count, "OK");
                     for (int i = 0; i < mazeDescriptions.Length; i++)
                     {
-                        MazeDescription md = new MazeDescription();
+                        MazeDescription md = new();
                         md.ID = Int32.Parse(mm.descriptions[i][0]);
                         md.mazeType = (MazeType)Enum.Parse(typeof(MazeType),mm.descriptions[i][2]);
                         md.creationDate = DateTime.Parse(mm.descriptions[i][3]);
@@ -54,7 +54,7 @@ namespace MauiMaze.Services
 
         public static async Task<Maze> getMaze(int userid)
         {
-            string apiUrl = "http://localhost:8085/loadMaze";
+            string apiUrl = ServiceConfig.serverAdress +"loadMaze";
 
             var userData = new
             {
@@ -65,15 +65,15 @@ namespace MauiMaze.Services
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-                string responseContent = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(false);
+                string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                await Application.Current.MainPage.DisplayAlert("Upozornění", "run "+ JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
+                //await Application.Current.MainPage.DisplayAlert("Upozornění", "run "+ JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
                 
                if (response.IsSuccessStatusCode)
                 {
                     MazeMessage mm = JsonConvert.DeserializeObject<MazeMessage>(responseContent);
-                    List<Edge> edges = new List<Edge>();
+                    List<Edge> edges = new();
                     foreach (int[] tup in mm.message)
                     {
                         edges.Add(new Edge(tup[2], tup[3]));

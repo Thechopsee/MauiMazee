@@ -10,7 +10,7 @@ public partial class GameRecordsPage : ContentPage
 	public GameRecordsPage(int userID)
     {
         InitializeComponent();
-        List<GameRecord> records = RecordFetcher.fetchRecords(1);
+        List<GameRecord> records = RecordFetcher.FetchRecords(1);
         recordsList.ItemsSource = records;
         this.userID = userID;
     }

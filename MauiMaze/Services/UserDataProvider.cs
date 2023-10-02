@@ -11,7 +11,7 @@ namespace MauiMaze.Services
     public class UserDataProvider
     {
         private static UserDataProvider instance;
-        public bool isUserValid =>checkUserValidity();
+        public bool isUserValid =>checkUserValidity;
         User user;
         public string getUserName()
         {
@@ -23,14 +23,11 @@ namespace MauiMaze.Services
         }
         DateTime expireDate;
         //TODO add refresh token
-        private bool isExpired => checkExpiration();
+        private bool IsExpired => checkExpiration();
 
         public void LogoutUser()
         {
-            if (user is not null)
-            {
-                user.Dispose();
-            }
+            user?.Dispose();
             expireDate = DateTime.MinValue;
         }
         public async Task<bool> LoginUser(string name,string password)
@@ -76,27 +73,29 @@ namespace MauiMaze.Services
             }
                 return true;
         }
-        private bool checkUserValidity() {
-            if (user != null )
+        private bool checkUserValidity
+        {
+            get
             {
-                if (!isExpired)
+                if (user != null)
                 {
-                    return true;
+                    if (!IsExpired)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        Application.Current.MainPage.DisplayAlert("Upozornění", "expired ", "OK");
+                        //TODO connect with UserFetcher
+                    }
                 }
-                else
-                {
-                    Application.Current.MainPage.DisplayAlert("Upozornění", "expired ", "OK");
-                    //TODO connect with UserFetcher
-                }
+                return false;
             }
-            return false;
         }
+
         public static UserDataProvider GetInstance()
         {
-            if (instance == null)
-            {
-                instance = new UserDataProvider();
-            }
+            instance ??= new UserDataProvider();
             return instance;
         }
 

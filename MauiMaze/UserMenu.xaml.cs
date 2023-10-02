@@ -12,7 +12,7 @@ public partial class UserMenu : ContentPage
 		UserMenuViewModel view= new UserMenuViewModel();
         if (login != LoginCases.Offline)
         {
-            view.setWelcomeText(UserDataProvider.GetInstance().getUserName());
+            view.SetWelcomeText(UserDataProvider.GetInstance().getUserName());
         }
         else {
 

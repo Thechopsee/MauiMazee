@@ -16,7 +16,7 @@ namespace MauiMaze.Drawables
         public double cellWidth { get; set; }
         public double cellHeight { get; set; }
         protected bool inicialized{ get; set; }
-        public bool[,] walls;
+        protected bool[,] walls { get; set; }
 
         public bool isInitialized() { return inicialized; }
         public Player reinitPlayer()

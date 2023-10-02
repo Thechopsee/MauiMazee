@@ -25,33 +25,30 @@ namespace MauiMaze.ViewModels
             IsRecordsButtonVisible = false;
             ExitText = "Exit 🚪";
         }
-        public void setWelcomeText(string name)
-        {
-            WelcomeText = $"Welcome {name}!";
-        }
+        public void SetWelcomeText(string name) => WelcomeText = $"Welcome {name}!";
         [RelayCommand]
-        async Task GoToMaze()
+        static async Task GoToMaze()
         {
             await Shell.Current.Navigation.PushAsync(new MazeMenu());
         }
         [RelayCommand]
-         async Task GoToRecords()
+         static async Task GoToRecords()
         {
             await Shell.Current.Navigation.PushAsync(new GameRecordsPage(UserDataProvider.GetInstance().getUserID()));
         }
         [RelayCommand]
-        async Task Logout()
+        static async Task Logout()
         {
             UserDataProvider.GetInstance().LogoutUser();
             await Shell.Current.Navigation.PopToRootAsync();
         }
         [RelayCommand]
-        async Task GoToHistory()
+        static async Task GoToHistory()
         {
             await Shell.Current.Navigation.PushAsync(new MazeHistoryPage());
         }
         [RelayCommand]
-        async Task GoToSettings()
+        static async Task GoToSettings()
         {
             await Shell.Current.Navigation.PushAsync(new Settings());
         }
