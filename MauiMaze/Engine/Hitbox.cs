@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace MauiMaze.Engine
 {
     public class Hitbox
     {
-        public float X;
-        public float Y;
-        public float size;
+        //TODO add auto recalcul ,parameters and hitfunction
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Size { get; set; }
     }
 }

@@ -65,7 +65,7 @@ namespace MauiMaze.Engine
             isReady = false;
             end = mazeDrawable.maze.end;
             mazeDrawable.maze.firstrun = true;
-            //Application.Current.MainPage.DisplayAlert("Upozornění", "Touch" +player.playerSizeX+" "+player.playerSizeY+" "+player.positionX+" "+player.positionY, "OK");
+
             if (player.positionX==0 && player.positionY==0)
             {
 
@@ -87,30 +87,9 @@ namespace MauiMaze.Engine
             {
                 player.positionX = (float)(x - (player.playerSizeX));
                 player.positionY = (float)(y - (player.playerSizeY));
-                player.recalculateHitbox();
-                //mazeDrawable.checkCollision((int)player.hitbox.X, (int)player.hitbox.Y, (int)(player.hitbox.X + player.hitbox.size), (int)(player.hitbox.Y + player.hitbox.size))
-                if ( checkFlush(oldHitbox,oldHitboy))
+                if ( player.checkFlushHit(oldHitbox,oldHitboy,oldPlayerX,oldPlayery,mazeDrawable))
                 {
-
-
-                    if (player.positionX > oldPlayerX)
-                    {
-                        player.positionX = oldPlayerX ;
-                    }
-                    else
-                    {
-                        player.positionX = oldPlayerX ;
-                    }
-                    if (player.positionY > oldPlayery)
-                    {
-                        player.positionY = oldPlayery ;
-                    }
-                    else
-                    {
-                        player.positionY = oldPlayery ;
-                    }
                     isReady = true;
-                    player.recalculateHitbox();
                     graphicsView.Invalidate();
                     return;
                 }
@@ -127,8 +106,7 @@ namespace MauiMaze.Engine
         }
         private bool checkEnd()
         {
-            player.recalculateHitbox();
-            if (player.hitbox.X> end.bottomX && player.hitbox.Y > end.bottomY && player.hitbox.X < end.X && player.hitbox.Y < end.Y)
+            if (player.checkHit(end.X,end.Y,end.bottomX,end.bottomY))
             {
                 return true;
             }
@@ -142,69 +120,7 @@ namespace MauiMaze.Engine
             gameRecord.stopMeasuremnt();
             RecordRepository.GetInstance().addRecord(gameRecord);
             ended = true;
-            //go out
-
         }
-        private bool checkFlush(float oldPlayerX, float oldPlayerY)
-        {
-            float xnew = player.hitbox.X;
-            float ynew = player.hitbox.Y;
-            float xorigin = oldPlayerX ;
-            float yorigin = oldPlayerY ;
-
-
-            float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
-
-            int numberOfDots = (int)(distance);
-            if (numberOfDots == 0)
-            {
-                numberOfDots = 1;
-            }
-            float xdiv = xnew - xorigin;
-            float ydiv= ynew - yorigin;
-            // float stepX=xdiv / distance;
-            // float stepY= ydiv / distance;
-            float stepX;
-            float stepY;
-            if (xdiv / distance < 0)
-            {
-                stepX = -1;
-            }
-            else if (xdiv / distance == 0)
-            {
-                stepX = 0;
-            }
-            else
-            {
-                stepX = 1;
-            }
-            if (ydiv / distance < 0)
-            {
-                stepY = -1;
-            }
-            else if (ydiv / distance == 0)
-            {
-                stepY = 0;
-            }
-            else
-            {
-                stepY = 1;
-            }
-
-            for (int i = 0; i <= numberOfDots; i++)
-            {
-                int x = (int)(xorigin + i * stepX);
-                int y = (int)(yorigin + i * stepY);
-               // Application.Current.MainPage.DisplayAlert("Upozornění", "x" + x + " y" + y + "dista" + distance + "\nnew" + xnew + " " + ynew + "\norigin" + xorigin + " " + yorigin + "\n" + stepX + " " + stepY, "OK"); ;
-                if (mazeDrawable.checkCollision(x, y, (int)(x + player.hitbox.size), (int)(y + player.hitbox.size)))
-                {
-                    return true;
-                }
-
-            }
-
-            return false;
-           
-        }
+        
     }
 }
