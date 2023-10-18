@@ -66,7 +66,7 @@ namespace MauiMaze.Drawables
                     {
                         movefor = dirtyRect.Height;
                     }
-                    for (int i = (int)y; i < movefor-1; i++)
+                    for (int i = (int)y+2; i < movefor-1; i++)
                     {
                         walls[(int)x, i] = true;
                     }

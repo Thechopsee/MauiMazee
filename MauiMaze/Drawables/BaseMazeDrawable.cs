@@ -79,11 +79,12 @@ namespace MauiMaze.Drawables
                         currY >= 0 && currY < walls.GetLength(1) &&
                         walls[currX, currY])
                     {
-                        if (walls[currX+1,currY] && walls[currX+2,currY])
+
+                        if (walls[currX+1,currY] )
                         {
                             collisionX = true;
                         }
-                        if (walls[currX , currY+2] && walls[currX, currY+3])
+                        if (walls[currX , currY+1])
                         {
                             collisionY = true;
                         }
