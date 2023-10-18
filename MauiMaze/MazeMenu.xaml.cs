@@ -86,7 +86,7 @@ public partial class MazeMenu : ContentPage
     private void classicClick(object sender, EventArgs e)
     {
         MazeDrawable md = new MazeDrawable();
-        md.maze = new Maze(new Size(10, 10),false);
+        md.maze = new Maze(new Size(10, 10));
         canvas.Drawable = md;
         actual = MazeType.Classic;
         hexaButton.BackgroundColor = native;

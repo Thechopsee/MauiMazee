@@ -17,48 +17,22 @@ namespace MauiMaze.Models.ClassicMaze
             Cell2 = cell2;
         }
 
-        public static List<Edge> GenerateCircularEdges(Size size)
-        {
-            var edges = new List<Edge>();
+        //public static List<Edge> GenerateCircularEdges(Size size)
+        //{
+        //    var edges = new List<Edge>();
 
-            int numCells = (int)(size.Width * Math.PI);
+        //    int numCells = (int)(size.Width * Math.PI);
 
-            int cell = 0;
-            for (int i = 0; i < numCells; i++)
-            {
-                edges.Add(new Edge(cell, (cell + 1) % numCells));
-                edges.Add(new Edge(cell, (cell + (int)size.Width) % numCells));
-                cell++;
-            }
+        //    int cell = 0;
+        //    for (int i = 0; i < numCells; i++)
+        //    {
+        //        edges.Add(new Edge(cell, (cell + 1) % numCells));
+        //        edges.Add(new Edge(cell, (cell + (int)size.Width) % numCells));
+        //        cell++;
+        //    }
 
-            return edges;
-        }
-
-        public static List<Edge> Generate(Size size)
-        {
-            var edges = new List<Edge>();
-
-            var cell = 0;
-            for (var row = 0; row < size.Height; row++)
-            {
-                for (var column = 0; column < size.Width; column++)
-                {
-                    if (column != size.Width - 1)
-                    {
-                        edges.Add(new Edge(cell, cell + 1));
-                    }
-
-                    if (row != size.Height - 1)
-                    {
-                        edges.Add(new Edge(cell, cell + Convert.ToInt32(size.Width)));
-                    }
-
-                    cell++;
-                }
-            }
-
-            return edges;
-        }
+        //    return edges;
+        //}
 
         public bool Equals(Edge other)
         {

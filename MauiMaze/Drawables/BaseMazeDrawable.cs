@@ -62,12 +62,14 @@ namespace MauiMaze.Drawables
             */
         }
 
-        public bool checkCollision(int x, int y, int x2, int y2)
+        public (bool,bool,bool) checkCollision(int x, int y, int x2, int y2)
         {
             int startX = Math.Min(x, x2);
             int startY = Math.Min(y, y2);
             int endX = Math.Max(x, x2);
             int endY = Math.Max(y, y2);
+            bool collisionX = false;
+            bool collisionY = false;
 
             for (int currX = startX; currX <= endX; currX++)
             {
@@ -77,12 +79,22 @@ namespace MauiMaze.Drawables
                         currY >= 0 && currY < walls.GetLength(1) &&
                         walls[currX, currY])
                     {
-                        return true;
+                        if (walls[currX+1,currY] && walls[currX+2,currY])
+                        {
+                            collisionX = true;
+                        }
+                        if (walls[currX , currY+2] && walls[currX, currY+3])
+                        {
+                            collisionY = true;
+                        }
+
+                        return (true,collisionX,collisionY);
+
                     }
                 }
             }
 
-            return false;
+            return (false,false,false);
         }
     }
 }

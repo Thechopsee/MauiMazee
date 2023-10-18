@@ -98,10 +98,25 @@ namespace MauiMaze.Engine
                 int x = (int)(xorigin + i * stepX);
                 int y = (int)(yorigin + i * stepY);
                 // Application.Current.MainPage.DisplayAlert("Upozornění", "x" + x + " y" + y + "dista" + distance + "\nnew" + xnew + " " + ynew + "\norigin" + xorigin + " " + yorigin + "\n" + stepX + " " + stepY, "OK"); ;
-                if (mazeDrawable.checkCollision(x, y, (int)(x + hitbox.Size), (int)(y + hitbox.Size)))
+
+                (bool, bool, bool) hitcheck = mazeDrawable.checkCollision(x, y, (int)(x + hitbox.Size), (int)(y + hitbox.Size));
+                if (hitcheck.Item1)
                 {
-                    positionX = oldPlayerX;
-                    positionY = oldPlayerY;
+                    float xrep = (xorigin + (i-1) * stepX) + (stepX*(hitcheck.Item3?0:1));
+                    float yrep = (yorigin + (i-1) * stepY) + (stepY*(hitcheck.Item2?0:1));
+                    recalculateHitbox();
+                    (bool, bool, bool) hitcheck2 = mazeDrawable.checkCollision((int)xrep, (int)yrep, (int)(xrep + hitbox.Size-1), (int)(yrep + hitbox.Size-1));
+                    recalculateHitbox();
+                    if (hitcheck2.Item1)
+                    {
+                        positionX = oldPlayerX;
+                        positionY = oldPlayerY;
+                        return true;
+                    }
+
+                    float minsize = MathF.Min((float)playerSizeX, (float)playerSizeY);
+                    positionX = xrep - ((float)playerSizeX - (minsize / 1.5f) / 2);
+                    positionY = yrep- ((float)playerSizeY - (minsize / 1.5f) / 2);
                     return true;
                 }
 
