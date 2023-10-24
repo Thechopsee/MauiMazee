@@ -39,19 +39,20 @@ namespace MauiMaze.Drawables
             else {
                 maze.JustDraw(canvas);
             }
-            cellHeight = 80;
-            cellWidth = 80;
-
+            cellHeight = 20;
+            cellWidth = 20;
             if (player is null)
             {
-                cellHeight = 80;
-                cellWidth = 80;
+                cellHeight = 20;
+                cellWidth = 20;
                 player = new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
+                
             }
             else
             {
                 drawPlayer(canvas);
             }
+            //drawStartAndEnd(canvas);
         }
 
     }

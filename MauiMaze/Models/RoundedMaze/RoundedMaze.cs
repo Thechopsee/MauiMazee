@@ -32,7 +32,7 @@ namespace MauiMaze.Models.RoundedMaze
             Resize(false, height);
             xoffsett = (width /2)-this.width/2;
             yoffsett = 30;
-            end = new End((this.width / 2) + xoffsett, this.width / 2, (this.width / 2) + xoffsett+10, this.width / 2+10);
+            end = new End((this.width / 2) + xoffsett, (this.width / 2)+yoffsett, (this.width / 2) + xoffsett+30, (this.width / 2)+yoffsett+30);
             createGrid();
         }
         void createGrid()
@@ -200,8 +200,10 @@ namespace MauiMaze.Models.RoundedMaze
         private void RenderMaze(ICanvas canvas)
         {
             //Application.Current.MainPage.DisplayAlert("Upozornění", "run "+grid.Count, "OK");
+            canvas.StrokeColor = Colors.Blue;
+            canvas.DrawCircle((float)end.X, (float)end.Y, 10);
+            canvas.DrawRectangle((float)end.X, end.Y, end.bottomX-end.X, end.bottomY-end.Y);
             canvas.StrokeColor = Colors.Red;
-            canvas.DrawCircle((float)end.X, (float)end.Y+yoffsett, 10);
             canvas.DrawCircle((float)start.X, (float)start.Y + yoffsett, 10);
             canvas.StrokeColor = Colors.Black;
 

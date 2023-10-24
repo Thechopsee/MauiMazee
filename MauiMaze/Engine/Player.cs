@@ -38,7 +38,7 @@ namespace MauiMaze.Engine
 
         public bool checkHit(float X,float Y,float Xbottom ,float Ybottom)
         {
-            if (hitbox.X > Xbottom && hitbox.Y > Ybottom && hitbox.X < X && hitbox.Y < Y)
+            if (hitbox.X < Xbottom && hitbox.Y < Ybottom && hitbox.X > X && hitbox.Y > Y)
             {
                 return true;
             }

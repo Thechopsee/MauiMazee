@@ -78,9 +78,9 @@ namespace MauiMaze.Drawables
                 float startY = (float)(Math.Floor((double)Start / maze.Size.Width) * cellHeight + cellHeight / 2);
                 maze.start = new Start((int)startX, (int)startY);
 
-                float endX = (float)(End % maze.Size.Width * cellWidth + cellWidth / 2);
-                float endY = (float)(Math.Floor((double)End / maze.Size.Width) * cellHeight + cellHeight / 2);
-                maze.end = new End((int)endX,(int)endY,(int)endX-((int)cellWidth/2),(int)endY-((int)cellHeight/2));
+                float endX = (float)(End % maze.Size.Width * cellWidth + cellWidth );
+                float endY = (float)(Math.Floor((double)End / maze.Size.Width) * cellHeight + cellHeight );
+                maze.end = new End((int)endX,(int)endY,(int)endX+((int)cellWidth),(int)endY+((int)cellHeight));
                 drawStartAndEnd(canvas);
 
                 drawPlayer(canvas);                

@@ -34,6 +34,7 @@ namespace MauiMaze.Drawables
         {
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle(maze.end.X, maze.end.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
+            canvas.DrawRectangle(maze.end.X, maze.end.Y,  maze.end.bottomX- maze.end.X , maze.end.bottomY-maze.end.Y);
             canvas.StrokeColor = Colors.Red;
             canvas.DrawCircle(maze.start.X, maze.start.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
             canvas.StrokeColor = Colors.Green;

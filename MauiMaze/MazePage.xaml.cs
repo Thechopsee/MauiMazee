@@ -46,10 +46,13 @@ public partial class MazePage : ContentPage
     {
         AreUSurePopUp areUSurePopUp = new();
         var result = await this.ShowPopupAsync(areUSurePopUp);
-        if ((bool)result)
+        if (result is not null)
         {
-            //TODO :Save procedure
-            await Navigation.PopAsync();
+            if ((bool)result)
+            {
+                //TODO :Save procedure
+                await Navigation.PopAsync();
+            }
         }
         
     }
