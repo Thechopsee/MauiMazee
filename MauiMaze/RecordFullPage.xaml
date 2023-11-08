@@ -2,34 +2,38 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiMaze.RecordFullPage"
+              xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:RecordFullPageViewModel"
              Title="RecordFullPage">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
     <StackLayout Margin="20">
         <Label Text="Name:"/>
-        <Label Text="{Binding NameRecord.name}"/>
+        <Label Text="{Binding GameRecord.name}"/>
         <!--<Button Text="Set Name" Clicked="SetName_Clicked" Margin="5"/>-->
 
         <Label Text="Maze ID:"/>
-        <Label Text="{Binding NameRecord.mazeID}"/>
+        <Label Text="{Binding GameRecord.mazeID}"/>
         <!--<Button Text="Set Maze ID" Clicked="SetMazeID_Clicked" Margin="5"/>-->
 
         <Label Text="Number of Tries:"/>
-        <Label Text="{Binding NameRecord.numOfTry}"/>
+        <Label Text="{Binding GameRecord.numOfTry}"/>
         <!--<Button Text="Set Tries" Clicked="SetNumOfTry_Clicked" Margin="5"/>-->
 
         <Label Text="Hit Walls Count:"/>
-        <Label Text="{Binding NameRecord.hitWallsCount}"/>
+        <Label Text="{Binding GameRecord.hitWallsCount}"/>
         <!--<Button Text="Set Walls Count" Clicked="SetHitWallsCount_Clicked" Margin="5"/>-->
 
         <Label Text="Travel Length:"/>
-        <Label Text="{Binding NameRecord.travelLenght}"/>
+        <Label Text="{Binding GameRecord.travelLenght}"/>
+        <Label Text="Traveled Cells:"/>
+        <Label Text="{Binding CellPathString}"/>
         <!--<Button Text="Set Travel Length" Clicked="SetTravelLength_Clicked" Margin="5"/>-->
         <Button Text="Return to menu"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
-                Clicked="backToMenu"
+                Command="{Binding backToMenuCommand}"
                 />
     </StackLayout>
 </ContentPage>

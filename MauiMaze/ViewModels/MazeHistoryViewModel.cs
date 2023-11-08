@@ -1,39 +1,38 @@
-﻿using MauiMaze.Models;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using MauiMaze.Models;
+using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MauiMaze.ViewModels
 {
-    public class MazeHistoryViewModel : INotifyPropertyChanged
+    public partial class MazeHistoryViewModel : ObservableObject
     {
-        private MazeDescription mazeDescription;
+        [ObservableProperty]
+        public List<MazeDescription> records;
+        ActivityIndicator ai;
 
-        public MazeHistoryViewModel(MazeDescription ds)
+        public MazeHistoryViewModel(ActivityIndicator ai)
         {
-            mazeDescription = ds;
+            this.ai = ai;
+            loadRecord();
+           
+        }
+        public async void loadRecord()
+        {
+            Records = await MazeProvider.Instance.loadMazes();
+            Maze[] mazes = await MazeFetcher.getOfflineMazes();
+            ai.IsRunning = false;
         }
 
-        public MazeDescription NameRecord
-        {
-            get => mazeDescription;
-            set
-            {
-                if (mazeDescription != value)
-                {
-                    mazeDescription = value;
-                    OnPropertyChanged(nameof(MazeDescription));
-                }
-            }
-        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+
     }
 }

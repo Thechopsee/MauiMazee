@@ -1,5 +1,7 @@
 using MauiMaze.Drawables;
 using MauiMaze.Engine;
+using MauiMaze.Models;
+
 namespace MauiMaze;
 
 public partial class RoundedMazePage : ContentPage
@@ -14,15 +16,15 @@ public partial class RoundedMazePage : ContentPage
         //Application.Current.MainPage.DisplayAlert("Upozornìní", "Touch" + e.Touches.Length, "OK");
         if (driver.ended)
         {
-            await Navigation.PushAsync(new RecordFullPage(driver.gameRecord));
+            await Navigation.PushAsync(new RecordFullPage(driver.gameRecord,0));
         }
         driver.movePlayerToPosition(touch.X, touch.Y);
 
     }
-    public RoundedMazePage(int size)
+    public RoundedMazePage(int size, LoginCases login)
 	{
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as RoundedMazeDrawable;
-        driver = new GameDriver(mazeDrawable, Canvas, size,1);
+        driver = new GameDriver(mazeDrawable, Canvas, size,1,login);
     }
 }

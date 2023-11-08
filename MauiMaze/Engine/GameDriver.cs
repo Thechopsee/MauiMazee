@@ -4,6 +4,7 @@ using MauiMaze.Drawables;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Models.RoundedMaze;
+using MauiMaze.Services;
 using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
@@ -18,21 +19,19 @@ namespace MauiMaze.Engine
     internal class GameDriver
     {
         BaseMazeDrawable mazeDrawable;
-        List<MoveRecord> moveRecords;
-       public  bool isReady = true;
         public GraphicsView graphicsView { get; set; }
-        Player player;
-        End end;
+        private Player player { get; set; }
+        private End end { get; set; }
+        LoginCases gamestatus;
         public bool ended {get;set;}
         public GameRecord gameRecord { get; set; }
 
-        public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype)
+        public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype,LoginCases gamestatus)
         {
-            ended = false;
+            this.gamestatus = gamestatus;
             graphicsView = gv;
             mazeDrawable = md;
             mazeDrawable.player=new Player(0, 0,md.cellWidth,md.cellHeight);
-            this.moveRecords = new List<MoveRecord>();
             player = mazeDrawable.player;
             GameMaze maze;
             if (mazetype == 0)
@@ -45,7 +44,14 @@ namespace MauiMaze.Engine
             }
             mazeDrawable.maze=maze;
             graphicsView.Invalidate();
-            gameRecord = new GameRecord("test"+1,1); //TODO
+            if (this.gamestatus == LoginCases.Offline)
+            {
+                gameRecord = new GameRecord(-1,-1); //TODO
+            }
+            else
+            {
+                gameRecord = new GameRecord(maze.MazeID,UserDataProvider.GetInstance().getUserID());
+            }
         }
         public GameDriver(BaseMazeDrawable md, GraphicsView gv, int size, int mazetype,Maze maze)
         {
@@ -53,23 +59,27 @@ namespace MauiMaze.Engine
             graphicsView = gv;
             mazeDrawable = md;
             mazeDrawable.player = new Player(0, 0, md.cellWidth, md.cellHeight);
-            this.moveRecords = new List<MoveRecord>();
             player = mazeDrawable.player;
             mazeDrawable.maze = maze;
             graphicsView.Invalidate();
-            gameRecord = new GameRecord("test" + 1, 1); //TODO
+            if (this.gamestatus == LoginCases.Offline)
+            {
+                gameRecord = new GameRecord(-1, -1); //TODO
+            }
+            else
+            {
+                gameRecord = new GameRecord(maze.MazeID, UserDataProvider.GetInstance().getUserID());
+            }
         }
 
         public void movePlayerToPosition(float x, float y)
         {
-            isReady = false;
             end = mazeDrawable.maze.end;
             mazeDrawable.maze.firstrun = true;
 
             if (player.positionX==0 && player.positionY==0)
             {
-
-                player = mazeDrawable.reinitPlayer();
+                mazeDrawable.reinitPlayer(player);
             }
             if (player.playerSizeX != mazeDrawable.cellWidth) {
                 player.playerSizeX = mazeDrawable.cellWidth;
@@ -89,20 +99,32 @@ namespace MauiMaze.Engine
                 player.positionY = (float)(y - (player.playerSizeY));
                 if ( player.checkFlushHit(oldHitbox,oldHitboy,oldPlayerX,oldPlayery,mazeDrawable))
                 {
-                    isReady = true;
+                    saveMove(true);
                     graphicsView.Invalidate();
                     return;
                 }
                 if (checkEnd())
                 { 
-                    Application.Current.MainPage.DisplayAlert("Upozornění", "Konec hry", "OK");
+                    
                     endGameprocedure();
                 }
                 mazeDrawable.player = player;
-                gameRecord.addMoveRecord(new MoveRecord((int)player.positionX, (int)player.positionY,false));
+                if (mazeDrawable.mazeWidth > 0)
+                {
+                    saveMove(false);
+                }
                 graphicsView.Invalidate();
-                isReady = true;
             }
+        }
+        private void saveMove(bool hit)
+        {
+            double playerXPercentage = ((player.positionX + player.playerSizeX) / mazeDrawable.mazeWidth);
+            double playerYPercentage = ((player.positionY + player.playerSizeY) / mazeDrawable.mazeHeight);
+            double mazesize = mazeDrawable.maze.Size.Width;
+            double xid = ((player.positionX + player.playerSizeX) / mazeDrawable.cellWidth);
+            double yid = ((player.positionY + player.playerSizeY) / mazeDrawable.cellHeight);
+            gameRecord.addCellMoveRecord((int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid));
+            gameRecord.addMoveRecord(new MoveRecord((int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, hit));
         }
         private bool checkEnd()
         {
@@ -118,7 +140,11 @@ namespace MauiMaze.Engine
         private void endGameprocedure()
         {
             gameRecord.stopMeasuremnt();
-            RecordRepository.GetInstance().addRecord(gameRecord);
+            if (!ended)
+            {
+                gameRecord.finished = true;
+                RecordRepository.GetInstance().addRecord(gameRecord);
+            }
             ended = true;
         }
         

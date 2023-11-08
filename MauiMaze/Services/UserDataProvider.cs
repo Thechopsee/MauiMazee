@@ -15,11 +15,22 @@ namespace MauiMaze.Services
         User user;
         public string getUserName()
         {
-            return user.Name;
+            if (user is not null)
+            {
+                return user.Name;
+            }
+            else
+            {
+                return "OfflineUser";
+            }
         }
         public int getUserID()
         {
-            return user.Id;
+            if (user is not null)
+            {
+                return user.Id;
+            }
+            return -1;
         }
         DateTime expireDate;
         //TODO add refresh token
@@ -27,7 +38,7 @@ namespace MauiMaze.Services
 
         public void LogoutUser()
         {
-            user?.Dispose();
+            user = null;
             expireDate = DateTime.MinValue;
         }
         public async Task<bool> LoginUser(string name,string password)

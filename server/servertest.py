@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import sqlite3 
+import datetime
 app = Flask(__name__)
 
 
@@ -18,6 +19,16 @@ def saveEdgeToDatabase(edge):
     cur.executemany("INSERT INTO Edge (MazeID,Cell1,Cell2) VALUES (?,?,?)",edge)
     con.commit()
 
+def saveMazetoDatabase(userid,type):
+    con = sqlite3.connect("test.db")
+    cur = con.cursor()
+    now = datetime.datetime.now()
+
+    formatted_datetime = now.strftime("%Y-%m-%dT%H:%M:%S")
+    cur.execute("INSERT INTO Maze (UserID,Type,CreationDate) VALUES (?,?,?)",(userid,type,formatted_datetime))
+    con.commit()
+    last_id = cur.lastrowid
+    return last_id
 def getMaze(id):
     con = sqlite3.connect("test.db")
     cur = con.cursor()
@@ -35,17 +46,33 @@ def getMazeList(id):
         return []
     else:
         return res.fetchall()
+def getMazeCount(id):
+    con = sqlite3.connect("test.db")
+    cur = con.cursor()
+    cur.execute("SELECT Count(*) FROM Maze WHERE UserID="+str(id))
+    count = cur.fetchone()[0]
+    print(count)
+    con.close()
+    return count
+def countMazes() ->int:
+    con = sqlite3.connect("test.db")
+    cur = con.cursor()
+    cur.execute("SELECT COUNT(*) FROM Maze")
+    count = cur.fetchone()[0]
+    print(count)
+    con.close()
+    return count
     
 @app.route('/saveMaze', methods=['POST'])
 def saveMaze():
     data = request.get_json()
     id = data.get('userID')
     edges = data.get('edges')
-    print(id)
+    mazeid=saveMazetoDatabase(id,"Classic")
     print(edges[0]['Cell1'])
     upredges=[]
     for edge in edges:
-        tupled=(3,edge['Cell1'],edge['Cell2'])
+        tupled=(mazeid,edge['Cell1'],edge['Cell2'])
         upredges.append((tupled))
     print(upredges)
     saveEdgeToDatabase(upredges)
@@ -57,6 +84,14 @@ def loadMaze():
     data = request.get_json()
     id = data.get('mazeID')
     result=getMaze(id)
+    response =  {'message': result}
+    status_code = 200
+    return jsonify(response), status_code
+@app.route('/loadMazeCount', methods=['POST'])
+def loadMazeCount():
+    data = request.get_json()
+    id = data.get('userID')
+    result=getMazeCount(id)
     response =  {'message': result}
     status_code = 200
     return jsonify(response), status_code

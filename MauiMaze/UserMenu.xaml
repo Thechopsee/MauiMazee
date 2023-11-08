@@ -65,7 +65,7 @@
                 MinimumWidthRequest="200"
                 
                 Command="{Binding LogoutCommand}"
-                Margin="0,60,0,20"
+                
                 />
     </VerticalStackLayout>
 </ContentPage>

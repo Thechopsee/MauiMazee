@@ -18,7 +18,6 @@ namespace MauiMaze.ViewModels
         public string password;
         [ObservableProperty]
         bool isBusy;
-        bool isNotBusy => !IsBusy;
         [ObservableProperty]
         bool nameisValid;
         [ObservableProperty]
@@ -67,18 +66,11 @@ namespace MauiMaze.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("Upozornění", "Zjistěna chyba při zjišťovaní stavu sítě", "OK");
                 Console.WriteLine($"Chyba: {ex.Message}");
+                OfflineButton = true;
             }
 
             isBusy = false;
 
-        }
-
-        private bool checkValidity()
-        {
-            if (email == "admin")
-            {
-                return true;
-            } else { return false; }
         }
     }
 }

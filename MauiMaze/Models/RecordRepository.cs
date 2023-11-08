@@ -23,7 +23,11 @@ namespace MauiMaze.Models
         public List<GameRecord> getRecords()
         {
             return records;
-        }   
+        }
+        public IEnumerable<GameRecord> getRecordsByMazeId(int mazeid)
+        {
+            return records.Where(x => x.mazeID == mazeid);
+        }
         public static RecordRepository GetInstance()
         {
             if (instance == null)

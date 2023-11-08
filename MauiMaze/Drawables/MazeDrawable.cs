@@ -9,6 +9,8 @@ using Microsoft.Maui.Graphics;
 
 using System.Reflection;
 using IImage = Microsoft.Maui.Graphics.IImage;
+using static Plugin.LocalNotification.NotificationRequestGeofence;
+using MauiMaze.Helpers;
 #if IOS || ANDROID || MACCATALYST
 using Microsoft.Maui.Graphics.Platform;
 #elif WINDOWS
@@ -20,17 +22,55 @@ namespace MauiMaze.Drawables
 {
     public class MazeDrawable : BaseMazeDrawable,IDrawable
     {
+        
+        public static (int, int) GetPlayerPositionInMazeSize(double xPercentage,double yPercentage, int currentMazeWidth, int currentMazeHeight)
+        {
+
+            int newX = (int)(xPercentage* currentMazeWidth);
+            int newY = (int)(yPercentage * currentMazeHeight);
+
+            return (newX, newY);
+        }
+
+        public void drawMotion(ICanvas canvas, GameRecord gr, int count, RectF dirtyRect)
+        {
+            canvas.StrokeColor = ColorSchemeProvider.getColor(count);
+            gr.color = ColorSchemeProvider.getColor(count);
+            canvas.StrokeSize = 2;
+            if (!showCell)
+            {
+                for (int i = 0; i < gr.moves.Count - 1; i++)
+                {
+
+                    (int, int) position = GetPlayerPositionInMazeSize(gr.moves[i].percentagex, gr.moves[i].percentagey, (int)dirtyRect.Width, (int)dirtyRect.Height);
+                    (int, int) position1 = GetPlayerPositionInMazeSize(gr.moves[i + 1].percentagex, gr.moves[i + 1].percentagey, (int)dirtyRect.Width, (int)dirtyRect.Height);
+                    canvas.DrawLine(position.Item1, position.Item2, position1.Item1, position1.Item2);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < gr.cellPath.Count - 1; i++)
+                {
+                    int y = gr.cellPath[i] / (int)maze.Size.Height;
+                    int x = gr.cellPath[i] % (int)maze.Size.Height;
+                    double posx = x * cellWidth;
+                    double posy = y * cellHeight;
+                    int y2 = gr.cellPath[i + 1] / (int)maze.Size.Height;
+                    int x2 = gr.cellPath[i + 1] % (int)maze.Size.Height;
+                    double posx2 = x2 * cellWidth;
+                    double posy2 = y2 * cellHeight;
+                    canvas.DrawLine((float)posx, (float)posy, (float)(posx2), (float)(posy2));
+                }
+            }
+        }
 
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             canvas.StrokeColor = Colors.Green;
             canvas.StrokeSize = 4;
-            float left = dirtyRect.Left;
-            float top = dirtyRect.Top;
-            float right = dirtyRect.Right;
-            float bottom = dirtyRect.Bottom;
-            canvas.DrawRectangle(left, top, right, bottom);
-
+            canvas.DrawRectangle(dirtyRect.Left, dirtyRect.Top, dirtyRect.Right, dirtyRect.Bottom);
+            this.mazeWidth = dirtyRect.Width;
+            this.mazeHeight = dirtyRect.Height;
             this.cellWidth = dirtyRect.Width / this.maze.Size.Width;
             this.cellHeight = dirtyRect.Height / this.maze.Size.Height;
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
@@ -42,8 +82,7 @@ namespace MauiMaze.Drawables
                 if (Math.Abs(edge.Cell1 - edge.Cell2) > 1)
                 {
                     float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
-                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width + 1) *
-                            cellHeight);
+                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width + 1) * cellHeight);
                     canvas.DrawLine(x, y, (float)(x + cellWidth), y);
                     double movefor = x+cellWidth;
                     if (movefor > dirtyRect.Width)
@@ -74,28 +113,40 @@ namespace MauiMaze.Drawables
             }
             if (player is not null)
             {
-                float startX = (float)(Start % maze.Size.Width * cellWidth + cellWidth / 2);
-                float startY = (float)(Math.Floor((double)Start / maze.Size.Width) * cellHeight + cellHeight / 2);
-                maze.start = new Start((int)startX, (int)startY);
+                if (maze.start is null || maze.end is null)
+                {
+                    float startX = (float)(Start % maze.Size.Width * cellWidth + cellWidth / 2);
+                    float startY = (float)(Math.Floor((double)Start / maze.Size.Width) * cellHeight + cellHeight / 2);
+                    maze.start = new Start((int)startX, (int)startY);
 
-                float endX = (float)(End % maze.Size.Width * cellWidth + cellWidth );
-                float endY = (float)(Math.Floor((double)End / maze.Size.Width) * cellHeight + cellHeight );
-                maze.end = new End((int)endX,(int)endY,(int)endX+((int)cellWidth),(int)endY+((int)cellHeight));
+                    float endX = (float)(End % maze.Size.Width * cellWidth + cellWidth);
+                    float endY = (float)(Math.Floor((double)End / maze.Size.Width) * cellHeight + cellHeight);
+                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight));
+                }
                 drawStartAndEnd(canvas);
-
-                drawPlayer(canvas);                
-
-                 canvas.StrokeColor = Colors.Magenta; 
-                 canvas.StrokeSize = 2;
-                 float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));
-                 //player.recalculateHitbox();
-                 canvas.DrawRectangle(player.positionX+(float)player.playerSizeX-(minsize / 1.5f) /2, player.positionY+ (float)player.playerSizeY-(minsize / 1.5f) /2,minsize/1.5f ,minsize/1.5f);
-                 inicialized = true;
+                drawPlayer(canvas);
+                drawHitbox(canvas);
             }
-
+            if (preview is not null)
+            {
+                drawPreview(canvas);    
+            }
+            if (gameRecords is not null)
+            {
+                int count = 0;
+                if (showAll)
+                {
+                    foreach (GameRecord gr in gameRecords)
+                    {
+                        drawMotion(canvas, gr, count, dirtyRect);
+                        count++;
+                    }
+                }
+                else
+                {
+                    drawMotion(canvas, gameRecords.ElementAt(actualID), actualID, dirtyRect);
+                }
+            }
         }
-       
-
-
     }   
 }

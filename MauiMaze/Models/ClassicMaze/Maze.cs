@@ -8,6 +8,7 @@ namespace MauiMaze.Models.ClassicMaze
     public class Maze : GameMaze
     {
         public Edge[] Edges { get; set; }
+        
 
         public Maze(Size size)
         {

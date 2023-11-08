@@ -9,7 +9,7 @@ public partial class UserMenu : ContentPage
 	public UserMenu(LoginCases login)
 	{
 		InitializeComponent();
-		UserMenuViewModel view= new UserMenuViewModel();
+		UserMenuViewModel view= new UserMenuViewModel(login);
         if (login != LoginCases.Offline)
         {
             view.SetWelcomeText(UserDataProvider.GetInstance().getUserName());

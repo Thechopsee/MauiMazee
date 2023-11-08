@@ -12,55 +12,53 @@ namespace MauiMaze.Drawables
     {
         public GameMaze maze { get; set; }
         public Player player { get; set; }
-        
+
+        public double mazeWidth { get; set; }
+        public double mazeHeight { get; set; }
         public double cellWidth { get; set; }
         public double cellHeight { get; set; }
-        protected bool inicialized{ get; set; }
         protected bool[,] walls { get; set; }
 
-        public bool isInitialized() { return inicialized; }
-        public Player reinitPlayer()
-        {
-            return new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
-        }
+        public bool showCell {get;set;}
+        public bool showAll { get; set; }
+        public int actualID { get; set; }
+        public Player preview { get; set; }
+        public IEnumerable<GameRecord> gameRecords { get; set; }
 
+        public void reinitPlayer(Player player)
+        {
+            player.positionX = (int)maze.start.X;
+            player.positionY = (int)maze.start.Y + 2;
+            player.playerSizeX = cellWidth;
+            player.playerSizeY = cellHeight;
+        }
         protected virtual void drawPlayer(ICanvas canvas) {
             float plX = (float)(player.positionX + player.playerSizeX);
             float plY = (float)(player.positionY + player.playerSizeY);
             canvas.StrokeColor = Colors.Orange;
             canvas.DrawCircle(plX, plY, MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY))/3);
         }
+        protected virtual void drawPreview(ICanvas canvas)
+        {
+            float plX = (float)(preview.positionX + preview.playerSizeX);
+            float plY = (float)(preview.positionY + preview.playerSizeY);
+            canvas.StrokeColor = Colors.Orange;
+            canvas.DrawCircle(plX, plY, MathF.Min((float)preview.playerSizeX, ((float)preview.playerSizeY)) / 3);
+        }
         protected void drawStartAndEnd(ICanvas canvas)
         {
             canvas.StrokeColor = Colors.Blue;
-            canvas.DrawCircle(maze.end.X, maze.end.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
-            canvas.DrawRectangle(maze.end.X, maze.end.Y,  maze.end.bottomX- maze.end.X , maze.end.bottomY-maze.end.Y);
+            canvas.DrawCircle(maze.end.X+(float)(cellWidth/2), maze.end.Y+(float)(cellHeight/2), (float)Math.Min(cellWidth, cellHeight) / 3);
             canvas.StrokeColor = Colors.Red;
             canvas.DrawCircle(maze.start.X, maze.start.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
             canvas.StrokeColor = Colors.Green;
-
-
         }
-        protected virtual void drawPathFormaze(ICanvas canvas)
+        protected void drawHitbox(ICanvas canvas)
         {
-            //just save off classic
-            //TODO
-            canvas.StrokeColor = Colors.Yellow;
-            canvas.StrokeSize = 6;
-            /*
-            for (int i = 0; i < maze.path.Count - 1; i++)
-            {
-                int cell1 = maze.path[i];
-                int cell2 = maze.path[i + 1];
-
-                float x1 = (float)(cell1 % maze.Size.Width * cellWidth + cellWidth / 2);
-                float y1 = (float)(Math.Floor((double)cell1 / mazee.Size.Width) * cellHeight + cellHeight / 2);
-                float x2 = (float)(cell2 % maze.Size.Width * cellWidth + cellWidth / 2);
-                float y2 = (float)(Math.Floor((double)cell2 / mazee.Size.Width) * cellHeight + cellHeight / 2);
-
-                canvas.DrawLine(x1, y1, x2, y2);
-            }
-            */
+            canvas.StrokeColor = Colors.Magenta;
+            canvas.StrokeSize = 2;
+            float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));
+            canvas.DrawRectangle(player.positionX + (float)player.playerSizeX - (minsize / 1.5f) / 2, player.positionY + (float)player.playerSizeY - (minsize / 1.5f) / 2, minsize / 1.5f, minsize / 1.5f);
         }
 
         public (bool,bool,bool) checkCollision(int x, int y, int x2, int y2)

@@ -40,31 +40,6 @@ namespace MauiMaze.Services
                 }
             }
         }
-        public static async Task<bool> TryToSaveMaze(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)
-        {
-            string apiUrl = ServiceConfig.serverAdress + "saveMaze";
 
-            var userData = new
-            {
-                userID = userIDD,
-                edges = edgess
-            };
-            using (HttpClient client = new HttpClient())
-            {
-                string jsonUserData = JsonConvert.SerializeObject(userData);
-                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-                string responseContent = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true; 
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
     }
 }

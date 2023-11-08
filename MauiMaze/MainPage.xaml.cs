@@ -1,4 +1,5 @@
-﻿using MauiMaze.ViewModels;
+﻿using MauiMaze.Models;
+using MauiMaze.ViewModels;
 
 namespace MauiMaze;
 
@@ -17,7 +18,7 @@ public partial class MainPage : ContentPage
 
 	private async void mazeMenuNavigate(object sender, EventArgs e)
 	{
-        await Navigation.PushAsync(new MazeMenu());
+        await Navigation.PushAsync(new MazeMenu(LoginCases.Offline));
     }
     
 }

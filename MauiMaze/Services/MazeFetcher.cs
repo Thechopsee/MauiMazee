@@ -1,6 +1,7 @@
 ﻿
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,84 @@ namespace MauiMaze.Services
 {
     public class MazeFetcher
     {
+        public class ResponseData
+        {
+            public int message { get; set; }
+        }
+        public static async Task<Maze[]> getOfflineMazes()
+        {
+            //1;2;
+
+            string data = await SecureStorage.Default.GetAsync("mazelist");
+            if (data is null)
+            {
+                return new Maze[0];
+            }
+            string[] splited = data.Split(";");
+            Maze[] mazeDescriptions = new Maze[splited.Length];
+            for(int i=0;i<splited.Length;i++)
+            {
+                string maze = await SecureStorage.Default.GetAsync("maze" + splited[i]);
+                if (maze is null)
+                {
+                    continue;
+                }
+                else
+                {
+                   mazeDescriptions[i]=JsonConvert.DeserializeObject<Maze>(maze);
+                }
+            }
+            return mazeDescriptions;
+        }
+        public static async Task saveMazeLocally(Maze maze)
+        {
+            string data = await SecureStorage.Default.GetAsync("mazelist");
+            if (data is null)
+            {
+                data = "1";
+            }
+            if (data.Length == 1)
+            {
+                await SecureStorage.Default.SetAsync("mazelist", "1");
+                await SecureStorage.Default.SetAsync("maze1", JsonConvert.SerializeObject(maze));
+            }
+            else
+            {
+                string[] splited = data.Split(";");
+                int last = Int32.Parse(splited[splited.Length - 1]);
+                await SecureStorage.Default.SetAsync("mazelist", data + ";" + (last + 1));
+                await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(maze));
+            }
+        }
+        public static async Task<bool> SaveMazeOnline(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)
+        {
+            string apiUrl = ServiceConfig.serverAdress + "saveMaze";
+
+            var userData = new
+            {
+                userID = userIDD,
+                edges = edgess
+            };
+            using (HttpClient client = new HttpClient())
+            {
+                string jsonUserData = JsonConvert.SerializeObject(userData);
+                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                string responseContent = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
         public static async Task<MazeDescription[]> getMazeList(int userid)
         {
+            await getMazeCountForUser(userid);
             string apiUrl = ServiceConfig.serverAdress+"loadMazeList";
 
             var userData = new
@@ -51,6 +128,34 @@ namespace MauiMaze.Services
                 }
             }
         }
+        public static async Task<int> getMazeCountForUser(int userid)
+        {
+            int rsp = 0;
+            string apiUrl = ServiceConfig.serverAdress + "loadMazeCount";
+
+            var userData = new
+            {
+                userID = userid,
+            };
+            using (HttpClient client = new HttpClient())
+            {
+                string jsonUserData = JsonConvert.SerializeObject(userData);
+                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(false);
+                string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                //await Application.Current.MainPage.DisplayAlert("Upozornění", "run "+ JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ResponseData mm = JsonConvert.DeserializeObject<ResponseData>(responseContent);
+                    rsp = mm.message;
+                }
+
+            }
+        
+            return rsp;
+        }
 
         public static async Task<Maze> getMaze(int userid)
         {
@@ -79,6 +184,7 @@ namespace MauiMaze.Services
                         edges.Add(new Edge(tup[2], tup[3]));
                     }
                     Maze mz=new Maze(new Size(10, 10));
+                    mz.MazeID = userid;
                     mz.Edges = edges.ToArray();
                     return mz;
                 }

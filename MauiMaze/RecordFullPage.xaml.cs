@@ -7,24 +7,13 @@ namespace MauiMaze;
 
 public partial class RecordFullPage : ContentPage
 {
-    public GameRecordViewModel ViewModel { get; } 
-    public RecordFullPage(GameRecord record)
+    public ViewModels.RecordFullPageViewModel ViewModel { get; } 
+    public RecordFullPage(GameRecord record,int camefrom)
 	{
 		InitializeComponent();
-        ViewModel = new GameRecordViewModel(record);
-        Application.Current.MainPage.DisplayAlert("Upozornìní", "Touch"+ViewModel.NameRecord.name, "OK");
+        ViewModel = new ViewModels.RecordFullPageViewModel(record, camefrom);
         BindingContext = ViewModel;
     }
 
-    private async void backToMenu(object sender, EventArgs e)
-    {
-        if (UserDataProvider.GetInstance().isUserValid)
-        {
-            await Navigation.PushAsync(new UserMenu(LoginCases.Online));
-        }
-        else
-        {
-            await Navigation.PushAsync(new UserMenu(LoginCases.Offline));
-        }
-    }
+
 }

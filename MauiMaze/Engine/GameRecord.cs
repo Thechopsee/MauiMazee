@@ -9,23 +9,41 @@ namespace MauiMaze.Engine
 {
     public class GameRecord
     {
+        public int grID { get; set; }
         public List<MoveRecord> moves;
         public int hitWallsCount { get; set; }
         public double travelLenght { get; set; }
-        public string mazeID { get; set; }
+        public int mazeID { get; set; }
         public int numOfTry { get; set; }
         public int userID { get; set; } 
         public string name { get; set; }
+        public bool finished { get; set; }
         Stopwatch stopwatch = new Stopwatch();
         public int timeInMilliSeconds { get; set; }
 
-        public GameRecord(String mazeID,int numOfTry)
+        public List<int> cellPath { get; }
+
+        public Color color { get; set; }
+
+
+        public GameRecord(int mazeID,int userID)
         {
             this.mazeID = mazeID;
-            this.numOfTry = numOfTry;
-            name =mazeID+"_"+numOfTry;
+            this.userID = userID;
+            cellPath = new List<int>();
             moves = new List<MoveRecord>();
             stopwatch.Start();
+        }
+        public void addCellMoveRecord(int cellID)
+        {
+            if (cellPath.Count == 0)
+            {
+                cellPath.Add(cellID);
+            }
+            else if (cellPath.Last() != cellID)
+            {
+                cellPath.Add(cellID);
+            }
         }
         public void addMoveRecord(MoveRecord move)
         {

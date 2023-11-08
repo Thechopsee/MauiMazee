@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiMaze.Models;
 using MauiMaze.Services;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,11 @@ namespace MauiMaze.ViewModels
         public string exitText = "Logout 🚪";
         [ObservableProperty]
         public string welcomeText = "Welcome User!";
+        LoginCases login;
+        public UserMenuViewModel(LoginCases login)
+        {
+            this.login = login;
+        }
         public void UserOfflineProcedure()
         {
             IsHistoryButtonVisible = false;
@@ -27,9 +33,9 @@ namespace MauiMaze.ViewModels
         }
         public void SetWelcomeText(string name) => WelcomeText = $"Welcome {name}!";
         [RelayCommand]
-        static async Task GoToMaze()
+        async Task GoToMaze()
         {
-            await Shell.Current.Navigation.PushAsync(new MazeMenu());
+            await Shell.Current.Navigation.PushAsync(new MazeMenu(login));
         }
         [RelayCommand]
          static async Task GoToRecords()

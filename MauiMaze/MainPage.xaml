@@ -42,7 +42,8 @@
                     IsPassword="true"
                     Placeholder="Enter your email"
                     HorizontalOptions="FillAndExpand" />
-                
+            <HorizontalStackLayout
+                HorizontalOptions="Center">
                 <Button
                     IsEnabled="{Binding NameisValid}"
                     x:Name="SubmitButton"
@@ -50,17 +51,18 @@
                     Text="Submit"
                     Command="{Binding tryToLoginnCommand}"
                     HorizontalOptions="Center" />
-            <Button
-                IsVisible="{Binding OfflineButton}"
-                x:Name="OfflineButon"
-                MinimumWidthRequest="200"
-                Text="Go offline"
-                Command="{Binding GoOfflineCommand}"
-                HorizontalOptions="Center" />   
+                <Button
+                    IsVisible="{Binding OfflineButton}"
+                    x:Name="OfflineButon"
+                    MinimumWidthRequest="200"
+                    Text="Go offline"
+                    Command="{Binding GoOfflineCommand}"
+                    HorizontalOptions="Center" />
+            </HorizontalStackLayout>
 
 
 
-            <Button
+                    <Button
                 x:Name="Mazes"
                 Text="Go to mazes"
                 SemanticProperties.Hint="Maze menu"

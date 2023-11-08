@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:drawables="clr-namespace:MauiMaze.Drawables"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:MazeMenuViewModel"
              x:Class="MauiMaze.MazeMenu"
              Title="Maze Menu">
     <ContentPage.Resources>
@@ -13,90 +15,74 @@
             VerticalOptions="Center">
         <HorizontalStackLayout
             HorizontalOptions="Center">
-        <VerticalStackLayout
-    Spacing="25"
-        Padding="30,0"
-        >
 
-            <Label Text="Hello, XAML!"
-           VerticalOptions="Center"
-           HorizontalTextAlignment="Center"
-           FontSize="18"
-           FontAttributes="Bold"/>
-            <Slider VerticalOptions="Center" 
-                x:Name="sizeSlider"
-                Minimum="10"
-                Maximum="35"
-                Value="10"
-                ValueChanged="OnSliderValueChanged"
-                />
-            <Label Text="10"
-               x:Name="valueLabel"
-               FontSize="18"
-               HorizontalOptions="Center"
-               VerticalOptions="Center" />
-        </VerticalStackLayout>
-            <VerticalStackLayout
-                Spacing="25"
-                Padding="30,0"
-                VerticalOptions="Center">       
-
-                <Label Text="Hello, XAML!"
-       VerticalOptions="Center"
-       HorizontalTextAlignment="Center"
-       FontSize="18"
-       FontAttributes="Bold"/>
-                <Slider VerticalOptions="Center" 
-            
-            Minimum="10"
-            Maximum="35"
-            Value="10"
-            ValueChanged="OnSliderValueChanged"
-            />
-                <Label Text="10"
            
-           FontSize="18"
-           HorizontalOptions="Center"
-           VerticalOptions="Center" />
-            </VerticalStackLayout>
         </HorizontalStackLayout>
         <Grid  Margin="45,0,45,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <StackLayout 
+            MinimumHeightRequest="300"
             Grid.Column="0"
             MinimumWidthRequest="120"
-            VerticalOptions="CenterAndExpand">
+            VerticalOptions="FillAndExpand">
                 <Button
                 x:Name="classicButton"
                 Text="Classic"
-                Clicked="classicClick"
+                Command="{Binding classicClickCommand}"
                 MinimumWidthRequest="100"
                 SemanticProperties.Hint="Counts the number of times you click"
                 BackgroundColor="#a2b223"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center" 
+                VerticalOptions="FillAndExpand"/>
                 <Button
                 x:Name="roundedButton"
                 Text="Rounded"
                 MinimumWidthRequest="100"
                 SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="roundedClick"
-                HorizontalOptions="Center" />
-                <Button
-                x:Name="hexaButton"
-                Text="Hexa"
-                MinimumWidthRequest="100"
-                Clicked="hexaClick"
-                HorizontalOptions="Center" />
+                Command="{Binding roundedClickCommand}"
+                VerticalOptions="FillAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
+                
             </StackLayout>
 
-            <!-- GraphicsView v druhém sloupci -->
+
+
+            <VerticalStackLayout
+                Spacing="25"
+                Padding="30,0"
+                MinimumWidthRequest="120"
+                VerticalOptions="CenterAndExpand"
+                Grid.Column="1">
+
+                <Label Text="Size of maze"
+           VerticalOptions="Center"
+           HorizontalTextAlignment="Center"
+           FontSize="18"
+           FontAttributes="Bold"/>
+                <Slider VerticalOptions="Center" 
+                x:Name="sizeSlider"
+                Minimum="10"
+                Maximum="35"
+                Value="{Binding Mazesize}"
+                DragCompletedCommand="{Binding dragMazeEndedCommand}"
+                />
+                <Label Text="{Binding Mazesize}"
+               x:Name="valueLabel"
+               FontSize="18"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+            </VerticalStackLayout>
+
             <GraphicsView 
             x:Name="canvas"
-            Grid.Column="1"
+            MaximumWidthRequest="500"
+            MinimumHeightRequest="300"
+            Grid.Column="2"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
             Drawable="{StaticResource MazeDrawable}" />
@@ -104,7 +90,8 @@
         <Button
         x:Name="OkButton"
         Text="Ok"
-        Clicked="mazeMenuNavigate"
+        MinimumWidthRequest="300"
+        Command="{Binding mazeMenuNavigateCommand}"
         HorizontalOptions="Center" />   
     </VerticalStackLayout>
     
