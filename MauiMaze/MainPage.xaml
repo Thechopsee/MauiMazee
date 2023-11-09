@@ -60,14 +60,6 @@
                     HorizontalOptions="Center" />
             </HorizontalStackLayout>
 
-
-
-                    <Button
-                x:Name="Mazes"
-                Text="Go to mazes"
-                SemanticProperties.Hint="Maze menu"
-                Clicked="mazeMenuNavigate"
-                HorizontalOptions="Center" />
             <StackLayout
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"

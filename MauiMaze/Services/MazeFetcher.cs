@@ -62,6 +62,35 @@ namespace MauiMaze.Services
                 await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(maze));
             }
         }
+        public static async Task saveMazeDescriptionLocally(Maze maze)
+        {
+            string data = await SecureStorage.Default.GetAsync("mazeDeslist");
+            MazeDescription md = new MazeDescription();
+            
+            if (data is null)
+            {
+                data = "1";
+            }
+            if (data.Length == 1)
+            {
+                md.ID = 1;
+                md.creationDate = DateTime.Now;
+                md.mazeType = MazeType.Classic;
+                await SecureStorage.Default.SetAsync("mazeDeslist", "1");
+                await SecureStorage.Default.SetAsync("mazeDes1", JsonConvert.SerializeObject(md));
+            }
+            else
+            {
+                string[] splited = data.Split(";");
+                int last = Int32.Parse(splited[splited.Length - 1]);
+                md.ID = last+1;
+                md.creationDate = DateTime.Now;
+                md.mazeType = MazeType.Classic;
+                
+                await SecureStorage.Default.SetAsync("mazeDeslist", data + ";" + (last + 1));
+                await SecureStorage.Default.SetAsync("mazeDes" + (last + 1), JsonConvert.SerializeObject(md));
+            }
+        }
         public static async Task<bool> SaveMazeOnline(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)
         {
             string apiUrl = ServiceConfig.serverAdress + "saveMaze";

@@ -16,7 +16,7 @@ public partial class RoundedMazePage : ContentPage
         //Application.Current.MainPage.DisplayAlert("Upozornìní", "Touch" + e.Touches.Length, "OK");
         if (driver.ended)
         {
-            await Navigation.PushAsync(new RecordFullPage(driver.gameRecord,0));
+            await Navigation.PushAsync(new RecordFullPage(driver.gameRecord,0)).ConfigureAwait(false);
         }
         driver.movePlayerToPosition(touch.X, touch.Y);
 

@@ -11,7 +11,7 @@ namespace MauiMaze.Services
     {
         public static async Task<SettingsData> getSettings()
         {
-            string data = await SecureStorage.Default.GetAsync("setting_json");
+            string data = await SecureStorage.Default.GetAsync("setting_json").ConfigureAwait(false);
 
             if (data == null)
             {
@@ -25,7 +25,7 @@ namespace MauiMaze.Services
         }
         public static async void saveSettings(SettingsData data)
         {
-            await SecureStorage.Default.SetAsync("setting_json", JsonConvert.SerializeObject(data).ToString());
+            await SecureStorage.Default.SetAsync("setting_json", JsonConvert.SerializeObject(data).ToString()).ConfigureAwait(false);
         }
     }
 }

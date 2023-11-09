@@ -14,12 +14,6 @@ public partial class MainPage : ContentPage
         BindingContext = mpvm;
     }
 
-
-
-	private async void mazeMenuNavigate(object sender, EventArgs e)
-	{
-        await Navigation.PushAsync(new MazeMenu(LoginCases.Offline));
-    }
     
 }
 

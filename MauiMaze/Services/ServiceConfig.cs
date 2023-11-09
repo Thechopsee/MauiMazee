@@ -8,6 +8,6 @@ namespace MauiMaze.Services
 {
     internal class ServiceConfig
     {
-        internal static string serverAdress="http://localhost:8085/";
+        internal static string serverAdress="http://85.162.168.74:3040/";
     }
 }

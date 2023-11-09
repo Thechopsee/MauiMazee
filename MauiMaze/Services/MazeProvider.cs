@@ -33,7 +33,7 @@ namespace MauiMaze.Services
         public async Task<List<MazeDescription>> loadMazes()
         {
 
-            int    datacount = await MazeFetcher.getMazeCountForUser(UserDataProvider.GetInstance().getUserID());
+            int    datacount = await MazeFetcher.getMazeCountForUser(UserDataProvider.GetInstance().getUserID()).ConfigureAwait(false);
             
             if (this.cache.Count == datacount)
             {
@@ -41,7 +41,7 @@ namespace MauiMaze.Services
             }
             else
             {
-                MazeDescription[] data = await MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID());
+                MazeDescription[] data = await MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID()).ConfigureAwait(false);
                 cache = data.ToList();
             }
             

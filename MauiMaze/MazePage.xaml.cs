@@ -47,13 +47,13 @@ public partial class MazePage : ContentPage
     private async void GoBackPop(object sender, EventArgs e)
     {
         AreUSurePopUp areUSurePopUp = new();
-        var result = await this.ShowPopupAsync(areUSurePopUp);
+        var result = await this.ShowPopupAsync(areUSurePopUp).ConfigureAwait(false);
         if (result is not null)
         {
             if ((bool)result)
             {
                 RecordRepository.GetInstance().addRecord(driver.gameRecord);
-                await Navigation.PopAsync();
+                await Navigation.PopAsync().ConfigureAwait(false);
             }
         }
         
@@ -62,19 +62,19 @@ public partial class MazePage : ContentPage
     private async void SaveMaze(object sender, EventArgs e)
     {
         SaveMazePopUp areUSurePopUp = new();
-        var result = await this.ShowPopupAsync(areUSurePopUp);
+        var result = await this.ShowPopupAsync(areUSurePopUp).ConfigureAwait(false);
         if (result is not null)
         {
             if ((bool)result)
             {
-                await MazeFetcher.saveMazeLocally((Maze)mazeDrawable.maze);
-                await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK");
+                await MazeFetcher.saveMazeLocally((Maze)mazeDrawable.maze).ConfigureAwait(false);
+                await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
             }
             else
             {
                 Maze maze = (Maze)mazeDrawable.maze;
-                await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges);
-                await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK");
+                await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges).ConfigureAwait(false);
+                await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
             }
         }
     }
