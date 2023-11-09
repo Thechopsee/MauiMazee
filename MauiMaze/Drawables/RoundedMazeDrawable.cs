@@ -7,6 +7,7 @@ using MauiMaze.Models;
 using System.Drawing;
 using MauiMaze.Models.RoundedMaze;
 using MauiMaze.Engine;
+using MauiMaze.Exceptions;
 
 namespace MauiMaze.Drawables
 {
@@ -22,6 +23,10 @@ namespace MauiMaze.Drawables
          
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             canvas.StrokeColor = Colors.Black;
             canvas.StrokeSize = 4;
             float left = dirtyRect.Left;

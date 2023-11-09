@@ -38,14 +38,8 @@ namespace MauiMaze.Engine
 
         public bool checkHit(float X,float Y,float Xbottom ,float Ybottom)
         {
-            if (hitbox.X < Xbottom && hitbox.Y < Ybottom && hitbox.X > X && hitbox.Y > Y)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (hitbox.X < Xbottom && hitbox.Y < Ybottom && hitbox.X > X && hitbox.Y > Y);
+
         }
         public bool checkFlushHit(float oldHitbox,float oldHitboy, float oldPlayerX,float oldPlayerY, BaseMazeDrawable mazeDrawable)
         {

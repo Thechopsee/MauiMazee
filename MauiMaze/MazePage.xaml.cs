@@ -8,6 +8,7 @@ using IImage = Microsoft.Maui.Graphics.IImage;
 using MauiMaze.Services;
 using MauiMaze.Models;
 using MauiMaze.Popups;
+using MauiMaze.Exceptions;
 #if IOS || ANDROID || MACCATALYST
 using Microsoft.Maui.Graphics.Platform;
 #elif WINDOWS
@@ -28,8 +29,11 @@ public partial class MazePage : ContentPage
         {
             Navigation.PushAsync(new RecordFullPage(driver.gameRecord, 0));
         }
-        var touch = e.Touches.First();
-        driver.movePlayerToPosition(touch.X, touch.Y);
+        if (e is not null)
+        {
+            var touch = e.Touches.First();
+            driver.movePlayerToPosition(touch.X, touch.Y);
+        }
     }
     public MazePage(int size, LoginCases login)
     {
@@ -38,7 +42,11 @@ public partial class MazePage : ContentPage
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
         driver = new GameDriver(mazeDrawable, canvas, size, 0, login);
     }
-    public MazePage(Maze maze) { 
+    public MazePage(Maze maze) {
+        if (maze is null)
+        {
+            throw new MazeNotLoadedExpectation("Maze is not loaded when try to inicialize gamedriver");
+        }
         InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
         driver = new GameDriver(mazeDrawable, canvas, (int)(maze.Size.Width), 0,maze); //todo doupravit
@@ -47,7 +55,7 @@ public partial class MazePage : ContentPage
     private async void GoBackPop(object sender, EventArgs e)
     {
         AreUSurePopUp areUSurePopUp = new();
-        var result = await this.ShowPopupAsync(areUSurePopUp).ConfigureAwait(false);
+        var result = await this.ShowPopupAsync(areUSurePopUp);
         if (result is not null)
         {
             if ((bool)result)
@@ -62,18 +70,18 @@ public partial class MazePage : ContentPage
     private async void SaveMaze(object sender, EventArgs e)
     {
         SaveMazePopUp areUSurePopUp = new();
-        var result = await this.ShowPopupAsync(areUSurePopUp).ConfigureAwait(false);
+        var result = await this.ShowPopupAsync(areUSurePopUp);
         if (result is not null)
         {
             if ((bool)result)
             {
-                await MazeFetcher.saveMazeLocally((Maze)mazeDrawable.maze).ConfigureAwait(false);
+                await MazeFetcher.saveMazeLocally((Maze)mazeDrawable.maze).ConfigureAwait(true);
                 await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
             }
             else
             {
                 Maze maze = (Maze)mazeDrawable.maze;
-                await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges).ConfigureAwait(false);
+                await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges).ConfigureAwait(true);
                 await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
             }
         }

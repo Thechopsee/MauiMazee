@@ -24,8 +24,8 @@ namespace MauiMaze.Models
         {
             if (ID > 0)
             {
-                Maze mz = await MazeFetcher.getMaze(ID);
-                await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz)).ConfigureAwait(false);
+                Maze mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
+                await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz)).ConfigureAwait(true);
             }
         }
         [RelayCommand]
@@ -33,8 +33,8 @@ namespace MauiMaze.Models
         {
             if (ID > 0)
             {
-                Maze mz = await MazeFetcher.getMaze(ID);
-                await Shell.Current.Navigation.PushAsync(new MazePage(mz)).ConfigureAwait(false);
+                Maze mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
+                await Shell.Current.Navigation.PushAsync(new MazePage(mz)).ConfigureAwait(true);
             }
         }
 

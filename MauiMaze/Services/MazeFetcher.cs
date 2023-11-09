@@ -62,7 +62,7 @@ namespace MauiMaze.Services
                 await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(maze));
             }
         }
-        public static async Task saveMazeDescriptionLocally(Maze maze)
+        public static async Task saveMazeDescriptionLocally()
         {
             string data = await SecureStorage.Default.GetAsync("mazeDeslist");
             MazeDescription md = new MazeDescription();
@@ -104,17 +104,11 @@ namespace MauiMaze.Services
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-                string responseContent = await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return response.IsSuccessStatusCode;
+               
             }
         }
         public static async Task<MazeDescription[]> getMazeList(int userid)
@@ -199,8 +193,8 @@ namespace MauiMaze.Services
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(false);
-                string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                string responseContent = await response.Content.ReadAsStringAsync();
 
                 //await Application.Current.MainPage.DisplayAlert("Upozornění", "run "+ JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
                 

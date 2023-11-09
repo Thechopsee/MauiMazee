@@ -1,5 +1,5 @@
 ﻿using MauiMaze.Engine;
-
+using MauiMaze.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +27,19 @@ namespace MauiMaze.Drawables
 
         public void reinitPlayer(Player player)
         {
-            player.positionX = (int)maze.start.X;
-            player.positionY = (int)maze.start.Y + 2;
-            player.playerSizeX = cellWidth;
-            player.playerSizeY = cellHeight;
+            if (player is not null)
+            {
+                player.positionX = (int)maze.start.X;
+                player.positionY = (int)maze.start.Y + 2;
+                player.playerSizeX = cellWidth;
+                player.playerSizeY = cellHeight;
+            }
         }
         protected virtual void drawPlayer(ICanvas canvas) {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             float plX = (float)(player.positionX + player.playerSizeX);
             float plY = (float)(player.positionY + player.playerSizeY);
             canvas.StrokeColor = Colors.Orange;
@@ -40,6 +47,10 @@ namespace MauiMaze.Drawables
         }
         protected virtual void drawPreview(ICanvas canvas)
         {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             float plX = (float)(preview.positionX + preview.playerSizeX);
             float plY = (float)(preview.positionY + preview.playerSizeY);
             canvas.StrokeColor = Colors.Orange;
@@ -47,6 +58,10 @@ namespace MauiMaze.Drawables
         }
         protected void drawStartAndEnd(ICanvas canvas)
         {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle(maze.end.X+(float)(cellWidth/2), maze.end.Y+(float)(cellHeight/2), (float)Math.Min(cellWidth, cellHeight) / 3);
             canvas.StrokeColor = Colors.Red;
@@ -55,6 +70,10 @@ namespace MauiMaze.Drawables
         }
         protected void drawHitbox(ICanvas canvas)
         {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             canvas.StrokeColor = Colors.Magenta;
             canvas.StrokeSize = 2;
             float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));

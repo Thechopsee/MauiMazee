@@ -1,5 +1,6 @@
 ﻿
 using MauiMaze.Engine;
+using MauiMaze.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,7 +119,7 @@ namespace MauiMaze.Models.RoundedMaze
             
             
         }
-        private bool IsLinked(Cell cellA, Cell cellB)
+        private static bool IsLinked(Cell cellA, Cell cellB)
         {
             return cellA.Links.Any(link => link.Row == cellB.Row && link.Col == cellB.Col);
         }
@@ -138,6 +139,10 @@ namespace MauiMaze.Models.RoundedMaze
 
         public override void SolveAndDraw(ICanvas canvas)
         {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             Random random = new Random();
             int randomRow = random.Next(rows);
             int randomCol = random.Next(grid[randomRow].Count);
@@ -196,9 +201,19 @@ namespace MauiMaze.Models.RoundedMaze
             RenderMaze(canvas);
         }
 
-        public override void JustDraw(ICanvas canvas) { RenderMaze(canvas); }
+        public override void JustDraw(ICanvas canvas) {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
+            RenderMaze(canvas); 
+        }
         private void RenderMaze(ICanvas canvas)
         {
+            if (canvas is null)
+            {
+                throw new CanvasNotAvailableExpectation("");
+            }
             //Application.Current.MainPage.DisplayAlert("Upozornění", "run "+grid.Count, "OK");
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle((float)end.X, (float)end.Y, 10);

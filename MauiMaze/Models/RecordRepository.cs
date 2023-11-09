@@ -11,14 +11,12 @@ namespace MauiMaze.Models
     {
         private static RecordRepository instance;
         private List<GameRecord> records = new List<GameRecord>();
-
-        private RecordRepository()
-        {
-
-        }
         public void addRecord(GameRecord record)
         {
-            records.Add(record);
+            if (record is not null)
+            {
+                records.Add(record);
+            }
         }   
         public List<GameRecord> getRecords()
         {

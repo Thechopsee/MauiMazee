@@ -68,9 +68,9 @@ namespace MauiMaze.Models.ClassicMaze
             return edges;
         }
 
-        private int[] InitializeSets(Size size)
+        private static int[] InitializeSets(Size size)
         {
-            var sets = new int[(int)(size.Width * size.Height)];
+            int[] sets = new int[(int)(size.Width * size.Height)];
             for (var i = 0; i < sets.Length; i++)
             {
                 sets[i] = i;
@@ -78,7 +78,7 @@ namespace MauiMaze.Models.ClassicMaze
             return sets;
         }
 
-        private int FindSet(int[] sets, int element)
+        private static int FindSet(int[] sets, int element)
         {
             if (sets[element] == element)
             {
@@ -91,7 +91,7 @@ namespace MauiMaze.Models.ClassicMaze
             }
         }
 
-        private void UnionSets(int[] sets, int set1, int set2)
+        private static void UnionSets(int[] sets, int set1, int set2)
         {
             sets[set1] = set2;
         }

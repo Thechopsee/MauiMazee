@@ -128,14 +128,7 @@ namespace MauiMaze.Engine
         }
         private bool checkEnd()
         {
-            if (player.checkHit(end.X,end.Y,end.bottomX,end.bottomY))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return player.checkHit(end.X, end.Y, end.bottomX, end.bottomY);
         }
         private void endGameprocedure()
         {
