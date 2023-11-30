@@ -27,8 +27,8 @@ namespace MauiMaze.ViewModels
         }
         public async void loadRecord()
         {
-            Records = await MazeProvider.Instance.loadMazes();
-            Maze[] mazes = await MazeFetcher.getOfflineMazes();
+            Records = await MazeProvider.Instance.loadMazes().ConfigureAwait(true);
+            //Maze[] mazes = await MazeFetcher.getOfflineMazes();
             ai.IsRunning = false;
         }
 

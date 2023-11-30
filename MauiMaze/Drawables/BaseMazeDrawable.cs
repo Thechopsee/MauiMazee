@@ -27,13 +27,9 @@ namespace MauiMaze.Drawables
 
         public void reinitPlayer(Player player)
         {
-            if (player is not null)
-            {
-                player.positionX = (int)maze.start.X;
-                player.positionY = (int)maze.start.Y + 2;
-                player.playerSizeX = cellWidth;
-                player.playerSizeY = cellHeight;
-            }
+            if (player is null) { throw new ArgumentNullException(); };
+            player.reInit((int)maze.start.X, (int)maze.start.Y + 2,cellWidth,cellHeight);
+            
         }
         protected virtual void drawPlayer(ICanvas canvas) {
             if (canvas is null)

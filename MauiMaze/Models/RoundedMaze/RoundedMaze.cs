@@ -26,6 +26,10 @@ namespace MauiMaze.Models.RoundedMaze
 
         public RoundedMaze(Size size)
         {
+            if (size==null)
+            {
+                throw new ArgumentNullException(nameof(size));
+            }
             this.size = (int)size.Height;
         }
         public override void generateProcedure(int height,int width)

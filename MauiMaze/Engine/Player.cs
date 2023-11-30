@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MauiMaze.Engine
 {
@@ -126,6 +127,13 @@ namespace MauiMaze.Engine
             hitbox.X = positionX + (float)playerSizeX - (minsize / 1.5f) / 2;
             hitbox.Y = positionY + (float)playerSizeY - (minsize / 1.5f) / 2;
             hitbox.Size = minsize / 1.5f;
+        }
+        public void reInit(int x,int y,double sx,double sy)
+        {
+            positionX = x;
+            positionY = y;
+            playerSizeX = sx;
+            playerSizeY = sy;
         }
 
         public Player(int positionx, int positiony, double playerSizeX, double playerSizeY)

@@ -18,11 +18,10 @@ namespace MauiMaze.Engine
         public int userID { get; set; } 
         public string name { get; set; }
         public bool finished { get; set; }
-        Stopwatch stopwatch = new Stopwatch();
         public int timeInMilliSeconds { get; set; }
-
         public List<int> cellPath { get; }
 
+        Stopwatch stopwatch = new Stopwatch();
         public Color color { get; set; }
 
 
