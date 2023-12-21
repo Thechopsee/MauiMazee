@@ -4,9 +4,13 @@
              xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="MauiMaze.MainPage"
+             BackgroundImageSource="back.gif"
              Title="">
 
+
     <ScrollView>
+
+
         <VerticalStackLayout
             Spacing="25"
             Padding="30,0"

@@ -50,8 +50,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiImage Remove="Resources\Images\back.gif" />
 	  <MauiImage Remove="Resources\Images\grass64.png" />
 	  <MauiImage Remove="Resources\Images\stone64.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Images\back.gif" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -63,6 +68,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Resources\Images\back.gif" />
 	  <EmbeddedResource Include="Resources\Images\grass64.png" />
 	  <EmbeddedResource Include="Resources\Images\stone64.png" />
 	</ItemGroup>
