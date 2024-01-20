@@ -4,7 +4,6 @@
              xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
              x:DataType="viewmodel:MainPageViewModel"
              x:Class="MauiMaze.MainPage"
-             BackgroundImageSource="back.gif"
              Title="">
 
 
@@ -23,46 +22,26 @@
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Welcome to .NET Multi-platform App UI"
+                Text="Welcome to MazeSomething how you gonna play today?"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand" />
-            <Entry
-                    x:Name="EmailEntry"
-                    Text="{Binding Email}"
-                    Placeholder="Enter your name"
-                    MinimumWidthRequest="200"
-                    MaximumWidthRequest="350"
-                    MinimumHeightRequest="50"
-                    HorizontalOptions="FillAndExpand" />
 
-                <Entry
-                    x:Name="PassEntry"
-                    Text="{Binding Password}"
-                    MinimumWidthRequest="200"
-                    MaximumWidthRequest="350"
-                    MinimumHeightRequest="50"
-                    IsPassword="true"
-                    Placeholder="Enter your email"
-                    HorizontalOptions="FillAndExpand" />
-            <HorizontalStackLayout
-                HorizontalOptions="Center">
-                <Button
-                    IsEnabled="{Binding NameisValid}"
-                    x:Name="SubmitButton"
-                    MinimumWidthRequest="200"
-                    Text="Submit"
-                    Command="{Binding tryToLoginnCommand}"
+            <Button
+                    x:Name="forfun"
+                    MinimumWidthRequest="300"
+                    MinimumHeightRequest="100"
+                    Text="Just for fun!"
+                    Command="{Binding GoToFreePlayCommand }"
                     HorizontalOptions="Center" />
-                <Button
-                    IsVisible="{Binding OfflineButton}"
-                    x:Name="OfflineButon"
-                    MinimumWidthRequest="200"
-                    Text="Go offline"
-                    Command="{Binding GoOfflineCommand}"
+            <Button
+                    x:Name="forscience"
+                    MinimumWidthRequest="300"
+                    MinimumHeightRequest="100"
+                    Text="For science!"
+                    Command="{Binding GoToScienceCommand }"
                     HorizontalOptions="Center" />
-            </HorizontalStackLayout>
 
             <StackLayout
                 Orientation="Horizontal"
@@ -71,9 +50,11 @@
 
                 <Button
                     x:Name="About"
-                    Text="Button 1"
+                    Text="Report 🐞"
                     MinimumWidthRequest="100" 
-                    HorizontalOptions="CenterAndExpand" />
+                    HorizontalOptions="CenterAndExpand"
+                    Command="{Binding GoToReportCommand }"
+                    />
 
                 <Label
                     x:Name="Button2"

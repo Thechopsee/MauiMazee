@@ -17,23 +17,6 @@ namespace MauiMaze.Models.ClassicMaze
             Cell2 = cell2;
         }
 
-        //public static List<Edge> GenerateCircularEdges(Size size)
-        //{
-        //    var edges = new List<Edge>();
-
-        //    int numCells = (int)(size.Width * Math.PI);
-
-        //    int cell = 0;
-        //    for (int i = 0; i < numCells; i++)
-        //    {
-        //        edges.Add(new Edge(cell, (cell + 1) % numCells));
-        //        edges.Add(new Edge(cell, (cell + (int)size.Width) % numCells));
-        //        cell++;
-        //    }
-
-        //    return edges;
-        //}
-
         public bool Equals(Edge other)
         {
             if (ReferenceEquals(null, other)) return false;
@@ -43,7 +26,5 @@ namespace MauiMaze.Models.ClassicMaze
 
         public static bool operator ==(Edge left, Edge right) => Equals(left, right);
         public static bool operator !=(Edge left, Edge right) => !Equals(left, right);
-
-
     }
 }

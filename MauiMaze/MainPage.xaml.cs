@@ -9,8 +9,7 @@ public partial class MainPage : ContentPage
 	{
         InitializeComponent();
         MainPageViewModel mpvm=new MainPageViewModel();
-        mpvm.Email = "admin";
-        mpvm.Password = "admin";
+
         BindingContext = mpvm;
     }
 

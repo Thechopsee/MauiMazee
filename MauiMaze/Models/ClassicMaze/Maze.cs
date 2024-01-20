@@ -9,7 +9,6 @@ namespace MauiMaze.Models.ClassicMaze
     {
         public Edge[] Edges { get; set; }
         
-
         public Maze(Size size)
         {
             var edgesToCheck = Generate(size);

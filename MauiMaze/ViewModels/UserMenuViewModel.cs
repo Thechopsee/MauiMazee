@@ -13,9 +13,11 @@ namespace MauiMaze.ViewModels
     public partial class UserMenuViewModel : ObservableObject
     {
         [ObservableProperty]
-        public bool isHistoryButtonVisible=true;
+        public bool isHistoryButtonVisible = true;
         [ObservableProperty]
-        public bool isRecordsButtonVisible=true;
+        public bool isRecordsButtonVisible = true;
+        [ObservableProperty]
+        public bool isDailyButtonVisible = true;
         [ObservableProperty]
         public string exitText = "Logout 🚪";
         [ObservableProperty]
@@ -29,6 +31,7 @@ namespace MauiMaze.ViewModels
         {
             IsHistoryButtonVisible = false;
             IsRecordsButtonVisible = false;
+            IsDailyButtonVisible = false;
             ExitText = "Exit 🚪";
         }
         public void SetWelcomeText(string name) => WelcomeText = $"Welcome {name}!";

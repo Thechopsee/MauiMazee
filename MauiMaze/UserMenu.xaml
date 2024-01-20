@@ -19,6 +19,7 @@
             Margin="0,20,0,45"/>
         
         <Button Text="Daily Maze"
+                IsVisible="{Binding IsDailyButtonVisible}"
                 x:Name="DailyMaze"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMaze.LoginPage"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:LoginPageViewModel"
+             Title="">
+    <VerticalStackLayout
+        HorizontalOptions="Center"
+        VerticalOptions="Center">
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Entry
+             x:Name="EmailEntry"
+             Text="{Binding Email}"
+             Placeholder="Enter your name"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             HorizontalOptions="FillAndExpand" />
+
+        <Entry
+             x:Name="PassEntry"
+             Text="{Binding Password}"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             IsPassword="true"
+             Placeholder="Enter your email"
+             HorizontalOptions="FillAndExpand" />
+        <HorizontalStackLayout
+             HorizontalOptions="Center">
+                 <Button
+                     IsEnabled="{Binding NameisValid}"
+                     x:Name="SubmitButton"
+                     MinimumWidthRequest="200"
+                     Text="Submit"
+                     Command="{Binding tryToLoginnCommand}"
+                 HorizontalOptions="Center" />
+
+        </HorizontalStackLayout>
+        <Label
+            Text="Or"/>
+        <Button
+                 x:Name="OfflineButon"
+                 MinimumWidthRequest="200"
+                 Text="Register"
+                 Command="{Binding goToRegisterCommand}"
+                 HorizontalOptions="Center" />
+    </VerticalStackLayout>
+    
+    
+</ContentPage>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiMaze.RegisterPage"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             x:DataType="viewmodel:RegisterPageViewModel"
+             Title="RegisterPage">
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <Label
+            Text="Email:"
+            />
+        <Entry
+             x:Name="EmailEntry"
+             Text="{Binding Email}"
+             Placeholder="Enter your email"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             HorizontalOptions="FillAndExpand" />
+        <Label
+            Text="Password:"
+            />
+        <Entry
+             x:Name="PassEntry"
+             Text="{Binding Password}"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             IsPassword="true"
+             Placeholder="Enter your password"
+             HorizontalOptions="FillAndExpand" />
+        <Label
+            Text="Password Re-type:"
+            />
+        <Entry
+             x:Name="PassAgainEntry"
+             Text="{Binding RePassword}"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             IsPassword="true"
+             Placeholder="Re-type password"
+             HorizontalOptions="FillAndExpand" />
+        <Label
+            Text="Registration Code:"
+            />
+        <Entry
+             x:Name="CodeEntry"
+             Text="{Binding Code}"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             IsPassword="true"
+             Placeholder="Enter Code"
+             HorizontalOptions="FillAndExpand" />
+
+        <Label
+            Text="{Binding ErrorMessage}"
+            />
+
+        <ActivityIndicator IsRunning="{Binding Loading}"
+                           x:Name="loading"
+                           />
+
+        <Button
+             x:Name="SubmitButton"
+             MinimumWidthRequest="200"
+             Text="Submit"
+             Command="{Binding registerCommand}"
+             HorizontalOptions="Center" />
+
+    </VerticalStackLayout>
+</ContentPage>
