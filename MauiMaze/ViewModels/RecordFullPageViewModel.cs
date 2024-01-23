@@ -19,6 +19,8 @@ namespace MauiMaze.ViewModels
         private int camefrom;
         [ObservableProperty]
         public string cellPathString="0";
+        [ObservableProperty]
+        public string mazeIDLabel;
 
         public RecordFullPageViewModel(GameRecord gr,int camefrom)
         {
@@ -28,6 +30,17 @@ namespace MauiMaze.ViewModels
             {
                 CellPathString += "->" + id;
             }
+            if (gameRecord.mazeID == -1)
+            {
+                mazeIDLabel = "Random";
+            }
+            else
+            {
+                mazeIDLabel = ""+gameRecord.mazeID;
+            }
+            RecordFetcher.SaveRecordOnline(gr.GetRecordDTO());
+
+
         }
 
 

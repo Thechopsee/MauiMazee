@@ -36,14 +36,14 @@ namespace MauiMaze.Drawables
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
 
             canvas.DrawRectangle(left, top, right, bottom);
-            if (!maze.firstrun)
-            {
-                maze.generateProcedure((int)dirtyRect.Height, (int)dirtyRect.Width);
-                maze.SolveAndDraw(canvas);
-            }
-            else {
+            //if (!maze.firstrun)
+            //{
+            //    maze.generateProcedure((int)dirtyRect.Height, (int)dirtyRect.Width);
+            //    maze.SolveAndDraw(canvas);
+            //}
+            //else {
                 maze.JustDraw(canvas);
-            }
+            //}
             cellHeight = 20;
             cellWidth = 20;
             if (player is null)

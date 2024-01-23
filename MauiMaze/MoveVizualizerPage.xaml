@@ -33,7 +33,7 @@
                         <DataTemplate  >
                             <ViewCell>
                                 <HorizontalStackLayout>
-                                    <Label Text="{Binding mazeID}" MinimumHeightRequest="50" />
+                                    <Label Text="{Binding grID}" MinimumHeightRequest="50" />
                                     <Button Text=" " BackgroundColor="{Binding color}"/>
                                 </HorizontalStackLayout>
                             </ViewCell>

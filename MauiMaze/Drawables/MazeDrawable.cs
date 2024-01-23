@@ -89,9 +89,12 @@ namespace MauiMaze.Drawables
                     {
                         movefor = dirtyRect.Width;
                     }
-                    for (int i = (int)x; i < movefor-1; i++)
+                    if (player is not null)
                     {
-                        walls[i, (int)y] = true;
+                        for (int i = (int)x; i < movefor - 1; i++)
+                        {
+                            walls[i, (int)y] = true;
+                        }
                     }
                    
                 }
@@ -105,9 +108,12 @@ namespace MauiMaze.Drawables
                     {
                         movefor = dirtyRect.Height;
                     }
-                    for (int i = (int)y+2; i < movefor-1; i++)
+                    if (player is not null)
                     {
-                        walls[(int)x, i] = true;
+                        for (int i = (int)y + 2; i < movefor - 1; i++)
+                        {
+                            walls[(int)x, i] = true;
+                        }
                     }
                 }
             }

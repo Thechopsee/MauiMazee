@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiMaze.GameRecordsPage"
+             xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
+             
              Title="GameRecordsPage">
     <VerticalStackLayout>
         <Label 
@@ -11,7 +13,7 @@
         <ListView ItemsSource="{Binding Records}" x:Name="recordsList" >
             <ListView.ItemTemplate >
                 <DataTemplate >
-                    <TextCell Text="{Binding name}"
+                    <TextCell Text="{Binding mazeID}"
                               Detail="{Binding timeInMilliSeconds}"
                              />
                 </DataTemplate>

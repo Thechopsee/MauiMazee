@@ -21,7 +21,11 @@ namespace MauiMaze.Helpers
                             Colors.Cyan,
                             Colors.Magenta,
                             Colors.Gray,
-                            Colors.Black
+                            Colors.Black,
+                            Colors.White,
+                            Colors.Turquoise,
+                            Colors.DarkTurquoise,
+                            Colors.Wheat
             };
             return colorScheme[i];
         }

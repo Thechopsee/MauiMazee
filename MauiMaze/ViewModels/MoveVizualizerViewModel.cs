@@ -5,6 +5,7 @@ using MauiMaze.Engine;
 using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,23 +84,31 @@ namespace MauiMaze.ViewModels
             cellEnabled = true;
             PositionEnabled = false;
             this.graphicsView = graphicsView;
-            MazeDrawable md=new MazeDrawable();
+            MazeDrawable md = new MazeDrawable();
+            md.maze = maze;
             this.listview = listview;
-            
-            gr= RecordRepository.GetInstance().getRecordsByMazeId(maze.MazeID);
-            for(int i=0;i< gr.Count();i++)
+            GraphicsView.Drawable = md;
+            getRecordsAsync(maze);
+
+
+        }
+        public async void getRecordsAsync(Maze maze)
+        {
+            gr=await RecordFetcher.loadRecordsByMaze(maze.MazeID).ConfigureAwait(true);
+            MazeDrawable md = new MazeDrawable();
+
+            for (int i = 0; i < gr.Count(); i++)
             {
-                gr.ElementAt(i).color = ColorSchemeProvider.getColor(i); 
+                gr.ElementAt(i).color = ColorSchemeProvider.getColor(i);
                 gr.ElementAt(i).grID = i;
             }
-            actualGamerecord = gr.ElementAt(0);
-            md.preview = new Player(actualGamerecord.moves[0].positionx, actualGamerecord.moves[0].positiony,md.cellWidth,md.cellHeight);
-            this.listview.ItemsSource=gr;
+            ActualGamerecord = gr.ElementAt(0);
+            md.preview = new Player(ActualGamerecord.moves[0].positionx, ActualGamerecord.moves[0].positiony, md.cellWidth, md.cellHeight);
+            this.listview.ItemsSource = gr;
             md.gameRecords = gr;
             md.maze = maze;
 
-            this.graphicsView.Drawable = md;
-
+            GraphicsView.Drawable = md;
         }
         
     }

@@ -23,8 +23,14 @@ public partial class MazePage : ContentPage
     GameDriver driver;
     LoginCases login;
     Timer timer;
+    bool firstMove = true;
     void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
+        if (firstMove)
+        {
+            timer = new Timer(driver.timerMove, null, 0, 33);
+            firstMove = false;
+        }
         if (driver.ended)
         {
             Navigation.PushAsync(new RecordFullPage(driver.gameRecord, 0));
@@ -32,7 +38,8 @@ public partial class MazePage : ContentPage
         if (e is not null)
         {
             var touch = e.Touches.First();
-            driver.movePlayerToPosition(touch.X, touch.Y);
+            //driver.movePlayerToPosition(touch.X, touch.Y);
+            driver.setPosition(touch.X, touch.Y);
         }
     }
     public MazePage(int size, LoginCases login)
@@ -41,7 +48,10 @@ public partial class MazePage : ContentPage
         this.login = login;
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
         driver = new GameDriver(mazeDrawable, canvas, size, 0, login);
+        
     }
+
+
     public MazePage(Maze maze) {
         if (maze is null)
         {
@@ -60,7 +70,7 @@ public partial class MazePage : ContentPage
         {
             if ((bool)result)
             {
-                RecordRepository.GetInstance().addRecord(driver.gameRecord);
+                // TODO RecordRepository.GetInstance().addRecord(driver.gameRecord);
                 await Navigation.PopAsync().ConfigureAwait(false);
             }
         }

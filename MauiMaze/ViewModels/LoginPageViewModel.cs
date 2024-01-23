@@ -48,8 +48,6 @@ namespace MauiMaze.ViewModels
                 }
                 else if (current == NetworkAccess.Local || current == NetworkAccess.None || current == NetworkAccess.Unknown)
                 {
-                    //TODO pada Interrnet nebo Unknown nic jiného asi vlastnost maui upravit
-                    // Nemáte přístup k internetu
                     await Shell.Current.DisplayAlert("Chyba", "Nemáte přístup k internetu", "OK");
                     OfflineButton = true;
                 }

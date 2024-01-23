@@ -9,17 +9,9 @@
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
     <StackLayout Margin="20">
-        <Label Text="Name:"/>
-        <Label Text="{Binding GameRecord.name}"/>
-        <!--<Button Text="Set Name" Clicked="SetName_Clicked" Margin="5"/>-->
-
         <Label Text="Maze ID:"/>
-        <Label Text="{Binding GameRecord.mazeID}"/>
+        <Label Text="{Binding MazeIDLabel}"/>
         <!--<Button Text="Set Maze ID" Clicked="SetMazeID_Clicked" Margin="5"/>-->
-
-        <Label Text="Number of Tries:"/>
-        <Label Text="{Binding GameRecord.numOfTry}"/>
-        <!--<Button Text="Set Tries" Clicked="SetNumOfTry_Clicked" Margin="5"/>-->
 
         <Label Text="Hit Walls Count:"/>
         <Label Text="{Binding GameRecord.hitWallsCount}"/>

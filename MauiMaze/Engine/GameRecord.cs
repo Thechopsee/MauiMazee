@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MauiMaze.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,20 +11,17 @@ namespace MauiMaze.Engine
     public class GameRecord
     {
         public int grID { get; set; }
-        public List<MoveRecord> moves;
         public int hitWallsCount { get; set; }
         public double travelLenght { get; set; }
         public int mazeID { get; set; }
-        public int numOfTry { get; set; }
-        public int userID { get; set; } 
-        public string name { get; set; }
+        public int userID { get; set; }
         public bool finished { get; set; }
         public int timeInMilliSeconds { get; set; }
         public List<int> cellPath { get; }
 
+        public List<MoveRecord> moves;
         Stopwatch stopwatch = new Stopwatch();
         public Color color { get; set; }
-
 
         public GameRecord(int mazeID,int userID)
         {
@@ -32,6 +30,23 @@ namespace MauiMaze.Engine
             cellPath = new List<int>();
             moves = new List<MoveRecord>();
             stopwatch.Start();
+        }
+        public GameRecordDTO GetRecordDTO()
+        {
+            return new GameRecordDTO(grID,mazeID,userID,timeInMilliSeconds,hitWallsCount, pathToStr(), moves.ToArray());   
+        }
+        public string pathToStr()
+        {
+            string stringpath = "";
+            for (int i = 0; i < cellPath.Count; i++)
+            {
+                stringpath += cellPath[i];
+                if (i != cellPath.Count - 1)
+                {
+                    stringpath += "->";
+                }
+            }
+            return stringpath;
         }
         public void addCellMoveRecord(int cellID)
         {
@@ -58,12 +73,19 @@ namespace MauiMaze.Engine
             timeInMilliSeconds = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
             int lastX=0;
             int lastY=0;
+            bool hit_diffuser = false;
             foreach(MoveRecord move in moves)
             {
-                if(move.hitWall)
+                if (move.hitWall && hit_diffuser == false)
                 {
                     hitWallsCount++;
+                    hit_diffuser = true;
                 }
+                else if (!move.hitWall && hit_diffuser == true)
+                {
+                    hit_diffuser = false;
+                }
+
                 double deltaX = move.positionx - lastX;
                 double deltaY = move.positiony - lastY;
 
