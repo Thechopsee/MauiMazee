@@ -108,7 +108,6 @@ namespace MauiMaze.Drawables
                     }
                 }
             }
-
             return (false,false,false);
         }
     }

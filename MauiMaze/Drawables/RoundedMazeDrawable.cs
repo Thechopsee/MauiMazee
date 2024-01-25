@@ -8,6 +8,7 @@ using System.Drawing;
 using MauiMaze.Models.RoundedMaze;
 using MauiMaze.Engine;
 using MauiMaze.Exceptions;
+using Microsoft.Maui.Controls.Compatibility;
 
 namespace MauiMaze.Drawables
 {
@@ -36,28 +37,53 @@ namespace MauiMaze.Drawables
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
 
             canvas.DrawRectangle(left, top, right, bottom);
-            //if (!maze.firstrun)
-            //{
-            //    maze.generateProcedure((int)dirtyRect.Height, (int)dirtyRect.Width);
-            //    maze.SolveAndDraw(canvas);
-            //}
-            //else {
-                maze.JustDraw(canvas);
-            //}
-            cellHeight = 20;
-            cellWidth = 20;
+
+            RoundedMaze rm = (RoundedMaze)maze;
+            if (rm.end is null)
+            {
+                rm.SolveAndDraw(dirtyRect.Width, dirtyRect.Height);
+            }
+            canvas.StrokeColor = Colors.Blue;
+            canvas.DrawCircle((float)rm.end.X, (float)rm.end.Y, 10);
+            canvas.DrawRectangle((float)rm.end.X, rm.end.Y, rm.end.bottomX - rm.end.X, rm.end.bottomY - rm.end.Y);
+            canvas.StrokeColor = Colors.Red;
+            canvas.DrawCircle((float)rm.start.X, (float)rm.start.Y + rm.yoffsett, 10);
+
+            foreach (var row in rm.grid)
+            {
+                foreach (var cell in row)
+                {
+                    float startX = cell.InnerCcwX;
+                    float startY = cell.InnerCcwY;
+
+                    if (cell.Inward == null || !RoundedMaze.IsLinked(cell, cell.Inward))
+                    {
+                        canvas.DrawLine(startX, startY, cell.InnerCwX, cell.InnerCwY);
+                    }
+
+                    if (cell.Cw == null || !RoundedMaze.IsLinked(cell, cell.Cw))
+                    {
+                        canvas.DrawLine(cell.InnerCwX, cell.InnerCwY, cell.OuterCwX, cell.OuterCwY);
+                    }
+
+                    if (cell.Row == rm.grid.Count - 1 && cell.Col != row.Count * 0.75)
+                    {
+                        canvas.DrawLine(cell.OuterCcwX, cell.OuterCcwY, cell.OuterCwX, cell.OuterCwY);
+                    }
+                }
+            }
+
             if (player is null)
             {
                 cellHeight = 20;
                 cellWidth = 20;
                 player = new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
-                
             }
             else
             {
                 drawPlayer(canvas);
             }
-            //drawStartAndEnd(canvas);
+
         }
 
     }

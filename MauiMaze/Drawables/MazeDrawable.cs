@@ -53,12 +53,12 @@ namespace MauiMaze.Drawables
                 {
                     int y = gr.cellPath[i] / (int)maze.Size.Height;
                     int x = gr.cellPath[i] % (int)maze.Size.Height;
-                    double posx = x * cellWidth;
-                    double posy = y * cellHeight;
+                    double posx = x * cellWidth+(cellWidth/2);
+                    double posy = y * cellHeight+(cellHeight/2);
                     int y2 = gr.cellPath[i + 1] / (int)maze.Size.Height;
                     int x2 = gr.cellPath[i + 1] % (int)maze.Size.Height;
-                    double posx2 = x2 * cellWidth;
-                    double posy2 = y2 * cellHeight;
+                    double posx2 = x2 * cellWidth+(cellWidth/2);
+                    double posy2 = y2 * cellHeight+(cellHeight / 2);
                     canvas.DrawLine((float)posx, (float)posy, (float)(posx2), (float)(posy2));
                 }
             }

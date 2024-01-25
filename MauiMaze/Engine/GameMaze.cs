@@ -13,8 +13,5 @@ namespace MauiMaze.Engine
         public End end { get; set; }
         public Start start { get; set; }
         public bool firstrun { get; set; }
-        public virtual void generateProcedure(int height, int width) { }
-        public virtual void SolveAndDraw(ICanvas canvas) { }
-        public virtual void JustDraw(ICanvas canvas) { }
     }
 }

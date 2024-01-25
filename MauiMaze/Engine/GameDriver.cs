@@ -113,7 +113,6 @@ namespace MauiMaze.Engine
                 {
                     areHitted = true;
                     graphicsView.Invalidate();
-                    //return;
                 }
                 if (checkEnd())
                 { 

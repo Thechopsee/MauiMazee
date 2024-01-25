@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.RoundedMaze
 {
-    internal class Cell
+    public class Cell
     {
         public int Row { get; set; }
         public int Col { get; set; }

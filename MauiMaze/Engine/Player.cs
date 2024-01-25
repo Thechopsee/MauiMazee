@@ -92,7 +92,6 @@ namespace MauiMaze.Engine
             {
                 int x = (int)(xorigin + i * stepX);
                 int y = (int)(yorigin + i * stepY);
-                // Application.Current.MainPage.DisplayAlert("Upozornění", "x" + x + " y" + y + "dista" + distance + "\nnew" + xnew + " " + ynew + "\norigin" + xorigin + " " + yorigin + "\n" + stepX + " " + stepY, "OK"); ;
 
                 (bool, bool, bool) hitcheck = mazeDrawable.checkCollision(x, y, (int)(x + hitbox.Size), (int)(y + hitbox.Size));
                 if (hitcheck.Item1)

@@ -27,6 +27,10 @@ namespace MauiMaze.Helpers
                             Colors.DarkTurquoise,
                             Colors.Wheat
             };
+            if (i >= colorScheme.Length)
+            {
+                i = (i % colorScheme.Length);
+            }
             return colorScheme[i];
         }
     }

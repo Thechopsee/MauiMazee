@@ -1,6 +1,7 @@
 ﻿
 using MauiMaze.Engine;
 using MauiMaze.Exceptions;
+using MauiMaze.Models.ClassicMaze;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,32 +10,50 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.RoundedMaze
 {
-    internal class Link
+    public class Link
     {
         public int Row { get; set; }
         public int Col { get; set; }
     }
-    public class RoundedMaze :GameMaze
+    public class RoundedMaze : GameMaze
     {
-        private List<List<Cell>> grid = new List<List<Cell>>();
+        public List<List<Cell>> grid = new List<List<Cell>>();
         private int lineWidth = 4;
         private int size = 25;
         private int width = 0;
         private int rows = 0;
-        private int xoffsett;
-        private int yoffsett;
+        public int xoffsett { get; set; }
+        public int yoffsett { get; set; }
 
         public RoundedMaze(Size size)
         {
-            if (size==null)
-            {
-                throw new ArgumentNullException(nameof(size));
-            }
             this.size = (int)size.Height;
         }
-        public override void generateProcedure(int height,int width)
+
+        public Edge[] transformToEdgeGraph()
         {
-            Resize(false, height);
+            List<Edge> edges=new List<Edge>();
+            int rowLenght=grid[0].Count;
+            for (int i = 0; i < grid.Count; i++)
+            {
+                for (int j = 0; j < grid[i].Count; j++)
+                {
+                    int startingid = grid[i][j].Row + (grid[i][j].Col * rowLenght);
+                    List<Cell> listnei=GetNeighbors(grid[i][j]);
+                    foreach (Cell c in listnei)
+                    {
+                        int endid = c.Row + (c.Col * rowLenght);
+                        edges.Add(new Edge(startingid, endid));
+                    }
+                }
+            }
+            return edges.ToArray();
+        }
+        public void generateProcedure(int height,int width)
+        {
+            this.width = height;
+            rows = (int)Math.Floor(this.width / 2.0 / size);
+            this.width = 2 * rows * size;
             xoffsett = (width /2)-this.width/2;
             yoffsett = 30;
             end = new End((this.width / 2) + xoffsett, (this.width / 2)+yoffsett, (this.width / 2) + xoffsett+30, (this.width / 2)+yoffsett+30);
@@ -90,8 +109,6 @@ namespace MauiMaze.Models.RoundedMaze
         void PositionCells()
         {
             double center = width / 2.0;
-
-            
             foreach (var row in grid)
             {
                 foreach (var cell in row)
@@ -123,12 +140,12 @@ namespace MauiMaze.Models.RoundedMaze
             
             
         }
-        private static bool IsLinked(Cell cellA, Cell cellB)
+        public static bool IsLinked(Cell cellA, Cell cellB)
         {
             return cellA.Links.Any(link => link.Row == cellB.Row && link.Col == cellB.Col);
         }
 
-        private List<Cell> GetNeighbors(Cell cell)
+        public List<Cell> GetNeighbors(Cell cell)
         {
             var list = new List<Cell>();
 
@@ -141,12 +158,10 @@ namespace MauiMaze.Models.RoundedMaze
             return list;
         }
 
-        public override void SolveAndDraw(ICanvas canvas)
+        public void SolveAndDraw(double width, double height)
         {
-            if (canvas is null)
-            {
-                throw new CanvasNotAvailableExpectation("");
-            }
+            generateProcedure((int)height,(int)height);
+           
             Random random = new Random();
             int randomRow = random.Next(rows);
             int randomCol = random.Next(grid[randomRow].Count);
@@ -171,7 +186,6 @@ namespace MauiMaze.Models.RoundedMaze
                 }
                 else
                 {
-                    
                     current = null;
 
                     for (int i = 0; i < grid.Count; i++)
@@ -202,71 +216,8 @@ namespace MauiMaze.Models.RoundedMaze
             {
                 start = new Start((int)last.CenterX + xoffsett,(int)last.CenterY);
             }
-            RenderMaze(canvas);
         }
 
-        public override void JustDraw(ICanvas canvas) {
-            if (canvas is null)
-            {
-                throw new CanvasNotAvailableExpectation("");
-            }
-            RenderMaze(canvas); 
-        }
-        private void RenderMaze(ICanvas canvas)
-        {
-            if (canvas is null)
-            {
-                throw new CanvasNotAvailableExpectation("");
-            }
-            //Application.Current.MainPage.DisplayAlert("Upozornění", "run "+grid.Count, "OK");
-            canvas.StrokeColor = Colors.Blue;
-            canvas.DrawCircle((float)end.X, (float)end.Y, 10);
-            canvas.DrawRectangle((float)end.X, end.Y, end.bottomX-end.X, end.bottomY-end.Y);
-            canvas.StrokeColor = Colors.Red;
-            canvas.DrawCircle((float)start.X, (float)start.Y + yoffsett, 10);
-            canvas.StrokeColor = Colors.Black;
-
-            foreach (var row in grid)
-            {
-                foreach (var cell in row)
-                {
-                    float startX = cell.InnerCcwX;
-                    float startY = cell.InnerCcwY;
-
-
-                    if (cell.Inward == null || !IsLinked(cell, cell.Inward))
-                    {
-                        canvas.DrawLine(startX, startY, cell.InnerCwX, cell.InnerCwY);
-                    }
-
-                    if (cell.Cw == null || !IsLinked(cell, cell.Cw))
-                    {
-                        canvas.DrawLine(cell.InnerCwX, cell.InnerCwY, cell.OuterCwX, cell.OuterCwY);
-                    }
-
-                    if (cell.Row == grid.Count - 1 && cell.Col != row.Count * 0.75)
-                    {
-                        canvas.DrawLine(cell.OuterCcwX, cell.OuterCcwY, cell.OuterCwX, cell.OuterCwY);
-                    }
-                }
-            }
-        }
-
-        void Resize(bool change, int height)
-        {
-            width = height; //TODO min
-
-            if (change)
-            {
-                size = (int)Math.Floor(width / 2.0 / rows);
-            }
-            else
-            {
-                rows = (int)Math.Floor(width / 2.0 / size);
-            }
-
-            width = 2 * rows * size;
-
-        }
+       
     }
 }
