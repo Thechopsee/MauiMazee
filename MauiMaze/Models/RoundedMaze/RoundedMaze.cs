@@ -39,8 +39,9 @@ namespace MauiMaze.Models.RoundedMaze
                 for (int j = 0; j < grid[i].Count; j++)
                 {
                     int startingid = grid[i][j].Row + (grid[i][j].Col * rowLenght);
-                    List<Cell> listnei=GetNeighbors(grid[i][j]);
-                    foreach (Cell c in listnei)
+                   // List<Cell> listnei=GetNeighbors(grid[i][j]);
+
+                    foreach (Link c in grid[i][j].Links)
                     {
                         int endid = c.Row + (c.Col * rowLenght);
                         edges.Add(new Edge(startingid, endid));
