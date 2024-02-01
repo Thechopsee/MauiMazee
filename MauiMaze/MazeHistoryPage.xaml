@@ -7,6 +7,7 @@
             
              Title="">
     <VerticalStackLayout Margin="20,20,20,20">
+        
         <Label 
             Text="Mazes:"
             FontSize="24"
@@ -15,6 +16,7 @@
         <ActivityIndicator IsRunning="True"
                            x:Name="loading"
                            />
+        <ScrollView>
         <ListView ItemsSource="{Binding Records}" x:Name="recordsList" >
             <ListView.ItemTemplate x:DataType="mdls:MazeDescription">
                 <DataTemplate  >
@@ -32,5 +34,31 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        </ScrollView>
+        <Label 
+            Text="Saved Mazes:"
+            FontSize="24"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <ScrollView>
+        <ListView ItemsSource="{Binding Md}" x:Name="localrecordsList" >
+            <ListView.ItemTemplate x:DataType="mdls:MazeDescription">
+                <DataTemplate  >
+                    <ViewCell>
+                        <HorizontalStackLayout>
+                            <Label Text="{Binding description}" Height="50" />
+                            <Button Text="MoveHistory" 
+                                Command="{Binding GoToMovesCommand}"
+                                />
+                            <Button Text="Play" 
+                                Command="{Binding GoToPlayCommand}"
+                                />
+                        </HorizontalStackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        </ScrollView>
+
     </VerticalStackLayout>
 </ContentPage>

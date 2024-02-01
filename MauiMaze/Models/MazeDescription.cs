@@ -19,23 +19,44 @@ namespace MauiMaze.Models
 
         public string description { get; set; }
 
+        private bool local = false;
+
+        public MazeDescription() { }
+        public MazeDescription(int id,MazeType mt,DateTime cD) {
+            this.ID = id;
+            this.mazeType = mt;
+            this.creationDate = cD;
+            this.local = true;
+            this.description = "" + ID + mt;
+        }
+
         [RelayCommand]
         public async Task GoToMoves()
         {
-            if (ID > 0)
+            Maze mz;
+            if (local && ID >= 0)
             {
-                Maze mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
-                await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz)).ConfigureAwait(true);
+                 mz= await MazeFetcher.getMazeLocalbyID(ID);
             }
+            else
+            {
+                 mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
+            }
+            await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz)).ConfigureAwait(true);
         }
         [RelayCommand]
         public async Task GoToPlay()
         {
-            if (ID > 0)
+            Maze mz;
+            if (local && ID >= 0)
             {
-                Maze mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
-                await Shell.Current.Navigation.PushAsync(new MazePage(mz)).ConfigureAwait(true);
+                mz = await MazeFetcher.getMazeLocalbyID(ID);
             }
+            else
+            {
+                mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
+            }
+            await Shell.Current.Navigation.PushAsync(new MazePage(mz)).ConfigureAwait(true);
         }
 
     }

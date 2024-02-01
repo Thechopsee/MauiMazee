@@ -26,7 +26,7 @@
      Clicked="GoBackPop"
      HorizontalOptions="Center" />
             <Button
-    x:Name="SAVE"
+    x:Name="save_btn"
     Text="Save Maze"
     Clicked="SaveMaze"
     HorizontalOptions="Center" />       

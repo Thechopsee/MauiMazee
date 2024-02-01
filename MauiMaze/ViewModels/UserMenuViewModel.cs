@@ -29,7 +29,7 @@ namespace MauiMaze.ViewModels
         }
         public void UserOfflineProcedure()
         {
-            IsHistoryButtonVisible = false;
+            //IsHistoryButtonVisible = false;
             IsRecordsButtonVisible = false;
             IsDailyButtonVisible = false;
             ExitText = "Exit 🚪";

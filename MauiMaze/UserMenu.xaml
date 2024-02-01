@@ -41,9 +41,9 @@
                 MinimumWidthRequest="200"
                 Command="{Binding GoToRecordsCommand}"
                 Margin="0,0,0,20"/>
-        <Button Text="Maze History"
+        <Button Text="Saved Mazes"
                 VerticalOptions="Center"
-                x:Name="MazeHistory"
+                x:Name="Saved_Mazes"
                 HorizontalOptions="Center"
                 MinimumWidthRequest="200"
                 IsVisible="{Binding IsHistoryButtonVisible}"

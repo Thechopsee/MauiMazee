@@ -5,18 +5,18 @@
              x:Class="MauiMaze.Popups.SaveMazePopUp"
              >
     <VerticalStackLayout>
-        <Label Text="How doyou wanna save it?"/>
+        <Label Text="How doyou wanna save maze locally?"/>
         <HorizontalStackLayout>
             <Button
                 x:Name="Local"
-                Text="Local"
+                Text="Yes"
                 SemanticProperties.Hint="Save maze locally"
                 Clicked="setTrue"
                 MinimumWidthRequest="100"
                 HorizontalOptions="Center" />
             <Button
                 x:Name="Cloud"
-                Text="Cloud"
+                Text="No"
                 MinimumWidthRequest="100"
                 SemanticProperties.Hint="Save maze on cloud"
                 Clicked="setFalse"

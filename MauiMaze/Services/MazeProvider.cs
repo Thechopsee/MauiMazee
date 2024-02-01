@@ -1,4 +1,6 @@
 ﻿using MauiMaze.Models;
+using MauiMaze.Models.ClassicMaze;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +49,11 @@ namespace MauiMaze.Services
             
 
             return this.cache;
+        }
+        public async Task<(Maze[], MazeDescription[])> loadLocalMazes()
+        {
+            (Maze[] mazes,MazeDescription[] md) = await MazeFetcher.getOfflineMazes();
+            return (mazes,md);
         }
     }
 }

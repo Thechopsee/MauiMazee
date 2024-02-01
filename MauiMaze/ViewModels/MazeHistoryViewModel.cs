@@ -17,7 +17,11 @@ namespace MauiMaze.ViewModels
     {
         [ObservableProperty]
         public List<MazeDescription> records;
-        ActivityIndicator ai;
+        [ObservableProperty]
+        public Maze[] mazes;
+        [ObservableProperty]
+        MazeDescription[] md;
+        public ActivityIndicator ai;
 
         public MazeHistoryViewModel(ActivityIndicator ai)
         {
@@ -28,7 +32,7 @@ namespace MauiMaze.ViewModels
         public async void loadRecord()
         {
             Records = await MazeProvider.Instance.loadMazes().ConfigureAwait(true);
-            //Maze[] mazes = await MazeFetcher.getOfflineMazes();
+            (Mazes,Md) = await MazeProvider.Instance.loadLocalMazes();
             ai.IsRunning = false;
         }
 

@@ -58,6 +58,7 @@ public partial class MazePage : ContentPage
             throw new MazeNotLoadedExpectation("Maze is not loaded when try to inicialize gamedriver");
         }
         InitializeComponent();
+        save_btn.IsVisible = false;
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
         driver = new GameDriver(mazeDrawable, canvas, (int)(maze.Size.Width), 0,maze); //todo doupravit
     }
@@ -88,12 +89,12 @@ public partial class MazePage : ContentPage
                 await MazeFetcher.saveMazeLocally((Maze)mazeDrawable.maze).ConfigureAwait(true);
                 await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
             }
-            else
-            {
-                Maze maze = (Maze)mazeDrawable.maze;
-                await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges).ConfigureAwait(true);
-                await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
-            }
+            //else
+            //{
+            //    Maze maze = (Maze)mazeDrawable.maze;
+            //    await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges).ConfigureAwait(true);
+            //    await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
+            //}
         }
     }
 }

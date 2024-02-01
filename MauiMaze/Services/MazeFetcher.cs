@@ -17,18 +17,19 @@ namespace MauiMaze.Services
         {
             public int message { get; set; }
         }
-        public static async Task<Maze[]> getOfflineMazes()
+        public static async Task<(Maze[], MazeDescription[])> getOfflineMazes()
         {
             //1;2;
 
             string data = await SecureStorage.Default.GetAsync("mazelist");
             if (data is null)
             {
-                return new Maze[0];
+                return (new Maze[0],new MazeDescription[0]);
             }
             string[] splited = data.Split(";");
             Maze[] mazeDescriptions = new Maze[splited.Length];
-            for(int i=0;i<splited.Length;i++)
+            MazeDescription[] Descriptions = new MazeDescription[splited.Length];
+            for (int i=0;i<splited.Length;i++)
             {
                 string maze = await SecureStorage.Default.GetAsync("maze" + splited[i]);
                 if (maze is null)
@@ -38,9 +39,18 @@ namespace MauiMaze.Services
                 else
                 {
                    mazeDescriptions[i]=JsonConvert.DeserializeObject<Maze>(maze);
+                   Descriptions[i] = new MazeDescription(i+1,MazeType.Classic,DateTime.Now);
                 }
             }
-            return mazeDescriptions;
+            return (mazeDescriptions,Descriptions);
+        }
+        public static async Task<Maze> getMazeLocalbyID(int id)
+        {
+
+            string maze = await SecureStorage.Default.GetAsync("maze" + id);
+            return JsonConvert.DeserializeObject<Maze>(maze);
+
+            
         }
         public static async Task saveMazeLocally(Maze maze)
         {
