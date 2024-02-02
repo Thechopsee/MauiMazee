@@ -9,10 +9,11 @@ namespace MauiMaze.Models.ClassicMaze
     {
         public Edge[] Edges { get; set; }
         
-        public Maze(Size size)
+        public Maze(int width,int height)
         {
-            var edgesToCheck = Generate(size);
-            var sets = InitializeSets(size);
+            //Size size=new Size(width,height);
+            var edgesToCheck = Generate(width, height);
+            var sets = InitializeSets(width, height);
 
             var mazeEdges = new List<Edge>();
             var random = new Random();
@@ -38,26 +39,28 @@ namespace MauiMaze.Models.ClassicMaze
             }
 
             Edges = edgesToCheck.Concat(mazeEdges).ToArray();
-            Size = size;
+            this.Width= width;
+            this.Height= height;
+            //Size = size;
         }
 
-        private static List<Edge> Generate(Size size)
+        private static List<Edge> Generate(int Width,int Height)
         {
             var edges = new List<Edge>();
 
             var cell = 0;
-            for (var row = 0; row < size.Height; row++)
+            for (var row = 0; row <Height; row++)
             {
-                for (var column = 0; column < size.Width; column++)
+                for (var column = 0; column < Width; column++)
                 {
-                    if (column != size.Width - 1)
+                    if (column != Width - 1)
                     {
                         edges.Add(new Edge(cell, cell + 1));
                     }
 
-                    if (row != size.Height - 1)
+                    if (row != Height - 1)
                     {
-                        edges.Add(new Edge(cell, cell + Convert.ToInt32(size.Width)));
+                        edges.Add(new Edge(cell, cell + Convert.ToInt32(Width)));
                     }
 
                     cell++;
@@ -67,9 +70,9 @@ namespace MauiMaze.Models.ClassicMaze
             return edges;
         }
 
-        private static int[] InitializeSets(Size size)
+        private static int[] InitializeSets(int Width, int Height)
         {
-            int[] sets = new int[(int)(size.Width * size.Height)];
+            int[] sets = new int[(int)(Width * Height)];
             for (var i = 0; i < sets.Length; i++)
             {
                 sets[i] = i;

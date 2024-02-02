@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Engine
 {
-    internal class GameDriver
+    public class GameDriver
     {
         BaseMazeDrawable mazeDrawable;
         LoginCases gamestatus;
@@ -26,7 +26,11 @@ namespace MauiMaze.Engine
         public bool ended { get; set; }
         private float lastposx {get;set;}
         private float lastposy { get; set; }
+        private float prewposx {get;set;}
+        private float prewposy { get; set; }
         public GameRecord gameRecord { get; set; }
+
+        public int movecounter = 3;
 
         public void setPosition(float x, float y)
         {
@@ -44,7 +48,7 @@ namespace MauiMaze.Engine
             GameMaze maze;
             if (mazetype == 0)
             {
-                maze = new Maze(new Size(size, size));
+                maze = new Maze(size, size);
             }
             else
             {
@@ -61,15 +65,17 @@ namespace MauiMaze.Engine
                 gameRecord = new GameRecord(maze.MazeID,UserDataProvider.GetInstance().getUserID());
             }
         }
-        public GameDriver(BaseMazeDrawable md, GraphicsView gv, int size, int mazetype,Maze maze)
+        public void setGraphicView(GraphicsView gv)
+        {
+            graphicsView=gv;
+        }
+        public GameDriver(BaseMazeDrawable md, Maze maze)
         {
             ended = false;
-            graphicsView = gv;
             mazeDrawable = md;
             mazeDrawable.player = new Player(0, 0, md.cellWidth, md.cellHeight);
             player = mazeDrawable.player;
             mazeDrawable.maze = maze;
-            graphicsView.Invalidate();
             if (this.gamestatus == LoginCases.Offline)
             {
                 gameRecord = new GameRecord(-1, -1); //TODO
@@ -85,8 +91,9 @@ namespace MauiMaze.Engine
             movePlayerToPosition(lastposx, lastposy);
         }
 
-        public void movePlayerToPosition(float x, float y)
+        public bool movePlayerToPosition(float x, float y)
         {
+            
             if (player.positionX==0 && player.positionY==0)
             {
                 mazeDrawable.reinitPlayer(player);
@@ -95,6 +102,12 @@ namespace MauiMaze.Engine
             if (player.playerSizeX != mazeDrawable.cellWidth) {
                 player.playerSizeX = mazeDrawable.cellWidth;
                 player.playerSizeY =mazeDrawable.cellHeight;
+            }
+
+            if(prewposx==x || prewposy==y)
+            {
+                movecounter = 3;
+                return false;
             }
             float oldPlayerX = player.positionX;
             float oldPlayery = player.positionY;
@@ -122,17 +135,30 @@ namespace MauiMaze.Engine
                 graphicsView.Invalidate();
 
                 saveMove(areHitted);
+                lastposx = -100;
+                lastposy = -100;
+                return true;
             }
+            return false;
         }
         private void saveMove(bool hit)
         {
-            double playerXPercentage = ((player.positionX + player.playerSizeX) / mazeDrawable.mazeWidth);
-            double playerYPercentage = ((player.positionY + player.playerSizeY) / mazeDrawable.mazeHeight);
-            double mazesize = mazeDrawable.maze.Size.Width;
-            double xid = ((player.positionX + player.playerSizeX) / mazeDrawable.cellWidth);
-            double yid = ((player.positionY + player.playerSizeY) / mazeDrawable.cellHeight);
-            gameRecord.addCellMoveRecord((int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid));
-            gameRecord.addMoveRecord(new MoveRecord(-1,(int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, hit));
+            if (movecounter <= 0)
+            {
+                double playerXPercentage = ((player.positionX + player.playerSizeX) / mazeDrawable.mazeWidth);
+                double playerYPercentage = ((player.positionY + player.playerSizeY) / mazeDrawable.mazeHeight);
+                double mazesize = mazeDrawable.maze.Width;
+                double xid = ((player.positionX + player.playerSizeX) / mazeDrawable.cellWidth);
+                double yid = ((player.positionY + player.playerSizeY) / mazeDrawable.cellHeight);
+                gameRecord.addCellMoveRecord((int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid));
+                gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, hit));
+                movecounter += 3;
+
+            }
+            else
+            {
+                movecounter--;
+            }
         }
         private bool checkEnd()
         {

@@ -49,28 +49,12 @@ namespace MauiMaze.Services
                 expireDate = DateTime.Now;
                 expireDate.AddMonths(1);
                 user = new User(vysl, "Admin");
-                //TODO set with Token
                 return true;
             }
             else
             {
                 return false;
             }
-            /*
-            if (name == "admin" && password == "admin")
-            {
-                expireDate = DateTime.Now;
-                expireDate.AddMonths(1);
-                user = new User(1,"Admin");
-                //TODO set with Token
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-            */
-            //TODO connect with UserFetcher
         }
 
         private UserDataProvider()

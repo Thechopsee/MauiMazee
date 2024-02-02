@@ -15,38 +15,48 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <Label
-                Text="MauiMaze"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
+            <Frame BorderColor="Gray"
+                    CornerRadius="10">
+                <VerticalStackLayout
 
-            <Label
-                Text="Welcome to MazeSomething how you gonna play today?"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand" />
+                    Spacing="25"
+                    Margin="0,0,0,25"
+                    >
+                    
+                    <Label
+                        Text="MauiMaze"
+                        SemanticProperties.HeadingLevel="Level1"
+                        FontSize="32"
+                        HorizontalOptions="Center" />
 
-            <Button
-                    x:Name="forfun"
-                    MinimumWidthRequest="300"
-                    MinimumHeightRequest="100"
-                    Text="Just for fun!"
-                    Command="{Binding GoToFreePlayCommand }"
-                    HorizontalOptions="Center" />
-            <Button
-                    x:Name="forscience"
-                    MinimumWidthRequest="300"
-                    MinimumHeightRequest="100"
-                    Text="For science!"
-                    Command="{Binding GoToScienceCommand }"
-                    HorizontalOptions="Center" />
+                    <Label
+                        Text="Welcome to MazeSomething how you gonna play today?"
+                        SemanticProperties.HeadingLevel="Level2"
+                        SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                        FontSize="18"
+                        HorizontalOptions="CenterAndExpand" />
 
+                    <Button
+                            x:Name="forfun"
+                            MinimumWidthRequest="300"
+                            MinimumHeightRequest="100"
+                            Text="Just for fun!"
+                            Command="{Binding GoToFreePlayCommand }"
+                            HorizontalOptions="Center" />
+                    <Button
+                            x:Name="forscience"
+                            MinimumWidthRequest="300"
+                            MinimumHeightRequest="100"
+                            Text="For science!"
+                            Command="{Binding GoToScienceCommand }"
+                            HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
             <StackLayout
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
-                Margin="0,20,0,0">
+                VerticalOptions="EndAndExpand"
+                Margin="0,35,0,0">
 
                 <Button
                     x:Name="About"

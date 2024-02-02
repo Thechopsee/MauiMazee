@@ -60,7 +60,9 @@ public partial class MazePage : ContentPage
         InitializeComponent();
         save_btn.IsVisible = false;
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        driver = new GameDriver(mazeDrawable, canvas, (int)(maze.Size.Width), 0,maze); //todo doupravit
+        driver = new GameDriver(mazeDrawable,maze);
+        driver.setGraphicView(canvas);
+        canvas.Invalidate();
     }
 
     private async void GoBackPop(object sender, EventArgs e)

@@ -8,7 +8,8 @@ namespace MauiMaze.Engine
 {
     public class GameMaze
     {
-        public Size Size { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
         public int MazeID { get; set; }
         public End end { get; set; }
         public Start start { get; set; }

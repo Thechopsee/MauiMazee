@@ -61,6 +61,13 @@ namespace MauiMaze.Engine
         }
         public void addMoveRecord(MoveRecord move)
         {
+            if (moves.Count > 0)
+            {
+                if (moves.Last().positionx == move.positionx && moves.Last().positiony == move.positiony)
+                {
+                    return;
+                }
+            }
             moves.Add(move);
         }
         public int numberOfMoves()

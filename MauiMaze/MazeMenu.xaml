@@ -66,8 +66,8 @@
            FontAttributes="Bold"/>
                 <Slider VerticalOptions="Center" 
                 x:Name="sizeSlider"
-                Minimum="10"
-                Maximum="35"
+                Minimum="5"
+                Maximum="18"
                 Value="{Binding Mazesize}"
                 DragCompletedCommand="{Binding dragMazeEndedCommand}"
                 />

@@ -11,11 +11,7 @@ using System.Reflection;
 using IImage = Microsoft.Maui.Graphics.IImage;
 using static Plugin.LocalNotification.NotificationRequestGeofence;
 using MauiMaze.Helpers;
-#if IOS || ANDROID || MACCATALYST
-using Microsoft.Maui.Graphics.Platform;
-#elif WINDOWS
-using Microsoft.Maui.Graphics.Win2D;
-#endif
+
 
 
 namespace MauiMaze.Drawables
@@ -51,12 +47,12 @@ namespace MauiMaze.Drawables
             {
                 for (int i = 0; i < gr.cellPath.Count - 1; i++)
                 {
-                    int y = gr.cellPath[i] / (int)maze.Size.Height;
-                    int x = gr.cellPath[i] % (int)maze.Size.Height;
+                    int y = gr.cellPath[i] / (int)maze.Height;
+                    int x = gr.cellPath[i] % (int)maze.Height;
                     double posx = x * cellWidth+(cellWidth/2);
                     double posy = y * cellHeight+(cellHeight/2);
-                    int y2 = gr.cellPath[i + 1] / (int)maze.Size.Height;
-                    int x2 = gr.cellPath[i + 1] % (int)maze.Size.Height;
+                    int y2 = gr.cellPath[i + 1] / (int)maze.Height;
+                    int x2 = gr.cellPath[i + 1] % (int)maze.Height;
                     double posx2 = x2 * cellWidth+(cellWidth/2);
                     double posy2 = y2 * cellHeight+(cellHeight / 2);
                     canvas.DrawLine((float)posx, (float)posy, (float)(posx2), (float)(posy2));
@@ -71,8 +67,8 @@ namespace MauiMaze.Drawables
             canvas.DrawRectangle(dirtyRect.Left, dirtyRect.Top, dirtyRect.Right, dirtyRect.Bottom);
             this.mazeWidth = dirtyRect.Width;
             this.mazeHeight = dirtyRect.Height;
-            this.cellWidth = dirtyRect.Width / this.maze.Size.Width;
-            this.cellHeight = dirtyRect.Height / this.maze.Size.Height;
+            this.cellWidth = dirtyRect.Width / this.maze.Width;
+            this.cellHeight = dirtyRect.Height / this.maze.Height;
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
             Maze maze = (Maze)this.maze;
             int Start = 0;
@@ -81,8 +77,8 @@ namespace MauiMaze.Drawables
             {
                 if (Math.Abs(edge.Cell1 - edge.Cell2) > 1)
                 {
-                    float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
-                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width + 1) * cellHeight);
+                    float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Width * cellWidth);
+                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Width + 1) * cellHeight);
                     canvas.DrawLine(x, y, (float)(x + cellWidth), y);
                     double movefor = x+cellWidth;
                     if (movefor > dirtyRect.Width)
@@ -100,8 +96,8 @@ namespace MauiMaze.Drawables
                 }
                 else
                 {
-                    float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Size.Width * cellWidth);
-                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Size.Width) * cellHeight);
+                    float x = (float)(Math.Max(edge.Cell1, edge.Cell2) % maze.Width * cellWidth);
+                    float y = (float)(Math.Floor((double)Math.Min(edge.Cell1, edge.Cell2) / maze.Width) * cellHeight);
                     canvas.DrawLine(x, y, x, y + (float)cellHeight);
                     double movefor = y + cellHeight;
                     if (movefor > dirtyRect.Height)
@@ -121,12 +117,12 @@ namespace MauiMaze.Drawables
             {
                 if (maze.start is null || maze.end is null)
                 {
-                    float startX = (float)(Start % maze.Size.Width * cellWidth + cellWidth / 2);
-                    float startY = (float)(Math.Floor((double)Start / maze.Size.Width) * cellHeight + cellHeight / 2);
+                    float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
+                    float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
                     maze.start = new Start((int)startX, (int)startY);
 
-                    float endX = (float)(End % maze.Size.Width * cellWidth + cellWidth);
-                    float endY = (float)(Math.Floor((double)End / maze.Size.Width) * cellHeight + cellHeight);
+                    float endX = (float)(End % maze.Width * cellWidth + cellWidth);
+                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
                     maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight));
                 }
                 drawStartAndEnd(canvas);

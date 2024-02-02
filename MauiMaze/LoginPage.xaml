@@ -5,51 +5,58 @@
              xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
              x:DataType="viewmodel:LoginPageViewModel"
              Title="">
-    <VerticalStackLayout
-        HorizontalOptions="Center"
-        VerticalOptions="Center">
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+        <Frame BorderColor="Gray"
+                CornerRadius="10">
+            <VerticalStackLayout
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            Padding="25,25,25,25"
+            >
 
-        <Entry
-             x:Name="EmailEntry"
-             Text="{Binding Email}"
-             Placeholder="Enter your name"
-             MinimumWidthRequest="200"
-             MaximumWidthRequest="350"
-             MinimumHeightRequest="50"
-             HorizontalOptions="FillAndExpand" />
+                <Entry
+                 x:Name="EmailEntry"
+                 Text="{Binding Email}"
+                 Placeholder="Enter your name"
+                 MinimumWidthRequest="275"
+                 MaximumWidthRequest="350"
+                 MinimumHeightRequest="50"
+                 HorizontalOptions="FillAndExpand" 
+                 Margin="0,0,0,10"/>
 
-        <Entry
-             x:Name="PassEntry"
-             Text="{Binding Password}"
-             MinimumWidthRequest="200"
-             MaximumWidthRequest="350"
-             MinimumHeightRequest="50"
-             IsPassword="true"
-             Placeholder="Enter your email"
-             HorizontalOptions="FillAndExpand" />
-        <HorizontalStackLayout
-             HorizontalOptions="Center">
-                 <Button
-                     IsEnabled="{Binding NameisValid}"
-                     x:Name="SubmitButton"
+                <Entry
+                 x:Name="PassEntry"
+                 Text="{Binding Password}"
+                 MinimumWidthRequest="275"
+                 MaximumWidthRequest="350"
+                 MinimumHeightRequest="50"
+                 IsPassword="true"
+                 Placeholder="Enter your email"
+                 HorizontalOptions="FillAndExpand" 
+                 Margin="0,0,0,25"/>
+                <HorizontalStackLayout
+                 HorizontalOptions="Center">
+                    <Button
+                         IsEnabled="{Binding NameisValid}"
+                         x:Name="SubmitButton"
+                         MinimumWidthRequest="200"
+                         Text="Submit"
+                         Command="{Binding tryToLoginnCommand}"
+                     HorizontalOptions="Center" />
+
+                </HorizontalStackLayout>
+                <Label
+                Text="Don't you have an account?" HorizontalOptions="Center"
+                Margin="0,35,0,10"/>
+                <Button
+                     x:Name="OfflineButon"
                      MinimumWidthRequest="200"
-                     Text="Submit"
-                     Command="{Binding tryToLoginnCommand}"
-                 HorizontalOptions="Center" />
-
-        </HorizontalStackLayout>
-        <Label
-            Text="Or"/>
-        <Button
-                 x:Name="OfflineButon"
-                 MinimumWidthRequest="200"
-                 Text="Register"
-                 Command="{Binding goToRegisterCommand}"
-                 HorizontalOptions="Center" />
+                     Text="Register"
+                     Command="{Binding goToRegisterCommand}"
+                     HorizontalOptions="Center" 
+                     Margin="0,0,0,10"/>
+            </VerticalStackLayout>
+        </Frame>
     </VerticalStackLayout>
     
     

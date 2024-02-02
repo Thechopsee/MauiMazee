@@ -4,23 +4,35 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="MauiMaze.Popups.SaveMazePopUp"
              >
-    <VerticalStackLayout>
-        <Label Text="How doyou wanna save maze locally?"/>
-        <HorizontalStackLayout>
-            <Button
+    <Frame>
+        <VerticalStackLayout
+        VerticalOptions="Center"
+        >
+            <Label Text="Do you wanna save maze locally?"
+                   HorizontalOptions="Center"
+                   FontSize="24"
+                   />
+            <HorizontalStackLayout
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"
+                Margin="0,50,0,0"
+                >
+                <Button
                 x:Name="Local"
                 Text="Yes"
                 SemanticProperties.Hint="Save maze locally"
                 Clicked="setTrue"
                 MinimumWidthRequest="100"
                 HorizontalOptions="Center" />
-            <Button
+                <Button
                 x:Name="Cloud"
                 Text="No"
                 MinimumWidthRequest="100"
                 SemanticProperties.Hint="Save maze on cloud"
                 Clicked="setFalse"
-                HorizontalOptions="Center" />
-        </HorizontalStackLayout>
-    </VerticalStackLayout>
+                HorizontalOptions="Center" 
+                />
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Frame>
 </toolkit:Popup>

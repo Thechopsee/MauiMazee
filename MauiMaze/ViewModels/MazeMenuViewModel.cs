@@ -38,7 +38,7 @@ namespace MauiMaze.ViewModels
             native = rounded.BackgroundColor;
             actual = MazeType.Classic;
             MazeDrawable md = new MazeDrawable();
-            Maze maze = new Maze(new Size(Mazesize, Mazesize));
+            Maze maze = new Maze(Mazesize, Mazesize);
             md.maze = maze;
             this.canvas.Drawable = md;
             this.canvas.Invalidate();
@@ -55,7 +55,7 @@ namespace MauiMaze.ViewModels
         public void classicClick()
         {
             MazeDrawable md = new MazeDrawable();
-            md.maze = new Maze(new Size(Mazesize, Mazesize));
+            md.maze = new Maze(Mazesize, Mazesize);
             canvas.Drawable = md;
             actual = MazeType.Classic;
             classic.BackgroundColor = clicked;
@@ -82,7 +82,7 @@ namespace MauiMaze.ViewModels
             if (actual == MazeType.Classic)
             {
                 MazeDrawable md = new MazeDrawable();
-                Maze maze = new Maze(new Size(Mazesize, Mazesize));
+                Maze maze = new Maze(Mazesize, Mazesize);
                 md.maze = maze;
                 canvas.Drawable = md;
                 canvas.Invalidate();
