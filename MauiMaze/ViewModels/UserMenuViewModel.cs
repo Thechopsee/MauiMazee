@@ -26,6 +26,14 @@ namespace MauiMaze.ViewModels
         public UserMenuViewModel(LoginCases login)
         {
             this.login = login;
+            if (login == LoginCases.Offline)
+            {
+                UserOfflineProcedure();
+            }
+            else
+            { 
+                //TODO set Welcome text
+            }
         }
         public void UserOfflineProcedure()
         {

@@ -10,14 +10,6 @@ public partial class UserMenu : ContentPage
 	{
 		InitializeComponent();
 		UserMenuViewModel view= new UserMenuViewModel(login);
-        if (login != LoginCases.Offline)
-        {
-            view.SetWelcomeText(UserDataProvider.GetInstance().getUserName());
-        }
-        else {
-
-            view.UserOfflineProcedure();
-        }
         BindingContext = view;
 	}
 }
