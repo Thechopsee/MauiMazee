@@ -26,7 +26,7 @@
             </Grid.ColumnDefinitions>
 
             <StackLayout 
-            MinimumHeightRequest="300"
+            MinimumHeightRequest="200"
             Grid.Column="0"
             MinimumWidthRequest="120"
             VerticalOptions="FillAndExpand">
@@ -80,8 +80,8 @@
 
             <GraphicsView 
             x:Name="canvas"
-            MaximumWidthRequest="500"
-            MinimumHeightRequest="300"
+            MaximumWidthRequest="300"
+            MinimumHeightRequest="100"
             Grid.Column="2"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"

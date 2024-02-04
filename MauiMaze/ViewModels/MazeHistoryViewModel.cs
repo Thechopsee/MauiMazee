@@ -31,7 +31,10 @@ namespace MauiMaze.ViewModels
         }
         public async void loadRecord()
         {
-            Records = await MazeProvider.Instance.loadMazes().ConfigureAwait(true);
+            if (UserDataProvider.GetInstance().getUserID() != -1)
+            {
+                Records = await MazeProvider.Instance.loadMazes().ConfigureAwait(true);
+            }  
             (Mazes,Md) = await MazeProvider.Instance.loadLocalMazes();
             ai.IsRunning = false;
         }

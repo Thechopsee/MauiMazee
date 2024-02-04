@@ -9,12 +9,12 @@
             VerticalOptions="Center" >
             <Label 
                 HorizontalOptions="Center"
-                FontSize="24"
+                FontSize="15"
                 Text="Are you sure you want to leave this page?"/>
             <HorizontalStackLayout
                 VerticalOptions="Center" 
                 HorizontalOptions="Center"
-                Margin="0,50,0,0"
+                Margin="0,25,0,0"
                 >
                 <Button
                 x:Name="YES"
