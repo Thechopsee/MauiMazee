@@ -24,6 +24,8 @@ namespace MauiMaze.ViewModels
         async Task goToRegister()
         {
             await Shell.Current.Navigation.PushAsync(new RegisterPage());
+            
+
         }
         [RelayCommand]
         async Task tryToLoginn()

@@ -35,28 +35,29 @@
                         SemanticProperties.Description="Welcome to dot net Multi platform App U I"
                         FontSize="18"
                         HorizontalOptions="CenterAndExpand" />
-
-                    <Button
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing=" 10">
+                        <Button
                             x:Name="forfun"
                             MinimumWidthRequest="300"
                             MinimumHeightRequest="100"
                             Text="Just for fun!"
                             Command="{Binding GoToFreePlayCommand }"
                             HorizontalOptions="Center" />
-                    <Button
+                        <Button
                             x:Name="forscience"
                             MinimumWidthRequest="300"
                             MinimumHeightRequest="100"
                             Text="For science!"
                             Command="{Binding GoToScienceCommand }"
                             HorizontalOptions="Center" />
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Frame>
             <StackLayout
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="EndAndExpand"
-                Margin="0,35,0,0">
+                Margin="0,0,0,0">
 
                 <Button
                     x:Name="About"

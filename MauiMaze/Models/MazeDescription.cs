@@ -42,6 +42,7 @@ namespace MauiMaze.Models
             {
                  mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
             }
+            mz.MazeID = ID;
             await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz)).ConfigureAwait(true);
         }
         [RelayCommand]

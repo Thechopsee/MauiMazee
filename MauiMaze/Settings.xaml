@@ -7,45 +7,88 @@
              Title="Settings">
     <VerticalStackLayout>
         <ActivityIndicator IsRunning="True" 
+                           IsVisible="FALSE"
                            x:Name="loading"
                            />
-        <Label 
+        <VerticalStackLayout HorizontalOptions="Center" Margin="0,10,0,0">
+            <Label 
+            FontSize="17"
+             FontAttributes="Bold"
+            Text="Audio:"
+            VerticalOptions="Center" 
+             />
+            
+            <Label Text="Volume:" HorizontalOptions="Center"/>
+            <Slider VerticalOptions="Center" 
+            x:Name="sizeSlider"
+            Minimum="0"
+            Maximum="10"
+            MaximumWidthRequest="200"
+            DragCompletedCommand ="{Binding dragEndedCommand}"
+            Value="{Binding Valuee}"/>
+            <Label 
             Text="{Binding Valuee}"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <Slider VerticalOptions="Center" 
-            x:Name="sizeSlider"
-            Minimum="10"
-            Maximum="35"
-            MaximumWidthRequest="200"
-            DragCompletedCommand ="{Binding dragEndedCommand}"
-            Value="{Binding Valuee}"
-            
-            />
-        <Button
-    x:Name="changeCzech"
-    MaximumWidthRequest="200"
-    Text="Česky"
-            
-    IsEnabled="{Binding CzechLanguage}"
-    Command="{Binding changeCzechCommand}"
-    MinimumWidthRequest="200"
-    />
-        <Button
-x:Name="changeEnglish"
-MaximumWidthRequest="200"
-Text="English"
-
-IsEnabled="{Binding EnglishLanguage}"
-Command="{Binding changeEnglishCommand}"
-MinimumWidthRequest="200"
-/>
-        <Button
+            <Button
+            Margin="0,10,0,0"
             x:Name="Save"
             MaximumWidthRequest="200"
             Text="{Binding ButtonSaveText}"
             Command="{Binding saveSettingsCommand}"
             MinimumWidthRequest="200"
             />
+        </VerticalStackLayout>
+        <VerticalStackLayout HorizontalOptions="Center">
+            <Label 
+            FontSize="17"
+            FontAttributes="Bold"
+            Text="Graphic:"
+            VerticalOptions="Center" 
+             />
+            <Button
+                Text="Simplified"
+                MaximumWidthRequest="200"
+                MinimumWidthRequest="200"
+                />
+            <Button
+                Text="Textured"
+                IsEnabled="false"
+                MaximumWidthRequest="200"
+                MinimumWidthRequest="200"
+                />
+        </VerticalStackLayout>
+        <!--<Button
+            x:Name="changeCzech"
+            MaximumWidthRequest="200"
+            Text="Česky"
+            IsEnabled="{Binding CzechLanguage}"
+            Command="{Binding changeCzechCommand}"
+            MinimumWidthRequest="200"/>
+        <Button
+            x:Name="changeEnglish"
+            MaximumWidthRequest="200"
+            Text="English"
+
+            IsEnabled="{Binding EnglishLanguage}"
+            Command="{Binding changeEnglishCommand}"
+            MinimumWidthRequest="200"/>-->
+        <VerticalStackLayout HorizontalOptions="Center">
+            <Label 
+            FontSize="17"
+             FontAttributes="Bold"
+            Text="Data:"
+            VerticalOptions="Center" 
+             />
+            <Button
+        x:Name="delete"
+        MaximumWidthRequest="200"
+        Text="Delete Data"
+            BackgroundColor="Red"
+            TextColor="White"
+        Command="{Binding deleteDataCommand}"
+        MinimumWidthRequest="200"
+        />
+        </VerticalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

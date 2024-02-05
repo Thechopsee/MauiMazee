@@ -16,7 +16,6 @@
         <HorizontalStackLayout
             HorizontalOptions="Center">
 
-           
         </HorizontalStackLayout>
         <Grid  Margin="45,0,45,0">
             <Grid.ColumnDefinitions>

@@ -55,7 +55,7 @@ namespace MauiMaze.Engine
             int numberOfDots = (int)(distance);
             if (numberOfDots == 0)
             {
-                numberOfDots = 1;
+                return false;
             }
             float xdiv = xnew - xorigin;
             float ydiv = ynew - yorigin;

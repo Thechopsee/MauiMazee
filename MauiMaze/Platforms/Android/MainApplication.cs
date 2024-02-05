@@ -8,9 +8,10 @@ using Android.Runtime;
 [assembly: UsesPermission("android.permission.SCHEDULE_EXACT_ALARM")]
 [assembly: UsesPermission("android.permission.POST_NOTIFICATIONS")]
 
+
 namespace MauiMaze;
 
-[Application]
+[Application(UsesCleartextTraffic = true)]
 public class MainApplication : MauiApplication
 {
 	public MainApplication(IntPtr handle, JniHandleOwnership ownership)

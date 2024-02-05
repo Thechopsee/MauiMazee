@@ -16,7 +16,7 @@
         <ActivityIndicator IsRunning="True"
                            x:Name="loading"
                            />
-        <ScrollView>
+
         <ListView ItemsSource="{Binding Records}" x:Name="recordsList" >
             <ListView.ItemTemplate x:DataType="mdls:MazeDescription">
                 <DataTemplate  >
@@ -34,7 +34,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        </ScrollView>
+
         <Label 
             Text="Saved Mazes:"
             FontSize="24"

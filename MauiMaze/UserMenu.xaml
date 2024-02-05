@@ -16,7 +16,7 @@
             VerticalOptions="Center" 
             FontSize="20"
             HorizontalOptions="Center" 
-            Margin="0,20,0,45"/>
+            Margin="0,10,0,10"/>
         
         <Button Text="Daily Maze"
                 IsVisible="{Binding IsDailyButtonVisible}"

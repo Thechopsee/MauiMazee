@@ -48,6 +48,11 @@ namespace MauiMaze.ViewModels
             CzechLanguage = true;
             EnglishLanguage = false;
         }
+        [RelayCommand]
+        private void deleteData()
+        {
+            //TODO
+        }
         public SettingViewModel() {
             CzechLanguage = false;
             EnglishLanguage = false;
