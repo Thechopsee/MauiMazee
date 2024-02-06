@@ -10,6 +10,7 @@
             <Label 
                 HorizontalOptions="Center"
                 FontSize="15"
+                x:Name="question"
                 Text="Are you sure you want to leave this page?"/>
             <HorizontalStackLayout
                 VerticalOptions="Center" 

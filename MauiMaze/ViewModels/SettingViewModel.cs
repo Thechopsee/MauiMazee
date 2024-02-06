@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiMaze.Services;
 using System;
@@ -49,9 +50,16 @@ namespace MauiMaze.ViewModels
             EnglishLanguage = false;
         }
         [RelayCommand]
-        private void deleteData()
+        private async Task deleteData()
         {
-            //TODO
+            AreUSurePopUp areUSurePopUp = new("Delete all saved data?");
+            var result = await Shell.Current.CurrentPage.ShowPopupAsync(areUSurePopUp);
+            if ((bool)result)
+            {
+                await MazeProvider.Instance.deleteAllMazes();
+                //TODO delete saved games
+            }
+            
         }
         public SettingViewModel() {
             CzechLanguage = false;

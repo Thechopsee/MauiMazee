@@ -16,8 +16,8 @@
         <ActivityIndicator IsRunning="True"
                            x:Name="loading"
                            />
-
-        <ListView ItemsSource="{Binding Records}" x:Name="recordsList" >
+        <ScrollView MaximumHeightRequest="200">
+        <ListView ItemsSource="{Binding Records}" x:Name="recordsList" HorizontalScrollBarVisibility="Always" >
             <ListView.ItemTemplate x:DataType="mdls:MazeDescription">
                 <DataTemplate  >
                     <ViewCell>
@@ -26,38 +26,48 @@
                             <Button Text="MoveHistory" 
                                 Command="{Binding GoToMovesCommand}"
                                 />
-                            <Button Text="Play" 
+                                <Button Text="Play" 
                                 Command="{Binding GoToPlayCommand}"
                                 />
-                        </HorizontalStackLayout>
+                            </HorizontalStackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        </ScrollView>
 
         <Label 
             Text="Saved Mazes:"
             FontSize="24"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
-        <ScrollView>
-        <ListView ItemsSource="{Binding Md}" x:Name="localrecordsList" >
-            <ListView.ItemTemplate x:DataType="mdls:MazeDescription">
-                <DataTemplate  >
-                    <ViewCell>
-                        <HorizontalStackLayout>
-                            <Label Text="{Binding description}" Height="50" />
-                            <Button Text="MoveHistory" 
+        <ScrollView MaximumHeightRequest="200">
+            <ListView ItemsSource="{Binding Md}" x:Name="localrecordsList"  >
+                <ListView.ItemTemplate x:DataType="mdls:MazeDescription">
+                    <DataTemplate  >
+                        <ViewCell>
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding description}" Height="50" />
+                                <Button Text="MoveHistory" 
                                 Command="{Binding GoToMovesCommand}"
                                 />
-                            <Button Text="Play" 
+                                <Button Text="Play" 
                                 Command="{Binding GoToPlayCommand}"
                                 />
-                        </HorizontalStackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                                <Button Text="Delete" BackgroundColor="Red" 
+                                    Command="{Binding deleteMCommand}"
+                                        CommandParameter="{Binding ID}"
+                                />
+                                <Button Text="Save Online" BackgroundColor="Green" 
+                                    Command="{Binding saveOnlineCommand}"
+                                    CommandParameter="{Binding ID}"
+                                    IsVisible="{Binding LoggedIn}"
+                                />
+                            </HorizontalStackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </ScrollView>
 
     </VerticalStackLayout>

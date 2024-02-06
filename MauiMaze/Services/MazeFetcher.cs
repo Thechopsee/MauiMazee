@@ -27,7 +27,7 @@ namespace MauiMaze.Services
             MazeDescription[] Descriptions = new MazeDescription[splited.Length];
             for (int i=0;i<splited.Length;i++)
             {
-                string maze = await SecureStorage.Default.GetAsync("maze" + splited[i]);
+                string maze = await SecureStorage.Default.GetAsync("maze" + splited[i].Trim()) ;
                 if (maze is null)
                 {
                     continue;
@@ -35,7 +35,7 @@ namespace MauiMaze.Services
                 else
                 {
                    mazeDescriptions[i]=JsonConvert.DeserializeObject<Maze>(maze);
-                   Descriptions[i] = new MazeDescription(i+1,MazeType.Classic,DateTime.Now);
+                   Descriptions[i] = new MazeDescription(Int32.Parse(splited[i]),MazeType.Classic,DateTime.Now);
                 }
             }
             return (mazeDescriptions,Descriptions);
@@ -44,6 +44,7 @@ namespace MauiMaze.Services
         {
 
             string maze = await SecureStorage.Default.GetAsync("maze" + id);
+
             return JsonConvert.DeserializeObject<Maze>(maze);
 
             
@@ -63,6 +64,24 @@ namespace MauiMaze.Services
                 await SecureStorage.Default.SetAsync("mazelist", data + ";" + (last + 1));
                 await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(maze));
             }
+        }
+        public static async Task deleteMazelocaly(int mid)
+        {
+            string data = await SecureStorage.Default.GetAsync("mazelist");
+            
+            string[] splited = data.Split(mid+";");
+            if (splited.Length == 1)
+            {
+                await SecureStorage.Default.SetAsync("mazelist"," ");
+                await SecureStorage.Default.SetAsync("maze" + mid, " ");
+            }
+            else
+            {
+                string result = string.Join("", splited);
+                await SecureStorage.Default.SetAsync("mazelist", result);
+                await SecureStorage.Default.SetAsync("maze" + mid, " ");
+            }
+
         }
        
         public static async Task<bool> SaveMazeOnline(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)

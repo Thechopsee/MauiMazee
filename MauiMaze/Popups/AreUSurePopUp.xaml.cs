@@ -14,6 +14,14 @@ public partial class AreUSurePopUp : Popup
         closed = false;
 		InitializeComponent();
 	}
+    public AreUSurePopUp(String text)
+    {
+        clicked = false;
+        result = false;
+        closed = false;
+        question.Text = text;
+        InitializeComponent();
+    }
 
     private void setTrue(object sender, EventArgs e)
     {

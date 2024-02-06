@@ -55,5 +55,18 @@ namespace MauiMaze.Services
             (Maze[] mazes,MazeDescription[] md) = await MazeFetcher.getOfflineMazes();
             return (mazes,md);
         }
+
+        public async Task deleteAllMazes()
+        {
+            (Maze[] mazes, MazeDescription[] md) = await loadLocalMazes();
+
+            foreach (MazeDescription m in md)
+            {
+                if (m != null)
+                {
+                    await MazeFetcher.deleteMazelocaly(m.ID);
+                }
+            }
+        }
     }
 }
