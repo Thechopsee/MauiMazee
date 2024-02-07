@@ -58,7 +58,7 @@ namespace MauiMaze.Engine
             graphicsView.Invalidate();
             if (this.gamestatus == LoginCases.Offline)
             {
-                gameRecord = new GameRecord(-1,-1); //TODO
+                gameRecord = new GameRecord(-1,-1); 
             }
             else
             {
@@ -78,7 +78,7 @@ namespace MauiMaze.Engine
             mazeDrawable.maze = maze;
             if (this.gamestatus == LoginCases.Offline)
             {
-                gameRecord = new GameRecord(-1, -1); //TODO
+                gameRecord = new GameRecord(maze.MazeID, -1);
             }
             else
             {

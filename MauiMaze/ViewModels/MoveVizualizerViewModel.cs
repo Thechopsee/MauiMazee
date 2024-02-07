@@ -79,7 +79,7 @@ namespace MauiMaze.ViewModels
             GraphicsView.Drawable = md;
             GraphicsView.Invalidate();
         }
-        public MoveVizualizerViewModel(GraphicsView graphicsView,ListView listview,Maze maze)
+        public MoveVizualizerViewModel(GraphicsView graphicsView,ListView listview,Maze maze,LoginCases lc)
         {
             cellEnabled = true;
             PositionEnabled = false;
@@ -88,13 +88,21 @@ namespace MauiMaze.ViewModels
             md.maze = maze;
             this.listview = listview;
             GraphicsView.Drawable = md;
-            getRecordsAsync(maze);
+            getRecordsAsync(maze,lc);
 
 
         }
-        public async void getRecordsAsync(Maze maze)
+        public async void getRecordsAsync(Maze maze,LoginCases lc)
         {
-            gr=await RecordFetcher.loadRecordsByMaze(maze.MazeID).ConfigureAwait(true);
+            if (lc == LoginCases.Offline)
+            {
+                gr = await RecordFetcher.loadRecordByMazeOffline(maze.MazeID).ConfigureAwait(true);
+            }
+            else
+            {
+                gr = await RecordFetcher.loadRecordsByMaze(maze.MazeID).ConfigureAwait(true);
+            }
+            
             MazeDrawable md = new MazeDrawable();
 
             for (int i = 0; i < gr.Count(); i++)

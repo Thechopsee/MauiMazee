@@ -16,18 +16,20 @@ namespace MauiMaze.Models
         public int ID { get; set; }
         public MazeType mazeType { get; set; }
         public DateTime creationDate { get; set; }
+        public LoginCases whereIsMazeSaved { get; set; }
 
         public string description { get; set; }
 
         private bool local = false;
 
         public MazeDescription() { }
-        public MazeDescription(int id,MazeType mt,DateTime cD) {
+        public MazeDescription(int id,MazeType mt,DateTime cD,LoginCases lc) {
             this.ID = id;
             this.mazeType = mt;
             this.creationDate = cD;
             this.local = true;
             this.description = "" + ID + mt;
+            this.whereIsMazeSaved = lc;
         }
 
         [RelayCommand]
@@ -43,7 +45,7 @@ namespace MauiMaze.Models
                  mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
             }
             mz.MazeID = ID;
-            await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz)).ConfigureAwait(true);
+            await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz,whereIsMazeSaved)).ConfigureAwait(true);
         }
         [RelayCommand]
         public async Task GoToPlay()

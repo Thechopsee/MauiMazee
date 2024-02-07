@@ -11,26 +11,41 @@ namespace MauiMaze.Services
 {
     public class RecordFetcher
     {
-        private static async Task<List<GameRecord>> FetchLocal()
+        public static async Task<List<GameRecord>> loadRecordByMazeOffline(int mid)
         {
-            //TODO add similar to Mazes
-            string data = await SecureStorage.Default.GetAsync("recordlist_json").ConfigureAwait(false);
+            string data = await SecureStorage.Default.GetAsync("recordsCount"+mid).ConfigureAwait(false);
             if (data is null)
             {
                 return new List<GameRecord>();
             }
-
-            List<int> list2 = JsonConvert.DeserializeObject<List<int>>(data);
+            int len = Int32.Parse(data);
             List<GameRecord> records = new();
-            foreach (int x in list2)
+            for (int i= 1;i <= len;i++)
             {
-                string record = await SecureStorage.Default.GetAsync("record_json"+x).ConfigureAwait(false);
+                string record = await SecureStorage.Default.GetAsync("record+"+mid+"+"+i).ConfigureAwait(false);
                 records.Add(JsonConvert.DeserializeObject<GameRecord>(record));
             }
             return records;
 
+        }
+        public static async Task saveRecordByMazeOffline(GameRecord gr)
+        {
+            string data = await SecureStorage.Default.GetAsync("recordsCount" + gr.mazeID).ConfigureAwait(false);
+            int len;
+            if (data is null)
+            {
+                len = 0;
+            }
+            else
+            {
+                len = Int32.Parse(data);
+            }
+            await SecureStorage.Default.SetAsync("recordsCount" + gr.mazeID, ""+len+1);
+            await SecureStorage.Default.SetAsync("record+" + gr.mazeID+"+"+len+1, JsonConvert.SerializeObject(gr));
 
         }
+
+
         public static async Task<bool> SaveRecordOnline(GameRecordDTO gameRecord)
         {
             string apiUrl = ServiceConfig.serverAdress + "saveRecord";

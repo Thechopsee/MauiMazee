@@ -35,7 +35,7 @@ namespace MauiMaze.Services
                 else
                 {
                    mazeDescriptions[i]=JsonConvert.DeserializeObject<Maze>(maze);
-                   Descriptions[i] = new MazeDescription(Int32.Parse(splited[i]),MazeType.Classic,DateTime.Now);
+                   Descriptions[i] = new MazeDescription(Int32.Parse(splited[i]),MazeType.Classic,DateTime.Now,LoginCases.Offline);
                 }
             }
             return (mazeDescriptions,Descriptions);
@@ -134,6 +134,7 @@ namespace MauiMaze.Services
                         md.mazeType = (MazeType)Enum.Parse(typeof(MazeType),mm.descriptions[i][2]);
                         md.creationDate = DateTime.Parse(mm.descriptions[i][3]);
                         md.description=(md.ID)+" " + mm.descriptions[i][2] + " " + mm.descriptions[i][3];
+                        md.whereIsMazeSaved = LoginCases.Online;
                         mazeDescriptions[i] = md;
                     }
                     return mazeDescriptions;

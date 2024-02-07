@@ -38,7 +38,17 @@ namespace MauiMaze.ViewModels
             {
                 mazeIDLabel = ""+gameRecord.mazeID;
             }
-            RecordFetcher.SaveRecordOnline(gr.GetRecordDTO());
+            if (gr.userID != -1)
+            {
+                if (gr.mazeID != -1)
+                {
+                    RecordFetcher.SaveRecordOnline(gr.GetRecordDTO());
+                }
+            }
+            else
+            {
+                RecordFetcher.saveRecordByMazeOffline(gr);
+            }
 
 
         }
