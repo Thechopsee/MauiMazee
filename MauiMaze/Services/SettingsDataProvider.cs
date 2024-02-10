@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Services
 {
-    class SettingsDataProvider
+    static class SettingsDataProvider
     {
         public static async Task<SettingsData> getSettings()
         {

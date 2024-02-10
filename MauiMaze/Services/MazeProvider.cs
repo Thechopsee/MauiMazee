@@ -56,17 +56,19 @@ namespace MauiMaze.Services
             return (mazes,md);
         }
 
-        public async Task deleteAllMazes()
+        public async Task<int[]> deleteAllMazes()
         {
             (Maze[] mazes, MazeDescription[] md) = await loadLocalMazes();
-
+            List<int> deletedIDs = new List<int>();
             foreach (MazeDescription m in md)
             {
                 if (m != null)
                 {
+                    deletedIDs.Add(m.ID);
                     await MazeFetcher.deleteMazelocaly(m.ID);
                 }
             }
+            return deletedIDs.ToArray();
         }
     }
 }

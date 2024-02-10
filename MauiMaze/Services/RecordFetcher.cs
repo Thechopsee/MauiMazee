@@ -13,6 +13,24 @@ namespace MauiMaze.Services
 {
     public class RecordFetcher
     {
+        public static async Task deleteRecordsByMazeOffline(int mid)
+        {
+            string data = await SecureStorage.Default.GetAsync("recordsCounts" + mid).ConfigureAwait(false);
+            if (data is null)
+            {
+                return;
+            }
+            int len = Int32.Parse(data);;
+            for (int i = 1; i <= len; i++)
+            {
+                string record = await SecureStorage.Default.GetAsync("records+" + mid + "+" + i);
+                if (record is not null)
+                {
+                    await SecureStorage.Default.SetAsync("records+" + mid + "+" + i," ");
+                }
+            }
+            await SecureStorage.Default.SetAsync("recordsCounts" + mid, "0");
+        }
         public static async Task<List<GameRecord>> loadRecordByMazeOffline(int mid)
         {
             string data = await SecureStorage.Default.GetAsync("recordsCounts"+mid).ConfigureAwait(false);
@@ -20,8 +38,6 @@ namespace MauiMaze.Services
             {
                 return new List<GameRecord>();
             }
-            string s=("record+" + mid + "+" + 1);
-            string red = await SecureStorage.Default.GetAsync(s);
             int len = Int32.Parse(data);
             List<GameRecord> records = new();
             for (int i= 1;i <= len;i++)

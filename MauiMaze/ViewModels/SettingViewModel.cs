@@ -56,8 +56,11 @@ namespace MauiMaze.ViewModels
             var result = await Shell.Current.CurrentPage.ShowPopupAsync(areUSurePopUp);
             if ((bool)result)
             {
-                await MazeProvider.Instance.deleteAllMazes();
-                //TODO delete saved games
+               int[] deletedIDs= await MazeProvider.Instance.deleteAllMazes();
+                for (int i = 0; i < deletedIDs.Length; i++)
+                {
+                    await RecordFetcher.deleteRecordsByMazeOffline(deletedIDs[i]);
+                }
             }
             
         }
