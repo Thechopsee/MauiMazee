@@ -23,6 +23,7 @@ namespace MauiMaze.ViewModels
         MazeDescription[] md;
         [ObservableProperty]
         bool loggedIn;
+
         public ActivityIndicator ai;
 
         public MazeHistoryViewModel(ActivityIndicator ai)

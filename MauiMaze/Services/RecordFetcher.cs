@@ -1,6 +1,8 @@
 ﻿using MauiMaze.Engine;
+using MauiMaze.Helpers;
 using MauiMaze.Models;
 using Newtonsoft.Json;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,24 +15,29 @@ namespace MauiMaze.Services
     {
         public static async Task<List<GameRecord>> loadRecordByMazeOffline(int mid)
         {
-            string data = await SecureStorage.Default.GetAsync("recordsCount"+mid).ConfigureAwait(false);
+            string data = await SecureStorage.Default.GetAsync("recordsCounts"+mid).ConfigureAwait(false);
             if (data is null)
             {
                 return new List<GameRecord>();
             }
+            string s=("record+" + mid + "+" + 1);
+            string red = await SecureStorage.Default.GetAsync(s);
             int len = Int32.Parse(data);
             List<GameRecord> records = new();
             for (int i= 1;i <= len;i++)
             {
-                string record = await SecureStorage.Default.GetAsync("record+"+mid+"+"+i).ConfigureAwait(false);
-                records.Add(JsonConvert.DeserializeObject<GameRecord>(record));
+                string record = await SecureStorage.Default.GetAsync("records+" + mid + "+" + i);
+                if (record is not null)
+                {
+                    records.Add(JsonConvert.DeserializeObject<GameRecord>(record));
+                }
             }
             return records;
 
         }
         public static async Task saveRecordByMazeOffline(GameRecord gr)
         {
-            string data = await SecureStorage.Default.GetAsync("recordsCount" + gr.mazeID).ConfigureAwait(false);
+            string data = await SecureStorage.Default.GetAsync("recordsCounts" + gr.mazeID).ConfigureAwait(false);
             int len;
             if (data is null)
             {
@@ -40,9 +47,14 @@ namespace MauiMaze.Services
             {
                 len = Int32.Parse(data);
             }
-            await SecureStorage.Default.SetAsync("recordsCount" + gr.mazeID, ""+len+1);
-            await SecureStorage.Default.SetAsync("record+" + gr.mazeID+"+"+len+1, JsonConvert.SerializeObject(gr));
-
+            await SecureStorage.Default.SetAsync("recordsCounts" + gr.mazeID, ""+(len+1));
+            string json = JsonConvert.SerializeObject(gr);
+            //SQLiteAsyncConnection Database = new SQLiteAsyncConnection(Constantss.DatabasePath, Constantss.Flags);
+            //var result = await Database.CreateTableAsync<MoveRecord>();
+            gr.moves = new List<MoveRecord>();
+            await SecureStorage.Default.SetAsync("records+" + gr.mazeID + "+" + (len + 1), JsonConvert.SerializeObject(gr)) ;
+            string red = await SecureStorage.Default.GetAsync("records+" + gr.mazeID + "+" + (len + 1));
+            string kr = "karel";
         }
 
 

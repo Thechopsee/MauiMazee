@@ -18,6 +18,9 @@ namespace MauiMaze.Models
         public DateTime creationDate { get; set; }
         public LoginCases whereIsMazeSaved { get; set; }
 
+        [ObservableProperty]
+        bool offline;
+
         public string description { get; set; }
 
         private bool local = false;
@@ -30,6 +33,10 @@ namespace MauiMaze.Models
             this.local = true;
             this.description = "" + ID + mt;
             this.whereIsMazeSaved = lc;
+            if (UserDataProvider.GetInstance().getUserID() != -1)
+            {
+                Offline = true;
+            }
         }
 
         [RelayCommand]
@@ -54,11 +61,13 @@ namespace MauiMaze.Models
             if (local && ID >= 0)
             {
                 mz = await MazeFetcher.getMazeLocalbyID(ID);
+                mz.MazeID = ID;
             }
             else
             {
                 mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
             }
+            
             await Shell.Current.Navigation.PushAsync(new MazePage(mz)).ConfigureAwait(true);
         }
         [RelayCommand]

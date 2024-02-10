@@ -22,6 +22,7 @@ namespace MauiMaze.Engine
             this.positionx = positionx;
             this.positiony = positiony; 
             this.hitWall = hitWall;
-        }   
+        }
+        public MoveRecord() { }
     }
 }

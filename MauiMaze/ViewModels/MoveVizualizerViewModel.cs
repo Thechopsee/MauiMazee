@@ -113,7 +113,7 @@ namespace MauiMaze.ViewModels
             if (gr.Count() > 0)
             {
                 ActualGamerecord = gr.ElementAt(0);
-                md.preview = new Player(ActualGamerecord.moves[0].positionx, ActualGamerecord.moves[0].positiony, md.cellWidth, md.cellHeight);
+                //md.preview = new Player(ActualGamerecord.moves[0].positionx, ActualGamerecord.moves[0].positiony, md.cellWidth, md.cellHeight);
                 this.listview.ItemsSource = gr;
                 md.gameRecords = gr;
             }

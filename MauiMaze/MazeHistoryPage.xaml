@@ -61,7 +61,7 @@
                                 <Button Text="Save Online" BackgroundColor="Green" 
                                     Command="{Binding saveOnlineCommand}"
                                     CommandParameter="{Binding ID}"
-                                    IsVisible="{Binding LoggedIn}"
+                                    IsVisible="{Binding Offline}"
                                 />
                             </HorizontalStackLayout>
                         </ViewCell>

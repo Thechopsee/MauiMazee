@@ -22,6 +22,7 @@ namespace MauiMaze.ViewModels
         [ObservableProperty]
         public string mazeIDLabel;
 
+
         public RecordFullPageViewModel(GameRecord gr,int camefrom)
         {
             this.camefrom = camefrom;
@@ -38,25 +39,27 @@ namespace MauiMaze.ViewModels
             {
                 mazeIDLabel = ""+gameRecord.mazeID;
             }
+        }
+        private async Task saveMaze(GameRecord gr)
+        {
             if (gr.userID != -1)
             {
                 if (gr.mazeID != -1)
                 {
-                    RecordFetcher.SaveRecordOnline(gr.GetRecordDTO());
+                   await  RecordFetcher.SaveRecordOnline(gr.GetRecordDTO());
                 }
             }
             else
             {
-                RecordFetcher.saveRecordByMazeOffline(gr);
+               await RecordFetcher.saveRecordByMazeOffline(gr);
+
             }
-
-
         }
-
 
         [RelayCommand]
         private async Task backToMenu()
         {
+            await saveMaze(GameRecord);
             if (UserDataProvider.GetInstance().isUserValid)
             {
                 await Shell.Current.Navigation.PushAsync(new UserMenu(LoginCases.Online));
