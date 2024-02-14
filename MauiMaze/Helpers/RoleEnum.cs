@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Models
+namespace MauiMaze.Helpers
 {
-    public class MazeMessage
+    public enum RoleEnum
     {
-        public List<int[]> message { get; set; }
+        User,
+        Admin,
+        Reseacher,
     }
 }

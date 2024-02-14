@@ -23,8 +23,6 @@ namespace MauiMaze.Services
             if (Database is not null)
                 return;
 
-            Database = new SQLiteAsyncConnection(Constantss.DatabasePath, Constantss.Flags);
-            var result = await Database.CreateTableAsync<MoveRecord>();
         }
        
     }

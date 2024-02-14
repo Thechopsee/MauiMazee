@@ -29,6 +29,7 @@ public partial class MazePage : ContentPage
         if (firstMove)
         {
             timer = new Timer(driver.timerMove, null, 0, 33);
+            driver.startWatch();
             firstMove = false;
         }
         if (driver.ended)
@@ -82,6 +83,7 @@ public partial class MazePage : ContentPage
 
     private async void SaveMaze(object sender, EventArgs e)
     {
+        ((Button)sender).IsVisible = false;
         SaveMazePopUp areUSurePopUp = new();
         var result = await this.ShowPopupAsync(areUSurePopUp);
         if (result is not null)

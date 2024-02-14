@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Services;
 using System;
@@ -26,7 +27,12 @@ namespace MauiMaze.ViewModels
         [RelayCommand]
         async Task GoToScience()
         {
-            await Shell.Current.Navigation.PushAsync(new LoginPage());
+            await Shell.Current.Navigation.PushAsync(new LoginPage(RoleEnum.User));
+        }
+        [RelayCommand]
+        async Task GoToResearcher()
+        {
+            await Shell.Current.Navigation.PushAsync(new LoginPage(RoleEnum.Reseacher));
         }
         [RelayCommand]
         async Task GoToFreePlay()

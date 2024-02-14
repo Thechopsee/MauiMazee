@@ -15,14 +15,17 @@ namespace MauiMaze.Engine
         public readonly double percentagey;
         public readonly bool hitWall;
         public readonly int deltaTinMilisec;
-        public MoveRecord(int mrID,int positionx,int positiony, double percentagex, double percentagey, bool hitWall)
+        public readonly int cell;
+        public MoveRecord(int mrID,int positionx,int positiony, double percentagex, double percentagey, bool hitWall,int deltaTinMilisec, int cell)
         {
             this.percentagex = percentagex;
             this.percentagey = percentagey;
             this.positionx = positionx;
             this.positiony = positiony; 
             this.hitWall = hitWall;
+            this.deltaTinMilisec = deltaTinMilisec;
+            this.cell = cell;
         }
-        public MoveRecord() { }
+        
     }
 }

@@ -18,14 +18,14 @@
             HorizontalOptions="Center" 
             Margin="0,10,0,10"/>
         
-        <Button Text="Daily Maze"
+        <!--<Button Text="Daily Maze"
                 IsVisible="{Binding IsDailyButtonVisible}"
                 x:Name="DailyMaze"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Command="{Binding GoToMazeCommand}"
                 MinimumWidthRequest="200"
-                Margin="0,0,0,20"/>
+                Margin="0,0,0,20"/>-->
         <Button Text="Go to Maze"
                 x:Name="GotoMaze"
                 VerticalOptions="Center"

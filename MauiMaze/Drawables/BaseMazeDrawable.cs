@@ -58,11 +58,14 @@ namespace MauiMaze.Drawables
             {
                 throw new CanvasNotAvailableExpectation("");
             }
-            canvas.StrokeColor = Colors.Blue;
-            canvas.DrawCircle(maze.end.X+(float)(cellWidth/2), maze.end.Y+(float)(cellHeight/2), (float)Math.Min(cellWidth, cellHeight) / 3);
-            canvas.StrokeColor = Colors.Red;
-            canvas.DrawCircle(maze.start.X, maze.start.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
-            canvas.StrokeColor = Colors.Green;
+            if (maze.end is not null || maze.start is not null)
+            {
+                canvas.StrokeColor = Colors.Blue;
+                canvas.DrawCircle(maze.end.X + (float)(cellWidth / 2), maze.end.Y + (float)(cellHeight / 2), (float)Math.Min(cellWidth, cellHeight) / 3);
+                canvas.StrokeColor = Colors.Red;
+                canvas.DrawCircle(maze.start.X, maze.start.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
+                canvas.StrokeColor = Colors.Green;
+            }
         }
         protected void drawHitbox(ICanvas canvas)
         {

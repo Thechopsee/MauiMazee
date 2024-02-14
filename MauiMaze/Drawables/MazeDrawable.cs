@@ -5,11 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
-using Microsoft.Maui.Graphics;
-
-using System.Reflection;
-using IImage = Microsoft.Maui.Graphics.IImage;
-using static Plugin.LocalNotification.NotificationRequestGeofence;
 using MauiMaze.Helpers;
 
 
@@ -71,7 +66,7 @@ namespace MauiMaze.Drawables
             this.cellHeight = dirtyRect.Height / this.maze.Height;
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
             Maze maze = (Maze)this.maze;
-            int Start = 0;
+            int Start =0;
             int End = maze.Edges.Length - 1;
             foreach (var edge in maze.Edges)
             {
@@ -117,18 +112,48 @@ namespace MauiMaze.Drawables
             {
                 if (maze.start is null || maze.end is null)
                 {
+
                     float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
                     float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
-                    maze.start = new Start((int)startX, (int)startY);
+                    maze.start = new Start((int)startX, (int)startY, Start);
 
                     float endX = (float)(End % maze.Width * cellWidth + cellWidth);
                     float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
-                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight));
+                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
                 }
-                drawStartAndEnd(canvas);
-                drawPlayer(canvas);
+                else if (maze.end.X == -1 || maze.end.X == -1)
+                {
+                    Start = maze.start.cell;
+                    End = maze.end.cell;
+                    float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
+                    float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
+                    maze.start = new Start((int)startX, (int)startY, Start);
+
+                    float endX = (float)(End % maze.Width * cellWidth + cellWidth);
+                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
+                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
+                }
+
+                    //drawStartAndEnd(canvas);
+                    drawPlayer(canvas);
                 drawHitbox(canvas);
             }
+            else if (maze.start is not null)
+            {
+                if (maze.end.X == -1 || maze.end.X == -1)
+                {
+                    Start = maze.start.cell;
+                    End = maze.end.cell;
+                    float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
+                    float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
+                    maze.start = new Start((int)startX, (int)startY, Start);
+
+                    float endX = (float)(End % maze.Width * cellWidth + cellWidth);
+                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
+                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
+                }
+            }
+            drawStartAndEnd(canvas);
             if (preview is not null)
             {
                 drawPreview(canvas);    

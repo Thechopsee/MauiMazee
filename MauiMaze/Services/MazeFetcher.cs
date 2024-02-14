@@ -84,14 +84,14 @@ namespace MauiMaze.Services
 
         }
        
-        public static async Task<bool> SaveMazeOnline(int userIDD, MauiMaze.Models.ClassicMaze.Edge[] edgess)
+        public static async Task<bool> SaveMazeOnline(int userIDD, MazeDTO maze)
         {
             string apiUrl = ServiceConfig.serverAdress + "saveMaze";
 
             var userData = new
             {
                 userID = userIDD,
-                edges = edgess
+                mazedto = maze
             };
             using (HttpClient client = new HttpClient())
             {
@@ -174,13 +174,13 @@ namespace MauiMaze.Services
             return rsp;
         }
 
-        public static async Task<Maze> getMaze(int userid)
+        public static async Task<Maze> getMaze(int mazeid)
         {
             string apiUrl = ServiceConfig.serverAdress +"loadMaze";
 
             var userData = new
             {
-                mazeID = userid,
+                mazeID = mazeid,
             };
 
             using (HttpClient client = new HttpClient())
@@ -190,19 +190,15 @@ namespace MauiMaze.Services
                 HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
-                //await Application.Current.MainPage.DisplayAlert("Upozornění", "run "+ JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
-                
                if (response.IsSuccessStatusCode)
                 {
-                    MazeMessage mm = JsonConvert.DeserializeObject<MazeMessage>(responseContent);
-                    List<Edge> edges = new();
-                    foreach (int[] tup in mm.message)
-                    {
-                        edges.Add(new Edge(tup[2], tup[3]));
-                    }
-                    Maze mz=new Maze(10, 10);
-                    mz.MazeID = userid;
-                    mz.Edges = edges.ToArray();
+                    MazeDTO mm = JsonConvert.DeserializeObject<MazeDTO>(responseContent);
+
+                    Maze mz=new Maze(mm.size,mm.size);
+                    mz.MazeID = mazeid;
+                    mz.Edges = mm.edges;
+                    mz.start = new Engine.Start(-1,-1,mm.startCell);
+                    mz.end =new Engine.End(-1,-1,-1,-1,mm.endCell);
                     return mz;
                 }
                 else

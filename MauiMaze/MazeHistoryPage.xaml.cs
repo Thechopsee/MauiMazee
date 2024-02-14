@@ -13,9 +13,16 @@ public partial class MazeHistoryPage : ContentPage
     public MazeHistoryPage()
 	{
 		InitializeComponent();
-        BindingContext = new MazeHistoryViewModel(loading);
+        BindingContext = new MazeHistoryViewModel();
 
     }
+    public MazeHistoryPage(MazeHistoryViewModel mh)
+    {
+        InitializeComponent();
+        BindingContext = mh;
+
+    }
+
 
 
 }

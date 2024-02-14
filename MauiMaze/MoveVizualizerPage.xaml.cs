@@ -10,11 +10,19 @@ public partial class MoveVizualizerPage : ContentPage
     MoveVizualizerViewModel mv;
 	public MoveVizualizerPage(Maze maze, LoginCases lc)
 	{
+        
         InitializeComponent();
-        mv= new MoveVizualizerViewModel(canvas, recordsList, maze,lc);
+        this.Loaded += refreshCanvas;
+        mv = new MoveVizualizerViewModel(canvas, recordsList, maze,lc,heatmap);
         BindingContext = mv;
-		
-	}
+        
+
+
+    }
+    public  void refreshCanvas(object sender, EventArgs es)
+    {
+        canvas.Invalidate();
+    }
     public void OnItemSelectedChanged(object sender, SelectedItemChangedEventArgs e)
     {
         

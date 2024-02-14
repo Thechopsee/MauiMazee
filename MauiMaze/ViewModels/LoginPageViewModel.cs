@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Services;
 using System;
@@ -20,6 +21,8 @@ namespace MauiMaze.ViewModels
         bool nameisValid;
         [ObservableProperty]
         bool offlineButton;
+        [ObservableProperty]
+        RoleEnum role;
         [RelayCommand]
         async Task goToRegister()
         {
@@ -39,9 +42,18 @@ namespace MauiMaze.ViewModels
                     bool vysl = await UserDataProvider.GetInstance().LoginUser(Email.Trim(), Password.Trim());
                     if (vysl)
                     {
+                        
+                        if (Role == RoleEnum.User)
+                        {
+                            await Shell.Current.Navigation.PushAsync(new UserMenu(LoginCases.Online));
+                        }
+                        else if(Role == RoleEnum.Reseacher) 
+                        {
+                            UserDataDTO[] users=await UserComunicator.getUsers(Email.Trim(), Password.Trim());
+                            UserListPageViewModel uvm = new UserListPageViewModel(users);
+                            await Shell.Current.Navigation.PushAsync(new UserListPage(uvm));
+                        }
                         Password = "";
-                        await Shell.Current.Navigation.PushAsync(new UserMenu(LoginCases.Online));
-
                     }
                     else
                     {

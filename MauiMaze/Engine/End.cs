@@ -12,12 +12,14 @@ namespace MauiMaze.Engine
         public int Y { get; }
         public int bottomX { get; }
         public int bottomY { get; }
-        public End(int x, int y,int bottomX,int bottomY)
+        public int cell { get; }
+        public End(int x, int y,int bottomX,int bottomY,int cell)
         {
             X = x;
             Y = y;
             this.bottomX = bottomX;
-            this.bottomY = bottomY;  
-        }   
+            this.bottomY = bottomY;
+            this.cell = cell;
+        }
     }
 }

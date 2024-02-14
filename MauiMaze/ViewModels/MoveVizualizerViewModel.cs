@@ -18,6 +18,8 @@ namespace MauiMaze.ViewModels
     {
         [ObservableProperty]
         public GraphicsView graphicsView;
+        [ObservableProperty]
+        public GraphicsView heatMapView;
         IEnumerable<GameRecord> gr;
         [ObservableProperty]
         public GameRecord actualGamerecord;
@@ -30,6 +32,22 @@ namespace MauiMaze.ViewModels
         public bool positionEnabled;
         [ObservableProperty]
         public bool showAllEnabled;
+
+        [ObservableProperty]
+        public bool heatmapshow;
+        [ObservableProperty]
+        public bool vizualizershow;
+        [ObservableProperty]
+        public bool recordshow;
+
+        [ObservableProperty]
+        public bool vbs;
+        [ObservableProperty]
+        public bool hbs;
+        [ObservableProperty]
+        public bool gbs;
+
+        public Maze maze { get; set; }
         [RelayCommand]
         public void valueChanged()
         {
@@ -70,29 +88,138 @@ namespace MauiMaze.ViewModels
             GraphicsView.Drawable = md;
             GraphicsView.Invalidate();
         }
+        [RelayCommand]
+        public void switchView(string num)
+        {
+            int obj = Int32.Parse(num);
+            switch (obj) {
+                case 1:
+                    Vizualizershow = true;
+                    Heatmapshow = false;
+                    Recordshow = false;
+                    Vbs = false;
+                    Hbs = true;
+                    Gbs= true;
+                    break;
+                case 2:
+                    Vizualizershow = false;
+                    Heatmapshow = true;
+                    Recordshow = false;
+                    Vbs = true;
+                    Hbs = false;
+                    Gbs = true;
+                    break;
+                case 3:
+                    Vizualizershow = false;
+                    Heatmapshow = false;
+                    Recordshow = true;
+                    Vbs = true;
+                    Hbs = true;
+                    Gbs = false;
+                    break;
+            }
+        }
         public void selectChanged(GameRecord gr)
         {
-            MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
-            md.showAll = false;
-            md.actualID = gr.grID;
-            ShowAllEnabled = true;
-            GraphicsView.Drawable = md;
-            GraphicsView.Invalidate();
+            if (Vizualizershow)
+            {
+                MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
+                md.showAll = false;
+                md.actualID = gr.grID;
+                ShowAllEnabled = true;
+                GraphicsView.Drawable = md;
+                GraphicsView.Invalidate();
+            }
+            else if (Heatmapshow)
+            {
+                ActualGamerecord = gr;
+                HeatmapDrawable md = (HeatmapDrawable)HeatMapView.Drawable;
+                md.cellData=CountCellData(this.maze);
+                HeatMapView.Drawable = md;
+                HeatMapView.Invalidate();
+            }
         }
-        public MoveVizualizerViewModel(GraphicsView graphicsView,ListView listview,Maze maze,LoginCases lc)
+        public MoveVizualizerViewModel(GraphicsView graphicsView,ListView listview,Maze maze,LoginCases lc, GraphicsView heatMapView)
         {
+            Hbs = true;
+            Gbs = true;
+            Vizualizershow = true;
             cellEnabled = true;
             PositionEnabled = false;
             this.graphicsView = graphicsView;
-            MazeDrawable md = new MazeDrawable();
-            md.maze = maze;
+            this.heatMapView= heatMapView;
+
+
             this.listview = listview;
-            GraphicsView.Drawable = md;
-            getRecordsAsync(maze,lc);
+
+            getRecordsAsync(maze,lc,heatMapView);
+
 
 
         }
-        public async void getRecordsAsync(Maze maze,LoginCases lc)
+        public CellData[] CountCellData(Maze maze) {
+
+            this.maze = maze;
+            List<CellData> cd=new List<CellData>();
+            int maxcell = maze.Width * maze.Height;
+            int maxtime = 0;
+            for (int i = 0; i < maxcell; i++)
+            {
+                (int time,int hit)=filterDataForCells(i);
+                if (time > maxtime)
+                {
+                    maxtime = time;
+                }
+                cd.Add(new CellData(i,Colors.Aqua,time,hit));
+            }
+            double sevfv = maxtime * 0.75;
+            double fifty = maxtime * 0.50;
+            double twfv= maxtime * 0.25;
+            foreach (CellData c in cd)
+            {
+                if (c.time > sevfv)
+                {
+                    c.color = Colors.DarkRed;
+                }
+                else if (c.time > fifty)
+                {
+                    c.color = Colors.Red;
+                }
+                else if (c.time > twfv)
+                {
+                    c.color = Colors.Yellow;
+                }
+                else if (c.time > 0)
+                {
+                    c.color = Colors.Green;
+                }
+                else
+                {
+                    c.color = Colors.LightGreen;
+                }
+            }
+            return cd.ToArray();
+        }
+
+        public (int,int) filterDataForCells(int cell)
+        {
+            int time = 0;
+            int hit = 0;
+            foreach (MoveRecord m in ActualGamerecord.moves)
+            {
+                if (m.cell == cell)
+                {
+                    time += m.deltaTinMilisec;
+                    if (m.hitWall)
+                    {
+                        hit += 1;
+                    }
+                }
+            }
+            return (time,hit);
+        }
+
+        public async void getRecordsAsync(Maze maze,LoginCases lc, GraphicsView heatMapView)
         {
             if (lc == LoginCases.Offline)
             {
@@ -119,7 +246,10 @@ namespace MauiMaze.ViewModels
             }
             md.maze = maze;
             GraphicsView.Drawable = md;
+            CellData[] cd = CountCellData(maze);
+            HeatMapView.Drawable = new HeatmapDrawable(maze, cd);
         }
+
         
     }
 }

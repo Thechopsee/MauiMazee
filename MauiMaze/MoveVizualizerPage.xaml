@@ -52,15 +52,34 @@
                 </HorizontalStackLayout>
             </StackLayout>
 
+            <VerticalStackLayout
+                Grid.Column="2">
+                <HorizontalStackLayout>
+                    <Button Text="Vizualize" Command="{Binding switchViewCommand}" CommandParameter="1" IsEnabled="{Binding Vbs}"/>
+                    <Button Text="Heatmap" Command="{Binding switchViewCommand}" CommandParameter="2" IsEnabled="{Binding Hbs}"/>
+                    <Button Text="Records" Command="{Binding switchViewCommand}" CommandParameter="3" IsEnabled="{Binding Gbs}"/>
+                </HorizontalStackLayout>
+                <GraphicsView 
+                     x:Name="canvas"
+                     IsVisible="{Binding Vizualizershow}"
+                     MaximumWidthRequest="500"
+                     MinimumHeightRequest="300"
 
-            <GraphicsView 
-         x:Name="canvas"
-         MaximumWidthRequest="500"
-         MinimumHeightRequest="300"
-         Grid.Column="2"
-         HorizontalOptions="FillAndExpand"
-         VerticalOptions="FillAndExpand"
-         Drawable="{StaticResource MazeDrawable}" />
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"
+                     Drawable="{StaticResource MazeDrawable}" />
+                <GraphicsView 
+                     x:Name="heatmap"
+                     MaximumWidthRequest="500"
+                     MinimumHeightRequest="300"
+                     IsVisible="{Binding Heatmapshow}"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="FillAndExpand"/>
+                <VerticalStackLayout >
+                    <Label Text="gamerecord" IsVisible="{Binding Recordshow}"/>
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
         </Grid>
         <HorizontalStackLayout VerticalOptions="FillAndExpand">
             <Button

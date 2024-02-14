@@ -57,7 +57,7 @@ namespace MauiMaze.Models.RoundedMaze
             this.width = 2 * rows * size;
             xoffsett = (width /2)-this.width/2;
             yoffsett = 30;
-            end = new End((this.width / 2) + xoffsett, (this.width / 2)+yoffsett, (this.width / 2) + xoffsett+30, (this.width / 2)+yoffsett+30);
+            end = new End((this.width / 2) + xoffsett, (this.width / 2)+yoffsett, (this.width / 2) + xoffsett+30, (this.width / 2)+yoffsett+30,0);
             createGrid();
         }
         void createGrid()
@@ -215,7 +215,7 @@ namespace MauiMaze.Models.RoundedMaze
             }
             if (start is null)
             {
-                start = new Start((int)last.CenterX + xoffsett,(int)last.CenterY);
+                start = new Start((int)last.CenterX + xoffsett,(int)last.CenterY,0);
             }
         }
 

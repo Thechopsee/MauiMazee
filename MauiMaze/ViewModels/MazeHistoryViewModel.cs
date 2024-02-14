@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Services;
@@ -23,27 +24,42 @@ namespace MauiMaze.ViewModels
         MazeDescription[] md;
         [ObservableProperty]
         bool loggedIn;
+        [ObservableProperty]
+        bool loading;
+        [ObservableProperty]
+        bool showLocal;
 
-        public ActivityIndicator ai;
-
-        public MazeHistoryViewModel(ActivityIndicator ai)
+        public MazeHistoryViewModel()
         {
-            this.ai = ai;
             if (UserDataProvider.GetInstance().getUserID() != -1)
             {
-                LoggedIn = true;
+                    LoggedIn = true;
             }
-            loadRecord();
-           
+            if (UserDataProvider.GetInstance().getUserRole() == RoleEnum.Reseacher || UserDataProvider.GetInstance().getUserRole() == RoleEnum.Admin)
+            {
+                ShowLocal = false;
+            }
+            else
+            {
+                loadRecord();
+                ShowLocal = true;
+            }
+            Loading = true;
+
         }
         public async void loadRecord()
         {
             if (UserDataProvider.GetInstance().getUserID() != -1)
             {
+
                 Records = await MazeProvider.Instance.loadMazes().ConfigureAwait(true);
             }  
             (Mazes,Md) = await MazeProvider.Instance.loadLocalMazes();
-            ai.IsRunning = false;
+            Loading = false;
+        }
+        public async void loadRecordByuser(int id)
+        {
+            Records =(await MazeFetcher.getMazeList(id)).ToList();
         }
 
         [RelayCommand]

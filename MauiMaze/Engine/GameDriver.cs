@@ -8,6 +8,7 @@ using MauiMaze.Services;
 using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,10 @@ namespace MauiMaze.Engine
         private float prewposx {get;set;}
         private float prewposy { get; set; }
         public GameRecord gameRecord { get; set; }
+
+        Stopwatch stopwatch = new Stopwatch();
+
+        private long lastTime = 0;
 
         public int movecounter = 3;
 
@@ -90,7 +95,10 @@ namespace MauiMaze.Engine
         {
             movePlayerToPosition(lastposx, lastposy);
         }
-
+        public void startWatch()
+        {
+            stopwatch.Start();
+        }
         public bool movePlayerToPosition(float x, float y)
         {
             
@@ -150,8 +158,12 @@ namespace MauiMaze.Engine
                 double mazesize = mazeDrawable.maze.Width;
                 double xid = ((player.positionX + player.playerSizeX) / mazeDrawable.cellWidth);
                 double yid = ((player.positionY + player.playerSizeY) / mazeDrawable.cellHeight);
-                gameRecord.addCellMoveRecord((int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid));
-                gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, hit));
+                int cellID = (int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid);
+                gameRecord.addCellMoveRecord(cellID);
+                long now = stopwatch.ElapsedMilliseconds;
+                int delta = (int)( now - lastTime);
+                lastTime = now;
+                gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, hit,delta,cellID));
                 movecounter += 3;
 
             }

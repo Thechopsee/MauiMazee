@@ -10,10 +10,13 @@ namespace MauiMaze.Engine
     {
         public int X { get; }
         public int Y { get; }
-        public Start(int X, int Y)
+        public int cell { get; set; }
+        public Start(int X, int Y,int cell)
         {
             this.X = X;
             this.Y = Y;
+            this.cell = cell;
         }
+        
     }
 }

@@ -1,4 +1,6 @@
-﻿using MauiMaze.Models.UserManagment;
+﻿using MauiMaze.Helpers;
+using MauiMaze.Models;
+using MauiMaze.Models.UserManagment;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,14 @@ namespace MauiMaze.Services
             }
             return -1;
         }
+        public RoleEnum getUserRole()
+        {
+            if (user is not null)
+            {
+                return user.getRole();
+            }
+            return RoleEnum.User;
+        }
         DateTime expireDate;
         //TODO add refresh token
         private bool IsExpired => checkExpiration();
@@ -43,12 +53,12 @@ namespace MauiMaze.Services
         }
         public async Task<bool> LoginUser(string name,string password)
         {
-            int vysl=await UserComunicator.tryToLogin(name, password);
-            if (vysl>0)
+            UserDataDTO vysl=await UserComunicator.tryToLogin(name, password);
+            if (vysl.id>0)
             {
                 expireDate = DateTime.Now;
                 expireDate.AddMonths(1);
-                user = new User(vysl, "Admin");
+                user = new User(vysl.id, vysl.firstname,vysl.role);
                 return true;
             }
             else
