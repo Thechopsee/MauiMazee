@@ -93,6 +93,7 @@ namespace MauiMaze.Engine
 
         public void timerMove(object state)
         {
+            
             movePlayerToPosition(lastposx, lastposy);
         }
         public void startWatch()

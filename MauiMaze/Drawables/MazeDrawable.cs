@@ -66,8 +66,8 @@ namespace MauiMaze.Drawables
             this.cellHeight = dirtyRect.Height / this.maze.Height;
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
             Maze maze = (Maze)this.maze;
-            int Start =0;
-            int End = maze.Edges.Length - 1;
+            
+
             foreach (var edge in maze.Edges)
             {
                 if (Math.Abs(edge.Cell1 - edge.Cell2) > 1)
@@ -112,29 +112,33 @@ namespace MauiMaze.Drawables
             {
                 if (maze.start is null || maze.end is null)
                 {
-
+                    int Start = 0;
+                    int dolniHranice = (int)((maze.Width*maze.Height)*0.75);
+                    int horniHranice = maze.Width*maze.Height;
+                    Random random = new Random();
+                    int End = random.Next(dolniHranice, horniHranice-1 );
                     float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
                     float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
                     maze.start = new Start((int)startX, (int)startY, Start);
 
                     float endX = (float)(End % maze.Width * cellWidth + cellWidth);
-                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
+                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight );
                     maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
                 }
                 else if (maze.end.X == -1 || maze.end.X == -1)
                 {
-                    Start = maze.start.cell;
-                    End = maze.end.cell;
+                    int Start = maze.start.cell;
+                    int End = maze.end.cell;
                     float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
                     float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
                     maze.start = new Start((int)startX, (int)startY, Start);
 
                     float endX = (float)(End % maze.Width * cellWidth + cellWidth);
-                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
+                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight);
                     maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
                 }
 
-                    //drawStartAndEnd(canvas);
+                    drawStartAndEnd(canvas);
                     drawPlayer(canvas);
                 drawHitbox(canvas);
             }
@@ -142,8 +146,9 @@ namespace MauiMaze.Drawables
             {
                 if (maze.end.X == -1 || maze.end.X == -1)
                 {
-                    Start = maze.start.cell;
-                    End = maze.end.cell;
+
+                    int Start = maze.start.cell;
+                    int End = maze.end.cell;
                     float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
                     float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
                     maze.start = new Start((int)startX, (int)startY, Start);

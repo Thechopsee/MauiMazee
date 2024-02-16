@@ -75,8 +75,11 @@
                      IsVisible="{Binding Heatmapshow}"
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand"/>
-                <VerticalStackLayout >
-                    <Label Text="gamerecord" IsVisible="{Binding Recordshow}"/>
+                <VerticalStackLayout IsVisible="{Binding Recordshow}">
+                    <Label Text="Hit Walls Count:"/>
+                    <Label Text="{Binding ActualGamerecord.hitWallsCount}"/>
+                    <Label Text="Time:"/>
+                    <Label Text="{Binding ActualGamerecord.timeInMilliSeconds}"/>
                 </VerticalStackLayout>
 
             </VerticalStackLayout>
