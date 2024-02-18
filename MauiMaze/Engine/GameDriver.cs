@@ -164,7 +164,7 @@ namespace MauiMaze.Engine
                 long now = stopwatch.ElapsedMilliseconds;
                 int delta = (int)( now - lastTime);
                 lastTime = now;
-                gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, hit,delta,cellID));
+                gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, Convert.ToInt32(hit),delta,cellID));
                 movecounter += 3;
 
             }
@@ -181,7 +181,6 @@ namespace MauiMaze.Engine
         {
             gameRecord.stopMeasuremnt();
             gameRecord.finished = true;
-            //TODO //RecordRepository.GetInstance().addRecord(gameRecord);
             ended = true;
         }
         

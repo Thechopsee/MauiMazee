@@ -83,12 +83,12 @@ namespace MauiMaze.Engine
             bool hit_diffuser = false;
             foreach(MoveRecord move in moves)
             {
-                if (move.hitWall && hit_diffuser == false)
+                if (move.hitWall==1 && hit_diffuser == false)
                 {
                     hitWallsCount++;
                     hit_diffuser = true;
                 }
-                else if (!move.hitWall && hit_diffuser == true)
+                else if (move.hitWall==0 && hit_diffuser == true)
                 {
                     hit_diffuser = false;
                 }

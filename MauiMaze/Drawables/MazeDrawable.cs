@@ -82,7 +82,7 @@ namespace MauiMaze.Drawables
                     }
                     if (player is not null)
                     {
-                        for (int i = (int)x; i < movefor - 1; i++)
+                        for (int i = (int)x; i < movefor -1; i++)
                         {
                             walls[i, (int)y] = true;
                         }
@@ -101,7 +101,7 @@ namespace MauiMaze.Drawables
                     }
                     if (player is not null)
                     {
-                        for (int i = (int)y + 2; i < movefor - 1; i++)
+                        for (int i = (int)y+1 ; i < movefor-1 ; i++)
                         {
                             walls[(int)x, i] = true;
                         }
@@ -125,7 +125,7 @@ namespace MauiMaze.Drawables
                     float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight );
                     maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
                 }
-                else if (maze.end.X == -1 || maze.end.X == -1)
+                else if (maze.end.X == -1 )
                 {
                     int Start = maze.start.cell;
                     int End = maze.end.cell;
@@ -144,7 +144,7 @@ namespace MauiMaze.Drawables
             }
             else if (maze.start is not null)
             {
-                if (maze.end.X == -1 || maze.end.X == -1)
+                if (maze.end.X == -1)
                 {
 
                     int Start = maze.start.cell;
@@ -154,15 +154,11 @@ namespace MauiMaze.Drawables
                     maze.start = new Start((int)startX, (int)startY, Start);
 
                     float endX = (float)(End % maze.Width * cellWidth + cellWidth);
-                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight + cellHeight);
+                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight );
                     maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
                 }
             }
             drawStartAndEnd(canvas);
-            if (preview is not null)
-            {
-                drawPreview(canvas);    
-            }
             if (gameRecords is not null)
             {
                 int count = 0;

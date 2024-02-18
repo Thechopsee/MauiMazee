@@ -1,3 +1,4 @@
+using MauiMaze.Drawables;
 using MauiMaze.Engine;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
@@ -12,9 +13,13 @@ public partial class MoveVizualizerPage : ContentPage
 	{
         
         InitializeComponent();
-        this.Loaded += refreshCanvas;
-        mv = new MoveVizualizerViewModel(canvas, recordsList, maze,lc,heatmap);
+        MazeDrawable md = new MazeDrawable();
+        md.maze = maze;
+        canvas.Drawable = md;
+        mv = new MoveVizualizerViewModel(canvas, recordsList, maze, lc, heatmap);
         BindingContext = mv;
+        this.Loaded += refreshCanvas;
+        
         
 
 

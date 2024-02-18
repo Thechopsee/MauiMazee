@@ -67,7 +67,7 @@
 
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="FillAndExpand"
-                     Drawable="{StaticResource MazeDrawable}" />
+                     />
                 <GraphicsView 
                      x:Name="heatmap"
                      MaximumWidthRequest="500"
@@ -92,18 +92,6 @@
          Command="{Binding switchToAllCommand}"
          MinimumWidthRequest="300"
          HorizontalOptions="Center" />
-            <VerticalStackLayout>
-                <Slider VerticalOptions="Center" 
-                x:Name="sizeSlider"
-                Minimum="0"
-                Maximum="100"
-                MinimumWidthRequest="200"
-                Value="{Binding MovePercentage}"
-                
-                DragStartedCommand="{Binding ValueChangedCommand}"
-                />
-                <Label x:Name="moveprecentage" Text="{Binding MovePercentage}"/>
-            </VerticalStackLayout>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

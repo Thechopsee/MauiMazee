@@ -53,10 +53,13 @@ namespace MauiMaze.Engine
             float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
 
             int numberOfDots = (int)(distance);
+
+
             if (numberOfDots == 0)
             {
                 return false;
             }
+
             float xdiv = xnew - xorigin;
             float ydiv = ynew - yorigin;
             // float stepX=xdiv / distance;
@@ -88,20 +91,21 @@ namespace MauiMaze.Engine
                 stepY = 1;
             }
 
-            for (int i = 0; i <= numberOfDots; i++)
+            for (int i = 0; i <= numberOfDots-1; i++)
             {
                 int x = (int)(xorigin + i * stepX);
                 int y = (int)(yorigin + i * stepY);
 
-                (bool, bool, bool) hitcheck = mazeDrawable.checkCollision(x, y, (int)(x + hitbox.Size), (int)(y + hitbox.Size));
+
+                (bool, bool, bool) hitcheck = mazeDrawable.checkCollision(x, y, (int)(x + hitbox.Size), (int)(y + hitbox.Size),hitbox.Size);
                 if (hitcheck.Item1)
                 {
-                    float xrep = (xorigin + (i-1) * stepX) + (stepX*(hitcheck.Item3?0:1));
-                    float yrep = (yorigin + (i-1) * stepY) + (stepY*(hitcheck.Item2?0:1));
+                    float xrep = (xorigin + (i-1) * stepX) + (stepX*(hitcheck.Item3?0:3));
+                    float yrep = (yorigin + (i-1) * stepY) + (stepY*(hitcheck.Item2?0:3));
                     recalculateHitbox();
-                    (bool, bool, bool) hitcheck2 = mazeDrawable.checkCollision((int)xrep, (int)yrep, (int)(xrep + hitbox.Size-1), (int)(yrep + hitbox.Size-1));
+                    (bool, bool, bool) hitcheck2 = mazeDrawable.checkCollision((int)xrep, (int)yrep, (int)(xrep + hitbox.Size-1), (int)(yrep + hitbox.Size-1), hitbox.Size);
                     recalculateHitbox();
-                    if (hitcheck2.Item1)
+                    if (hitcheck2.Item1 )
                     {
                         positionX = oldPlayerX;
                         positionY = oldPlayerY;

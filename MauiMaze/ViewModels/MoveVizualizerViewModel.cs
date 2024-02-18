@@ -163,6 +163,10 @@ namespace MauiMaze.ViewModels
             List<CellData> cd=new List<CellData>();
             int maxcell = maze.Width * maze.Height;
             int maxtime = 0;
+            if (ActualGamerecord is null)
+            {
+                return new List<CellData>().ToArray();
+            }
             for (int i = 0; i < maxcell; i++)
             {
                 (int time,int hit)=filterDataForCells(i);
@@ -205,12 +209,13 @@ namespace MauiMaze.ViewModels
         {
             int time = 0;
             int hit = 0;
+
             foreach (MoveRecord m in ActualGamerecord.moves)
             {
                 if (m.cell == cell)
                 {
                     time += m.deltaTinMilisec;
-                    if (m.hitWall)
+                    if (m.hitWall == 1)
                     {
                         hit += 1;
                     }

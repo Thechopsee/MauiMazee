@@ -35,7 +35,7 @@ namespace MauiMaze.ViewModels
             {
                     LoggedIn = true;
             }
-            if (UserDataProvider.GetInstance().getUserRole() == RoleEnum.Reseacher || UserDataProvider.GetInstance().getUserRole() == RoleEnum.Admin)
+            if (UserDataProvider.GetInstance().getUserRole() == RoleEnum.Reseacher )
             {
                 ShowLocal = false;
             }
