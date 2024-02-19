@@ -43,7 +43,6 @@ namespace MauiMaze.Drawables
                 canvas.Font = Microsoft.Maui.Graphics.Font.Default;
                 canvas.DrawString(""+cell.time, (float)((column * cellWidth)), (float)(row * cellHeight), (float)(cellWidth), (float)(cellHeight), HorizontalAlignment.Center, VerticalAlignment.Top);
                 canvas.DrawString("" + cell.hit, (float)((column * cellWidth)+10), (float)(row * cellHeight+10), (float)(cellWidth)-10, (float)(cellHeight)-10, HorizontalAlignment.Center, VerticalAlignment.Center);
-                //canvas.DrawText(""+cell.time, (float)((column * cellWidth)), (float)(row * cellHeight));
             }
             foreach (var edge in maze.Edges)
             {

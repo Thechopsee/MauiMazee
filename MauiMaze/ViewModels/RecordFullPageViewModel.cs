@@ -49,8 +49,9 @@ namespace MauiMaze.ViewModels
                    await  RecordFetcher.SaveRecordOnline(gr.GetRecordDTO());
                 }
             }
-            else
+            else if(gr.mazeID > -1) 
             {
+
                await RecordFetcher.saveRecordByMazeOffline(gr);
 
             }

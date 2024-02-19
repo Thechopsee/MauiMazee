@@ -67,7 +67,7 @@ namespace MauiMaze.ViewModels
             switch (actual)
             {
                 case MazeType.Classic:
-                    await Shell.Current.Navigation.PushAsync(new MazePage(Mazesize,login));
+                    await Shell.Current.Navigation.PushAsync(new MazePage(Mazesize));
                     return;
                 case MazeType.Rounded:
                     await Shell.Current.Navigation.PushAsync(new RoundedMazePage(25,login));

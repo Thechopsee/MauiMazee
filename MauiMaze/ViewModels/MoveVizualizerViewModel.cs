@@ -49,17 +49,6 @@ namespace MauiMaze.ViewModels
 
         public Maze maze { get; set; }
         [RelayCommand]
-        public void valueChanged()
-        {
-            int mvp=(ActualGamerecord.moves.Count() / 100) * MovePercentage;
-            MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
-            md.preview.positionX = ActualGamerecord.moves[mvp].positionx;
-            md.preview.positionY = ActualGamerecord.moves[mvp].positiony;
-            md.preview.playerSizeX = md.cellWidth;
-            md.preview.playerSizeY = md.cellHeight;
-            GraphicsView.Invalidate();
-        }
-        [RelayCommand]
         public void switchToCell()
         {
             CellEnabled = false;
@@ -82,11 +71,89 @@ namespace MauiMaze.ViewModels
         [RelayCommand]
         public void switchToAll()
         {
-            ShowAllEnabled = false;
-            MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
-            md.showAll = true;
-            GraphicsView.Drawable = md;
-            GraphicsView.Invalidate();
+            if (Vizualizershow)
+            {
+                ShowAllEnabled = false;
+                MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
+                md.showAll = true;
+                GraphicsView.Drawable = md;
+                GraphicsView.Invalidate();
+            }
+            else if (Heatmapshow)
+            {
+                ShowAllEnabled = false;
+                List<CellData> cdl = new();
+                for (int i = 0; i < maze.Width * maze.Height; i++)
+                {
+                    cdl.Add(new CellData(i, Colors.Green, 0, 0));
+                }
+                foreach (GameRecord record in gr)
+                {
+                    CellData[] cd = CountCellData(maze, record);
+                    for (int i = 0; i < cd.Length; i++)
+                    {
+                        cdl[i].time += cd[i].time;
+                        cdl[i].hit += cd[i].hit;
+                    }
+                }
+                int maxtime = 0;
+                foreach (CellData data in cdl)
+                {
+                    data.time = data.time / gr.Count();
+                    data.hit = data.hit / gr.Count();
+                    if (data.time > maxtime)
+                    {
+                        maxtime = data.time;
+                    }
+
+                }
+                double sevfv = maxtime * 0.75;
+                double fifty = maxtime * 0.50;
+                double twfv = maxtime * 0.25;
+                foreach (CellData c in cdl)
+                {
+                    if (c.time > sevfv)
+                    {
+                        c.color = Colors.DarkRed;
+                    }
+                    else if (c.time > fifty)
+                    {
+                        c.color = Colors.Red;
+                    }
+                    else if (c.time > twfv)
+                    {
+                        c.color = Colors.Yellow;
+                    }
+                    else if (c.time > 0)
+                    {
+                        c.color = Colors.Green;
+                    }
+                    else
+                    {
+                        c.color = Colors.LightGreen;
+                    }
+                }
+                HeatMapView.Drawable = new HeatmapDrawable(maze, cdl.ToArray());
+
+            }
+            else if (Recordshow)
+            {
+                ShowAllEnabled=false;
+                int avarageHit = 0;
+                int avaragetime = 0;
+                foreach (GameRecord record in gr)
+                {
+                    avarageHit += record.hitWallsCount;
+                    avaragetime += record.timeInMilliSeconds;
+                    
+                }
+                avarageHit = avarageHit / gr.Count();
+                avaragetime = avaragetime / gr.Count();
+                GameRecord temp = new GameRecord(-1, -1);
+                temp.timeInMilliSeconds = avaragetime;
+                temp.hitWallsCount = avarageHit;
+                ActualGamerecord = temp;
+            }
         }
         [RelayCommand]
         public void switchView(string num)
@@ -121,20 +188,21 @@ namespace MauiMaze.ViewModels
         }
         public void selectChanged(GameRecord gr)
         {
+            ActualGamerecord = gr;
+            ShowAllEnabled = true;
             if (Vizualizershow)
             {
                 MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
                 md.showAll = false;
                 md.actualID = gr.grID;
-                ShowAllEnabled = true;
+                
                 GraphicsView.Drawable = md;
                 GraphicsView.Invalidate();
             }
             else if (Heatmapshow)
             {
-                ActualGamerecord = gr;
                 HeatmapDrawable md = (HeatmapDrawable)HeatMapView.Drawable;
-                md.cellData=CountCellData(this.maze);
+                md.cellData=CountCellData(this.maze, ActualGamerecord);
                 HeatMapView.Drawable = md;
                 HeatMapView.Invalidate();
             }
@@ -149,7 +217,6 @@ namespace MauiMaze.ViewModels
             this.graphicsView = graphicsView;
             this.heatMapView= heatMapView;
 
-
             this.listview = listview;
 
             getRecordsAsync(maze,lc,heatMapView);
@@ -157,19 +224,19 @@ namespace MauiMaze.ViewModels
 
 
         }
-        public CellData[] CountCellData(Maze maze) {
+        public CellData[] CountCellData(Maze maze,GameRecord record) {
 
             this.maze = maze;
             List<CellData> cd=new List<CellData>();
             int maxcell = maze.Width * maze.Height;
             int maxtime = 0;
-            if (ActualGamerecord is null)
+            if (record is null)
             {
                 return new List<CellData>().ToArray();
             }
             for (int i = 0; i < maxcell; i++)
             {
-                (int time,int hit)=filterDataForCells(i);
+                (int time,int hit)=filterDataForCells(i, record);
                 if (time > maxtime)
                 {
                     maxtime = time;
@@ -205,12 +272,12 @@ namespace MauiMaze.ViewModels
             return cd.ToArray();
         }
 
-        public (int,int) filterDataForCells(int cell)
+        public (int,int) filterDataForCells(int cell,GameRecord record)
         {
             int time = 0;
             int hit = 0;
 
-            foreach (MoveRecord m in ActualGamerecord.moves)
+            foreach (MoveRecord m in record.moves)
             {
                 if (m.cell == cell)
                 {
@@ -245,13 +312,12 @@ namespace MauiMaze.ViewModels
             if (gr.Count() > 0)
             {
                 ActualGamerecord = gr.ElementAt(0);
-                //md.preview = new Player(ActualGamerecord.moves[0].positionx, ActualGamerecord.moves[0].positiony, md.cellWidth, md.cellHeight);
                 this.listview.ItemsSource = gr;
-                md.gameRecords = gr;
+                md.gameRecords = gr.ToList();
             }
             md.maze = maze;
             GraphicsView.Drawable = md;
-            CellData[] cd = CountCellData(maze);
+            CellData[] cd = CountCellData(maze, ActualGamerecord);
             HeatMapView.Drawable = new HeatmapDrawable(maze, cd);
         }
 

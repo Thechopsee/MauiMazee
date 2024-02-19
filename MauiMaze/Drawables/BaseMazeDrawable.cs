@@ -17,13 +17,12 @@ namespace MauiMaze.Drawables
         public double mazeHeight { get; set; }
         public double cellWidth { get; set; }
         public double cellHeight { get; set; }
-        protected bool[,] walls { get; set; }
+        public bool[,] walls { get; set; }
 
         public bool showCell {get;set;}
         public bool showAll { get; set; }
         public int actualID { get; set; }
-        public Player preview { get; set; }
-        public IEnumerable<GameRecord> gameRecords { get; set; }
+        public List<GameRecord> gameRecords { get; set; }
 
         public void reinitPlayer(Player player)
         {
@@ -41,17 +40,6 @@ namespace MauiMaze.Drawables
             canvas.StrokeColor = Colors.Orange;
             canvas.DrawCircle(plX, plY, MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY))/3);
         }
-        //protected virtual void drawPreview(ICanvas canvas)
-        //{
-        //    if (canvas is null)
-        //    {
-        //        throw new CanvasNotAvailableExpectation("");
-        //    }
-        //    float plX = (float)(preview.positionX + preview.playerSizeX);
-        //    float plY = (float)(preview.positionY + preview.playerSizeY);
-        //    canvas.StrokeColor = Colors.Orange;
-        //    canvas.DrawCircle(plX, plY, MathF.Min((float)preview.playerSizeX, ((float)preview.playerSizeY)) / 3);
-        //}
         protected void drawStartAndEnd(ICanvas canvas)
         {
             if (canvas is null)
@@ -78,65 +66,6 @@ namespace MauiMaze.Drawables
             float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));
             canvas.DrawRectangle(player.positionX + (float)player.playerSizeX - (minsize / 1.5f) / 2, player.positionY + (float)player.playerSizeY - (minsize / 1.5f) / 2, minsize / 1.5f, minsize / 1.5f);
         }
-
-        public (bool,bool,bool) checkCollision(int x, int y, int x2, int y2,float hs)
-        {
-            int startX = Math.Min(x, x2);
-            int startY = Math.Min(y, y2);
-            int endX = Math.Max(x, x2);
-            int endY = Math.Max(y, y2);
-            bool collisionX = false;
-            bool collisionY = false;
-            bool changedx = false;
-            for (int currX = startX; currX <= endX; currX++)
-            {
-                changedx = true;
-                for (int currY = startY; currY <= endY; currY++)
-                {
-                    if (currX >= 0 && currX < walls.GetLength(0) &&
-                        currY >= 0 && currY < walls.GetLength(1) &&
-                        walls[currX, currY])
-                    {
-    
-                        if (walls[currX, currY + 1] || walls[currX, currY - 1])
-                        {
-                                collisionY = true;
-                            
-                        }
-
-                            if (walls[currX + 1, currY]|| walls[currX - 1, currY])
-                            {
-
-                                    collisionX = true;
-                               
-                            }
-
-                            
-                        if ((currY + 5 > endY ||currY<startY+5)&& collisionY)
-                        {
-                            if ((!walls[currX, currY + 1] && !walls[currX, currY + 2]) || (!walls[currX, currY - 1] && !walls[currX, currY - 2]))
-                            {
-                                collisionX = true;
-                                collisionY = false;
-                            }
-                        }
-                        if ((currX + 5 > endX || currX < startX + 5) && collisionX)
-                        {
-                            if ((!walls[currX + 1, currY] && !walls[currX + 2, currY]) || (!walls[currX - 1, currY] && !walls[currX - 2, currY]))
-                            {
-
-                                collisionX = false;
-                                collisionY = true;
-
-                            }
-                            
-                        }
-                        return (true, collisionX, collisionY);
-
-                    }
-                }
-            }
-            return (false,false,false);
-        }
+        
     }
 }

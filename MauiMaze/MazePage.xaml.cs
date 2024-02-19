@@ -21,7 +21,6 @@ public partial class MazePage : ContentPage
 {
     MazeDrawable mazeDrawable;
     GameDriver driver;
-    LoginCases login;
     Timer timer;
     bool firstMove = true;
     void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
@@ -39,20 +38,15 @@ public partial class MazePage : ContentPage
         if (e is not null)
         {
             var touch = e.Touches.First();
-            //driver.movePlayerToPosition(touch.X, touch.Y);
             driver.setPosition(touch.X, touch.Y);
         }
     }
-    public MazePage(int size, LoginCases login)
+    public MazePage(int size)
     {
         InitializeComponent();
-        this.login = login;
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        driver = new GameDriver(mazeDrawable, canvas, size, 0, login);
-        
+        driver = new GameDriver(mazeDrawable, canvas, size, 0);
     }
-
-
     public MazePage(Maze maze) {
         if (maze is null)
         {
@@ -61,8 +55,7 @@ public partial class MazePage : ContentPage
         InitializeComponent();
         save_btn.IsVisible = false;
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        driver = new GameDriver(mazeDrawable,maze);
-        driver.setGraphicView(canvas);
+        driver = new GameDriver(mazeDrawable,maze,canvas);
         canvas.Invalidate();
     }
 
@@ -74,7 +67,6 @@ public partial class MazePage : ContentPage
         {
             if ((bool)result)
             {
-                // TODO RecordRepository.GetInstance().addRecord(driver.gameRecord);
                 await Navigation.PopAsync().ConfigureAwait(false);
             }
         }
@@ -93,12 +85,6 @@ public partial class MazePage : ContentPage
                 await MazeFetcher.saveMazeLocally((Maze)mazeDrawable.maze).ConfigureAwait(true);
                 await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
             }
-            //else
-            //{
-            //    Maze maze = (Maze)mazeDrawable.maze;
-            //    await MazeFetcher.SaveMazeOnline(UserDataProvider.GetInstance().getUserID(), maze.Edges).ConfigureAwait(true);
-            //    await Application.Current.MainPage.DisplayAlert("Upozornìní", "saved", "OK").ConfigureAwait(false);
-            //}
         }
     }
 }

@@ -20,10 +20,8 @@ namespace MauiMaze.Engine
     public class GameDriver
     {
         BaseMazeDrawable mazeDrawable;
-        LoginCases gamestatus;
         public GraphicsView graphicsView { get; set; }
         private Player player { get; set; }
-        private End end { get; set; }
         public bool ended { get; set; }
         private float lastposx {get;set;}
         private float lastposy { get; set; }
@@ -37,15 +35,21 @@ namespace MauiMaze.Engine
 
         public int movecounter = 3;
 
-        public void setPosition(float x, float y)
-        {
-            lastposx = x;
-            lastposy = y;
-        }
 
-        public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype,LoginCases gamestatus)
+        private void inicializeGameboard()
         {
-            this.gamestatus = gamestatus;
+            if (UserDataProvider.GetInstance().getUserID() > 0)
+            {
+                gameRecord = new GameRecord(mazeDrawable.maze.MazeID, UserDataProvider.GetInstance().getUserID());
+            }
+            else
+            {
+                gameRecord = new GameRecord(mazeDrawable.maze.MazeID, -1);
+            }
+            graphicsView.Invalidate();
+        }
+        public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype)
+        {
             graphicsView = gv;
             mazeDrawable = md;
             mazeDrawable.player=new Player(0, 0,md.cellWidth,md.cellHeight);
@@ -60,40 +64,25 @@ namespace MauiMaze.Engine
                 maze = new RoundedMaze(new Size(size,size));
             }
             mazeDrawable.maze=maze;
-            graphicsView.Invalidate();
-            if (this.gamestatus == LoginCases.Offline)
-            {
-                gameRecord = new GameRecord(-1,-1); 
-            }
-            else
-            {
-                gameRecord = new GameRecord(maze.MazeID,UserDataProvider.GetInstance().getUserID());
-            }
+            inicializeGameboard();
+            
         }
-        public void setGraphicView(GraphicsView gv)
+        public GameDriver(BaseMazeDrawable md, Maze maze, GraphicsView gv)
         {
-            graphicsView=gv;
-        }
-        public GameDriver(BaseMazeDrawable md, Maze maze)
-        {
-            ended = false;
+            graphicsView = gv;
             mazeDrawable = md;
             mazeDrawable.player = new Player(0, 0, md.cellWidth, md.cellHeight);
             player = mazeDrawable.player;
             mazeDrawable.maze = maze;
-            if (this.gamestatus == LoginCases.Offline)
-            {
-                gameRecord = new GameRecord(maze.MazeID, -1);
-            }
-            else
-            {
-                gameRecord = new GameRecord(maze.MazeID, UserDataProvider.GetInstance().getUserID());
-            }
+            inicializeGameboard();
         }
-
+        public void setPosition(float x, float y)
+        {
+            lastposx = x;
+            lastposy = y;
+        }
         public void timerMove(object state)
         {
-            
             movePlayerToPosition(lastposx, lastposy);
         }
         public void startWatch()
@@ -106,7 +95,6 @@ namespace MauiMaze.Engine
             if (player.positionX==0 && player.positionY==0)
             {
                 mazeDrawable.reinitPlayer(player);
-                end = mazeDrawable.maze.end;
             }
             if (player.playerSizeX != mazeDrawable.cellWidth) {
                 player.playerSizeX = mazeDrawable.cellWidth;
@@ -125,13 +113,12 @@ namespace MauiMaze.Engine
             
             double distance = Math.Sqrt(Math.Pow((x - (player.playerSizeX/2)) - player.positionX, 2) + Math.Pow((y-(player.playerSizeY/2)) - player.positionY, 2));
 
-            // Pokud vzdálenost je menší než poloměr, uživatel klikl na kolečko hráče
             if (distance < player.playerSizeX)
             {
                 player.positionX = (float)(x - (player.playerSizeX));
                 player.positionY = (float)(y - (player.playerSizeY));
                 bool areHitted = false;
-                if (player.checkFlushHit(oldHitbox,oldHitboy,oldPlayerX,oldPlayery,mazeDrawable))
+                if (player.checkFlushHit(oldHitbox,oldHitboy,oldPlayerX,oldPlayery,mazeDrawable.walls))
                 {
                     areHitted = true;
                     graphicsView.Invalidate();
@@ -152,6 +139,7 @@ namespace MauiMaze.Engine
         }
         private void saveMove(bool hit)
         {
+            
             if (movecounter <= 0)
             {
                 double playerXPercentage = ((player.positionX + player.playerSizeX) / mazeDrawable.mazeWidth);
@@ -175,7 +163,7 @@ namespace MauiMaze.Engine
         }
         private bool checkEnd()
         {
-            return player.checkHit(end.X, end.Y, end.bottomX, end.bottomY);
+            return player.checkHit(mazeDrawable.maze.end.X, mazeDrawable.maze.end.Y, mazeDrawable.maze.end.bottomX, mazeDrawable.maze.end.bottomY);
         }
         private void endGameprocedure()
         {

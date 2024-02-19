@@ -13,7 +13,6 @@ public partial class RoundedMazePage : ContentPage
     async void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
         var touch = e.Touches.First();
-        //Application.Current.MainPage.DisplayAlert("Upozornìní", "Touch" + e.Touches.Length, "OK");
         if (driver.ended)
         {
             await Navigation.PushAsync(new RecordFullPage(driver.gameRecord,0)).ConfigureAwait(false);
@@ -25,6 +24,6 @@ public partial class RoundedMazePage : ContentPage
 	{
 		InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as RoundedMazeDrawable;
-        driver = new GameDriver(mazeDrawable, Canvas, size,1,login);
+        driver = new GameDriver(mazeDrawable, Canvas, size,1);
     }
 }
