@@ -20,16 +20,16 @@ namespace MauiMaze.Engine
         public List<int> cellPath { get; }
 
         public List<MoveRecord> moves;
-        Stopwatch stopwatch = new Stopwatch();
+        public Stopwatch stopwatch { get; set; }
         public Color color { get; set; }
 
         public GameRecord(int mazeID,int userID)
         {
+            stopwatch = new Stopwatch();
             this.mazeID = mazeID;
             this.userID = userID;
             cellPath = new List<int>();
             moves = new List<MoveRecord>();
-            stopwatch.Start();
         }
         public GameRecordDTO GetRecordDTO()
         {
@@ -52,6 +52,7 @@ namespace MauiMaze.Engine
         {
             if (cellPath.Count == 0)
             {
+                stopwatch.Start();
                 cellPath.Add(cellID);
             }
             else if (cellPath.Last() != cellID)
@@ -69,10 +70,6 @@ namespace MauiMaze.Engine
                 }
             }
             moves.Add(move);
-        }
-        public int numberOfMoves()
-        {
-            return moves.Count;
         }
         public void stopMeasuremnt()
         { 

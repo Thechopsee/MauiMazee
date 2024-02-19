@@ -173,6 +173,20 @@ namespace MauiMaze.Services
         
             return rsp;
         }
+        public static async Task<int[]> deleteAllMazes()
+        {
+            (Maze[] mazes, MazeDescription[] md) = await getOfflineMazes();
+            List<int> deletedIDs = new List<int>();
+            foreach (MazeDescription m in md)
+            {
+                if (m != null)
+                {
+                    deletedIDs.Add(m.ID);
+                    await MazeFetcher.deleteMazelocaly(m.ID);
+                }
+            }
+            return deletedIDs.ToArray();
+        }
 
         public static async Task<Maze> getMaze(int mazeid)
         {

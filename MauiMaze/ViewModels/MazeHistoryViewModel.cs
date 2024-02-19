@@ -52,9 +52,9 @@ namespace MauiMaze.ViewModels
             if (UserDataProvider.GetInstance().getUserID() != -1)
             {
 
-                Records = await MazeProvider.Instance.loadMazes().ConfigureAwait(true);
-            }  
-            (Mazes,Md) = await MazeProvider.Instance.loadLocalMazes();
+                Records = (await MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID())).ToList();
+            }
+            (Mazes, Md) = await MazeFetcher.getOfflineMazes();
             Loading = false;
         }
         public async void loadRecordByuser(int id)

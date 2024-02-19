@@ -20,21 +20,15 @@ namespace MauiMaze.Engine
     public class GameDriver
     {
         BaseMazeDrawable mazeDrawable;
-        public GraphicsView graphicsView { get; set; }
+        private GraphicsView graphicsView { get; set; }
         private Player player { get; set; }
         public bool ended { get; set; }
         private float lastposx {get;set;}
         private float lastposy { get; set; }
-        private float prewposx {get;set;}
-        private float prewposy { get; set; }
         public GameRecord gameRecord { get; set; }
 
-        Stopwatch stopwatch = new Stopwatch();
-
         private long lastTime = 0;
-
         public int movecounter = 3;
-
 
         private void inicializeGameboard()
         {
@@ -85,10 +79,6 @@ namespace MauiMaze.Engine
         {
             movePlayerToPosition(lastposx, lastposy);
         }
-        public void startWatch()
-        {
-            stopwatch.Start();
-        }
         public bool movePlayerToPosition(float x, float y)
         {
             
@@ -101,11 +91,7 @@ namespace MauiMaze.Engine
                 player.playerSizeY =mazeDrawable.cellHeight;
             }
 
-            if(prewposx==x || prewposy==y)
-            {
-                movecounter = 3;
-                return false;
-            }
+
             float oldPlayerX = player.positionX;
             float oldPlayery = player.positionY;
             float oldHitbox = player.hitbox.X;
@@ -149,7 +135,7 @@ namespace MauiMaze.Engine
                 double yid = ((player.positionY + player.playerSizeY) / mazeDrawable.cellHeight);
                 int cellID = (int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid);
                 gameRecord.addCellMoveRecord(cellID);
-                long now = stopwatch.ElapsedMilliseconds;
+                long now = gameRecord.stopwatch.ElapsedMilliseconds;
                 int delta = (int)( now - lastTime);
                 lastTime = now;
                 gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, Convert.ToInt32(hit),delta,cellID));

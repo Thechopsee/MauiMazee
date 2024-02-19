@@ -28,7 +28,6 @@ public partial class MazePage : ContentPage
         if (firstMove)
         {
             timer = new Timer(driver.timerMove, null, 0, 33);
-            driver.startWatch();
             firstMove = false;
         }
         if (driver.ended)
