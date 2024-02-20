@@ -13,6 +13,7 @@ using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Plugin.LocalNotification.NotificationRequestGeofence;
 
 
 namespace MauiMaze.Engine
@@ -104,7 +105,8 @@ namespace MauiMaze.Engine
                 player.positionX = (float)(x - (player.playerSizeX));
                 player.positionY = (float)(y - (player.playerSizeY));
                 bool areHitted = false;
-                if (player.checkFlushHit(oldHitbox,oldHitboy,oldPlayerX,oldPlayery,mazeDrawable.walls))
+                (bool vysl, player) = checkTrajectory(oldHitbox, oldHitboy, oldPlayerX, oldPlayery, mazeDrawable.walls, player);
+                if (vysl)
                 {
                     areHitted = true;
                     graphicsView.Invalidate();
@@ -123,6 +125,57 @@ namespace MauiMaze.Engine
             }
             return false;
         }
+
+        public (bool, bool, bool) checkCollision(int x, int y, int x2, int y2, bool[,] walls)
+        {
+            int startX = Math.Min(x, x2);
+            int startY = Math.Min(y, y2);
+            int endX = Math.Max(x, x2);
+            int endY = Math.Max(y, y2);
+            bool collisionX = false;
+            bool collisionY = false;
+            for (int currX = startX; currX <= endX; currX++)
+            {
+                for (int currY = startY; currY <= endY; currY++)
+                {
+                    if (currX >= 0 && currX < walls.GetLength(0) &&
+                        currY >= 0 && currY < walls.GetLength(1) &&
+                        walls[currX, currY])
+                    {
+                        if (walls[currX, currY + 1] || walls[currX, currY - 1])
+                        {
+                            collisionY = true;
+                        }
+                        if (walls[currX + 1, currY] || walls[currX - 1, currY])
+                        {
+                            collisionX = true;
+                        }
+                        if ((currY + 5 > endY || currY < startY + 5) && collisionY)
+                        {
+                            if ((!walls[currX, currY + 1] && !walls[currX, currY + 2]) || (!walls[currX, currY - 1] && !walls[currX, currY - 2]))
+                            {
+                                collisionX = true;
+                                collisionY = false;
+                            }
+                        }
+                        if ((currX + 5 > endX || currX < startX + 5) && collisionX)
+                        {
+                            if ((!walls[currX + 1, currY] && !walls[currX + 2, currY]) || (!walls[currX - 1, currY] && !walls[currX - 2, currY]))
+                            {
+
+                                collisionX = false;
+                                collisionY = true;
+                            }
+
+                        }
+                        return (true, collisionX, collisionY);
+
+                    }
+                }
+            }
+            return (false, false, false);
+        }
+
         private void saveMove(bool hit)
         {
             
@@ -150,6 +203,87 @@ namespace MauiMaze.Engine
         private bool checkEnd()
         {
             return player.checkHit(mazeDrawable.maze.end.X, mazeDrawable.maze.end.Y, mazeDrawable.maze.end.bottomX, mazeDrawable.maze.end.bottomY);
+        }
+        public (bool,Player) checkTrajectory(float oldHitbox, float oldHitboy, float oldPlayerX, float oldPlayerY, bool[,] walls,Player player)
+        {
+            float xnew = player.hitbox.X;
+            float ynew = player.hitbox.Y;
+            float xorigin = oldHitbox;
+            float yorigin = oldHitboy;
+
+
+            float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
+
+            int numberOfDots = (int)(distance);
+
+
+            if (numberOfDots == 0)
+            {
+                return (false,player);
+            }
+
+            float xdiv = xnew - xorigin;
+            float ydiv = ynew - yorigin;
+            // float stepX=xdiv / distance;
+            // float stepY= ydiv / distance;
+            float stepX;
+            float stepY;
+            if (xdiv / distance < 0)
+            {
+                stepX = -1;
+            }
+            else if (xdiv / distance == 0)
+            {
+                stepX = 0;
+            }
+            else
+            {
+                stepX = 1;
+            }
+            if (ydiv / distance < 0)
+            {
+                stepY = -1;
+            }
+            else if (ydiv / distance == 0)
+            {
+                stepY = 0;
+            }
+            else
+            {
+                stepY = 1;
+            }
+
+            for (int i = 0; i <= numberOfDots - 1; i++)
+            {
+                int x = (int)(xorigin + i * stepX);
+                int y = (int)(yorigin + i * stepY);
+
+
+                (bool, bool, bool) hitcheck = checkCollision(x, y, (int)(x + player.hitbox.Size), (int)(y + player.hitbox.Size), walls);
+                if (hitcheck.Item1)
+                {
+                    float xrep = (xorigin + (i - 1) * stepX) + (stepX * (hitcheck.Item3 ? 0 : 3));
+                    float yrep = (yorigin + (i - 1) * stepY) + (stepY * (hitcheck.Item2 ? 0 : 3));
+                    player.recalculateHitbox();
+                    (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size - 1), (int)(yrep + player.hitbox.Size - 1), walls);
+                    player.recalculateHitbox();
+                    if (hitcheck2.Item1)
+                    {
+                        player.positionX = oldPlayerX;
+                        player.positionY = oldPlayerY;
+                        return (true, player);
+                    }
+
+                    float minsize = (float)Math.Min(player.playerSizeX, player.playerSizeY);
+                    player.positionX = xrep - ((float)player.playerSizeX - (minsize / 1.5f) / 2);
+                    player.positionY = yrep - ((float)player.playerSizeY - (minsize / 1.5f) / 2);
+                    return (true, player);
+                }
+
+            }
+
+            return (false, player);
+
         }
         private void endGameprocedure()
         {
