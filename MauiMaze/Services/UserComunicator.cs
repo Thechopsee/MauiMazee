@@ -1,5 +1,4 @@
-﻿
-using MauiMaze.Models;
+﻿using MauiMaze.Models.DTOs;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

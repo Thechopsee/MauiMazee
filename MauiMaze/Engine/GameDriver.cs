@@ -191,7 +191,7 @@ namespace MauiMaze.Engine
                 long now = gameRecord.stopwatch.ElapsedMilliseconds;
                 int delta = (int)( now - lastTime);
                 lastTime = now;
-                gameRecord.addMoveRecord(new MoveRecord(-1, (int)player.positionX, (int)player.positionY, playerXPercentage, playerYPercentage, Convert.ToInt32(hit),delta,cellID));
+                gameRecord.addMoveRecord(new MoveRecord(-1, playerXPercentage, playerYPercentage, Convert.ToInt32(hit),delta,cellID));
                 movecounter += 3;
 
             }

@@ -1,6 +1,6 @@
 ﻿using MauiMaze.Engine;
 using MauiMaze.Helpers;
-using MauiMaze.Models;
+using MauiMaze.Models.DTOs;
 using Newtonsoft.Json;
 using SQLite;
 using System;

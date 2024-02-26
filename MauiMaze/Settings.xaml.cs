@@ -7,15 +7,17 @@ public partial class Settings : ContentPage
 {
 	public Settings()
 	{
-		InitializeComponent();
-		SettingViewModel swm= new SettingViewModel();
+        SettingViewModel swm = new SettingViewModel();
+        this.Loaded += swm.tryToLoadSetting;
+        InitializeComponent();
+		
 		
 		BindingContext = swm;
 		
-		swm.CzechLanguage = !swm.CzechLanguage;
-        swm.CzechLanguage = !swm.CzechLanguage;
-        swm.EnglishLanguage = !swm.EnglishLanguage;
-        swm.EnglishLanguage = !swm.EnglishLanguage;
+		swm.SimplifyEnabled = !swm.SimplifyEnabled;
+        swm.SimplifyEnabled = !swm.SimplifyEnabled;
+        swm.TexturedEnabled = !swm.TexturedEnabled;
+        swm.TexturedEnabled = !swm.TexturedEnabled;
 
         InvalidateMeasure();
 		loading.IsRunning = false;

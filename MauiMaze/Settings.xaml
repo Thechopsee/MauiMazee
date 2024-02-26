@@ -48,12 +48,15 @@
              />
             <Button
                 Text="Simplified"
+                IsEnabled="{Binding SimplifyEnabled}"
+                Command="{Binding switchGraphicCommand}"
                 MaximumWidthRequest="200"
                 MinimumWidthRequest="200"
                 />
             <Button
                 Text="Textured"
-                IsEnabled="false"
+                IsEnabled="{Binding TexturedEnabled}"
+                Command="{Binding switchGraphicCommand}"
                 MaximumWidthRequest="200"
                 MinimumWidthRequest="200"
                 />

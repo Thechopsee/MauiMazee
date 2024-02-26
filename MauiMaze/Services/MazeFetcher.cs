@@ -1,6 +1,7 @@
 ﻿
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Models.DTOs;
 using MauiMaze.ViewModels;
 using Newtonsoft.Json;
 using System;

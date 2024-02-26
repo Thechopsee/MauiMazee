@@ -1,5 +1,5 @@
 ﻿using MauiMaze.Helpers;
-using MauiMaze.Models;
+using MauiMaze.Models.DTOs;
 using MauiMaze.Models.UserManagment;
 using Microsoft.VisualBasic.FileIO;
 using System;

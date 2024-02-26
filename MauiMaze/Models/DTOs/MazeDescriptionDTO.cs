@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Interfaces.Services
+namespace MauiMaze.Models.DTOs
 {
-    internal interface IFetcher
+    public class MazeDescriptionDTO
     {
-      
+        public List<string[]> descriptions;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using MauiMaze.Models;
+using MauiMaze.Models.DTOs;
 using MauiMaze.Services;
 using System;
 using System.Collections.Generic;

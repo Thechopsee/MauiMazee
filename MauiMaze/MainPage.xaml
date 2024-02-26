@@ -50,14 +50,14 @@
                             Text="For science!"
                             Command="{Binding GoToScienceCommand }"
                             HorizontalOptions="Center" />
-                        <Button
-                            x:Name="forresearch"
-                            MinimumWidthRequest="300"
-                            MinimumHeightRequest="100"
-                            Text="Im Researcher!"
-                            Command="{Binding GoToResearcherCommand }"
-                            HorizontalOptions="Center" />
                     </HorizontalStackLayout>
+                    <Button
+                         x:Name="forresearch"
+                         MinimumWidthRequest="300"
+                         MinimumHeightRequest="100"
+                         Text="Im Researcher!"
+                         Command="{Binding GoToResearcherCommand }"
+                         HorizontalOptions="Center" />
                 </VerticalStackLayout>
             </Frame>
             <StackLayout

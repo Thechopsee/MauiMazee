@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Models
+namespace MauiMaze.Models.DTOs
 {
     public class MazeDTO
     {

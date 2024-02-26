@@ -16,9 +16,6 @@
         <Label Text="Hit Walls Count:"/>
         <Label Text="{Binding GameRecord.hitWallsCount}"/>
         <!--<Button Text="Set Walls Count" Clicked="SetHitWallsCount_Clicked" Margin="5"/>-->
-
-        <Label Text="Travel Length:"/>
-        <Label Text="{Binding GameRecord.travelLenght}"/>
         <Label Text="Traveled Cells:"/>
         <Label Text="{Binding CellPathString}"/>
         <!--<Button Text="Set Travel Length" Clicked="SetTravelLength_Clicked" Margin="5"/>-->

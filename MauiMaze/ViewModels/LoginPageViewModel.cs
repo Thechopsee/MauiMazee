@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using MauiMaze.Helpers;
 using MauiMaze.Models;
+using MauiMaze.Models.DTOs;
 using MauiMaze.Services;
 using System;
 using System.Collections.Generic;

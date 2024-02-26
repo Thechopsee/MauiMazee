@@ -19,8 +19,9 @@ public partial class AreUSurePopUp : Popup
         clicked = false;
         result = false;
         closed = false;
-        question.Text = text;
+        
         InitializeComponent();
+        question.Text = text;
     }
 
     private void setTrue(object sender, EventArgs e)

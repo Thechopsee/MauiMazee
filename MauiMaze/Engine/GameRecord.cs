@@ -1,4 +1,4 @@
-﻿using MauiMaze.Models;
+﻿using MauiMaze.Models.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,7 +12,6 @@ namespace MauiMaze.Engine
     {
         public int grID { get; set; }
         public int hitWallsCount { get; set; }
-        public double travelLenght { get; set; }
         public int mazeID { get; set; }
         public int userID { get; set; }
         public bool finished { get; set; }
@@ -64,7 +63,7 @@ namespace MauiMaze.Engine
         {
             if (moves.Count > 0)
             {
-                if (moves.Last().positionx == move.positionx && moves.Last().positiony == move.positiony)
+                if (moves.Last().percentagex == move.percentagex && moves.Last().percentagey == move.percentagey)
                 {
                     return;
                 }
@@ -75,8 +74,6 @@ namespace MauiMaze.Engine
         { 
             stopwatch.Stop();
             timeInMilliSeconds = Convert.ToInt32(stopwatch.Elapsed.TotalMilliseconds);
-            int lastX=0;
-            int lastY=0;
             bool hit_diffuser = false;
             foreach(MoveRecord move in moves)
             {
@@ -90,13 +87,6 @@ namespace MauiMaze.Engine
                     hit_diffuser = false;
                 }
 
-                double deltaX = move.positionx - lastX;
-                double deltaY = move.positiony - lastY;
-
-                double distance = Math.Abs(Math.Sqrt(deltaX * deltaX + deltaY * deltaY));
-                lastX = move.positionx;
-                lastY = move.positiony;
-                travelLenght += distance;
             }
 
         }

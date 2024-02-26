@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MauiMaze.Models
+namespace MauiMaze.Models.DTOs
 {
     public class GameRecordDTO
     {
@@ -44,7 +44,7 @@ namespace MauiMaze.Models
             string[] splited_path = cellPathString.Split("->");
             foreach (string s in splited_path)
             {
-                gr.cellPath.Add(Int32.Parse(s));
+                gr.cellPath.Add(int.Parse(s));
             }
             return gr;
         }

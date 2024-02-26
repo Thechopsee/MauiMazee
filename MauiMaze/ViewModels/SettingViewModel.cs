@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiMaze.Services;
+using Microsoft.Maui.Layouts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,10 @@ namespace MauiMaze.ViewModels
         [ObservableProperty]
         bool englishLanguage;
         [ObservableProperty]
+        bool simplifyEnabled;
+        [ObservableProperty]
+        bool texturedEnabled;
+        [ObservableProperty]
         string buttonSaveText;
         [RelayCommand]
         private void dragEnded()
@@ -31,7 +36,7 @@ namespace MauiMaze.ViewModels
         [RelayCommand]
         private void saveSettings()
         {
-           SettingsDataProvider.saveSettings(SettingsData);
+           SettingsDataFetcher.saveSettings(SettingsData);
         }
         [RelayCommand]
         private void changeCzech()
@@ -48,6 +53,24 @@ namespace MauiMaze.ViewModels
             ButtonSaveText = "Save settings";
             CzechLanguage = true;
             EnglishLanguage = false;
+        }
+        [RelayCommand]
+        public void switchGraphic()
+        {
+            if (SimplifyEnabled)
+            {
+                TexturedEnabled = true;
+                SimplifyEnabled = false;
+                SettingsData.SimplyfiedGraphic = true;
+                saveSettings();
+            }
+            else if (TexturedEnabled)
+            {
+                TexturedEnabled = false;
+                SimplifyEnabled = true;
+                SettingsData.SimplyfiedGraphic = false;
+                saveSettings();
+            }
         }
         [RelayCommand]
         private async Task deleteData()
@@ -68,11 +91,20 @@ namespace MauiMaze.ViewModels
             CzechLanguage = false;
             EnglishLanguage = false;
             isloaded = false;
-            tryToLoadSetting();
         }
-        public async void tryToLoadSetting()
+        public async void tryToLoadSetting(object sender, EventArgs e)
         {
-            SettingsData = await SettingsDataProvider.getSettings();
+            SettingsData = await SettingsDataFetcher.getSettings();
+            if (SettingsData.SimplyfiedGraphic)
+            {
+                SimplifyEnabled = false;
+                TexturedEnabled = true;
+            }
+            else
+            {
+                SimplifyEnabled = true;
+                TexturedEnabled = false;
+            }
             if (String.Equals(SettingsData.language, "czechLanguage"))
             {
                 ButtonSaveText = "Uložit nastavení";
