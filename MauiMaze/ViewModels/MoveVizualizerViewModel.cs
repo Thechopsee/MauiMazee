@@ -53,7 +53,7 @@ namespace MauiMaze.ViewModels
         {
             CellEnabled = false;
             PositionEnabled = true;
-            MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
+            MoveVizualizerDrawable md = (MoveVizualizerDrawable)GraphicsView.Drawable;
             md.showCell = true;
             GraphicsView.Drawable = md;
             GraphicsView.Invalidate();
@@ -63,7 +63,7 @@ namespace MauiMaze.ViewModels
         {
             PositionEnabled = false;
             CellEnabled = true;
-            MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
+            MoveVizualizerDrawable md = (MoveVizualizerDrawable)GraphicsView.Drawable;
             md.showCell = false;
             GraphicsView.Drawable = md;
             GraphicsView.Invalidate();
@@ -74,7 +74,7 @@ namespace MauiMaze.ViewModels
             if (Vizualizershow)
             {
                 ShowAllEnabled = false;
-                MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
+                MoveVizualizerDrawable md = (MoveVizualizerDrawable)GraphicsView.Drawable;
                 md.showAll = true;
                 GraphicsView.Drawable = md;
                 GraphicsView.Invalidate();
@@ -159,6 +159,11 @@ namespace MauiMaze.ViewModels
         public void switchView(string num)
         {
             int obj = Int32.Parse(num);
+            LoginCases lc = UserDataProvider.GetInstance().getLoginCase();
+            if (lc == LoginCases.Offline)
+            {
+                return;
+            }
             switch (obj) {
                 case 1:
                     Vizualizershow = true;
@@ -192,7 +197,7 @@ namespace MauiMaze.ViewModels
             ShowAllEnabled = true;
             if (Vizualizershow)
             {
-                MazeDrawable md = (MazeDrawable)GraphicsView.Drawable;
+                MoveVizualizerDrawable md = (MoveVizualizerDrawable)GraphicsView.Drawable;
                 md.showAll = false;
                 md.actualID = gr.grID;
                 
@@ -219,6 +224,14 @@ namespace MauiMaze.ViewModels
 
             this.listview = listview;
 
+            if (lc == LoginCases.Offline)
+            {
+                Hbs = false;
+                Gbs = true;
+                Vbs = false;
+                Vizualizershow = false;
+                Recordshow = true;
+            }
             getRecordsAsync(maze,lc,heatMapView);
 
 
@@ -302,7 +315,7 @@ namespace MauiMaze.ViewModels
                 gr = await RecordFetcher.loadRecordsByMaze(maze.MazeID).ConfigureAwait(true);
             }
             
-            MazeDrawable md = new MazeDrawable();
+            MoveVizualizerDrawable md = new MoveVizualizerDrawable();
 
             for (int i = 0; i < gr.Count(); i++)
             {
@@ -315,7 +328,7 @@ namespace MauiMaze.ViewModels
                 this.listview.ItemsSource = gr;
                 md.gameRecords = gr.ToList();
             }
-            md.maze = maze;
+            md.sendMaze(maze);
             GraphicsView.Drawable = md;
             CellData[] cd = CountCellData(maze, ActualGamerecord);
             HeatMapView.Drawable = new HeatmapDrawable(maze, cd);

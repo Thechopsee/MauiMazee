@@ -1,4 +1,5 @@
 ﻿using MauiMaze.Helpers;
+using MauiMaze.Models;
 using MauiMaze.Models.DTOs;
 using MauiMaze.Models.UserManagment;
 using Microsoft.VisualBasic.FileIO;
@@ -34,6 +35,14 @@ namespace MauiMaze.Services
             }
             return -1;
         }
+        public LoginCases getLoginCase()
+        {
+            if (user is not null)
+            {
+                return LoginCases.Online;
+            }
+            return LoginCases.Offline;
+        }
         public RoleEnum getUserRole()
         {
             if (user is not null)
@@ -43,7 +52,6 @@ namespace MauiMaze.Services
             return RoleEnum.User;
         }
         DateTime expireDate;
-        //TODO add refresh token
         private bool IsExpired => checkExpiration();
 
         public void LogoutUser()

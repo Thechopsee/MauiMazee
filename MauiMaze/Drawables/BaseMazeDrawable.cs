@@ -19,10 +19,8 @@ namespace MauiMaze.Drawables
         public double cellHeight { get; set; }
         public bool[,] walls { get; set; }
 
-        public bool showCell {get;set;}
-        public bool showAll { get; set; }
-        public int actualID { get; set; }
-        public List<GameRecord> gameRecords { get; set; }
+
+        public virtual void drawWalls(ICanvas canvas, RectF dirtyRect) { }
 
         public void reinitPlayer(Player player)
         {
@@ -40,7 +38,7 @@ namespace MauiMaze.Drawables
             canvas.StrokeColor = Colors.Orange;
             canvas.DrawCircle(plX, plY, MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY))/3);
         }
-        protected void drawStartAndEnd(ICanvas canvas)
+        public void drawStartAndEnd(ICanvas canvas)
         {
             if (canvas is null)
             {
