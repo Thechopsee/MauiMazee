@@ -6,6 +6,7 @@ using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Services;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,18 @@ namespace MauiMaze.ViewModels
         public GameRecord actualGamerecord;
         private ListView listview;
         [ObservableProperty]
-        public int movePercentage;
-        [ObservableProperty]
         public bool cellEnabled;
         [ObservableProperty]
         public bool positionEnabled;
         [ObservableProperty]
         public bool showAllEnabled;
+
+        [ObservableProperty]
+        public bool timeEnabled;
+        [ObservableProperty]
+        public bool hitsEnabled;
+        [ObservableProperty]
+        public bool allHeatEnabled;
 
         [ObservableProperty]
         public bool heatmapshow;
@@ -69,6 +75,46 @@ namespace MauiMaze.ViewModels
             GraphicsView.Invalidate();
         }
         [RelayCommand]
+        public void switchToTime()
+        {
+            TimeEnabled = false;
+            HitsEnabled= true;
+            AllHeatEnabled = true;
+            HeatmapDrawable md = (HeatmapDrawable)HeatMapView.Drawable;
+            md.cellData = CountCellData(this.maze, ActualGamerecord);
+            md.time = true;
+            md.hits = false;
+            HeatMapView.Drawable = md;
+            HeatMapView.Invalidate();
+        }
+        [RelayCommand]
+        public void switchToHits()
+        {
+            HitsEnabled= false;
+            TimeEnabled = true;
+            AllHeatEnabled = true;
+            HeatmapDrawable md = (HeatmapDrawable)HeatMapView.Drawable;
+            md.cellData = CountCellData(this.maze, ActualGamerecord);
+            md.time = false;
+            md.hits = true;
+            HeatMapView.Drawable = md;
+            HeatMapView.Invalidate();
+        }
+        [RelayCommand]
+        public void switchToAllHeat()
+        {
+            HitsEnabled = true;
+            TimeEnabled = true;
+            AllHeatEnabled = false;
+            HeatmapDrawable md = (HeatmapDrawable)HeatMapView.Drawable;
+            md.cellData = CountCellData(this.maze, ActualGamerecord);
+            md.time = true;
+            md.hits = true;
+            HeatMapView.Drawable = md;
+            HeatMapView.Invalidate();
+        }
+
+        [RelayCommand]
         public void switchToAll()
         {
             if (Vizualizershow)
@@ -97,6 +143,7 @@ namespace MauiMaze.ViewModels
                     }
                 }
                 int maxtime = 0;
+                int maxhits = 0;
                 foreach (CellData data in cdl)
                 {
                     data.time = data.time / gr.Count();
@@ -105,33 +152,31 @@ namespace MauiMaze.ViewModels
                     {
                         maxtime = data.time;
                     }
+                    if (data.hit > maxhits)
+                    { 
+                        maxhits= data.hit;
+                    }
 
                 }
-                double sevfv = maxtime * 0.75;
-                double fifty = maxtime * 0.50;
-                double twfv = maxtime * 0.25;
+                
                 foreach (CellData c in cdl)
                 {
-                    if (c.time > sevfv)
+                    if (!HitsEnabled)
                     {
-                        c.color = Colors.DarkRed;
-                    }
-                    else if (c.time > fifty)
-                    {
-                        c.color = Colors.Red;
-                    }
-                    else if (c.time > twfv)
-                    {
-                        c.color = Colors.Yellow;
-                    }
-                    else if (c.time > 0)
-                    {
-                        c.color = Colors.Green;
+                        if (maxhits == 0)
+                        {
+                            c.color = Colors.White;
+                        }
+                        else
+                        {
+                            c.color = ColorSchemeProvider.getHeatmapColor(c.hit, 0, maxhits);
+                        }
                     }
                     else
                     {
-                        c.color = Colors.LightGreen;
+                        c.color = ColorSchemeProvider.getHeatmapColor(c.time, 0, maxtime);
                     }
+
                 }
                 HeatMapView.Drawable = new HeatmapDrawable(maze, cdl.ToArray());
 
@@ -219,6 +264,9 @@ namespace MauiMaze.ViewModels
             Vizualizershow = true;
             cellEnabled = true;
             PositionEnabled = false;
+            AllHeatEnabled = false;
+            TimeEnabled = true;
+            HitsEnabled = true;
             this.graphicsView = graphicsView;
             this.heatMapView= heatMapView;
 
@@ -243,6 +291,7 @@ namespace MauiMaze.ViewModels
             List<CellData> cd=new List<CellData>();
             int maxcell = maze.Width * maze.Height;
             int maxtime = 0;
+            int maxhits = 0;
             if (record is null)
             {
                 return new List<CellData>().ToArray();
@@ -254,32 +303,29 @@ namespace MauiMaze.ViewModels
                 {
                     maxtime = time;
                 }
+                if (hit > maxhits)
+                { 
+                    maxhits = hit; 
+                }
+                
                 cd.Add(new CellData(i,Colors.Aqua,time,hit));
             }
-            double sevfv = maxtime * 0.75;
-            double fifty = maxtime * 0.50;
-            double twfv= maxtime * 0.25;
             foreach (CellData c in cd)
             {
-                if (c.time > sevfv)
+                if (!HitsEnabled)
                 {
-                    c.color = Colors.DarkRed;
-                }
-                else if (c.time > fifty)
-                {
-                    c.color = Colors.Red;
-                }
-                else if (c.time > twfv)
-                {
-                    c.color = Colors.Yellow;
-                }
-                else if (c.time > 0)
-                {
-                    c.color = Colors.Green;
+                    if (maxhits == 0)
+                    {
+                        c.color = Colors.White;
+                    }
+                    else
+                    {
+                        c.color = ColorSchemeProvider.getHeatmapColor(c.hit, 0, maxhits);
+                    }
                 }
                 else
                 {
-                    c.color = Colors.LightGreen;
+                    c.color = ColorSchemeProvider.getHeatmapColor(c.time, 0, maxtime);
                 }
             }
             return cd.ToArray();

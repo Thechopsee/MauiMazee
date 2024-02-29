@@ -15,9 +15,13 @@ namespace MauiMaze.Drawables
     public class HeatmapDrawable : IDrawable
     {
         Maze maze { get; set; }
+        public bool time { get; set; }
+        public bool hits { get; set; }
         public HeatmapDrawable(Maze maze, CellData[] cellData) { 
             this.maze = maze;
             this.cellData = cellData;
+            this.time = true;
+            this.hits = true;
         }
         public CellData[] cellData { get; set; } 
         public void Draw(ICanvas canvas, RectF dirtyRect)
@@ -37,12 +41,18 @@ namespace MauiMaze.Drawables
                 int row = cell.num / maze.Width;
                 canvas.FillColor = cell.color;
 
-                canvas.FillRectangle((float)((column *cellWidth)), (float)(row*cellHeight), (float)(cellWidth), (float)(cellHeight));
+                canvas.FillRectangle((float)((column * cellWidth)), (float)(row * cellHeight), (float)(cellWidth), (float)(cellHeight));
                 canvas.FontColor = Colors.Black;
                 canvas.FontSize = 10;
                 canvas.Font = Microsoft.Maui.Graphics.Font.Default;
-                canvas.DrawString(""+cell.time, (float)((column * cellWidth)), (float)(row * cellHeight), (float)(cellWidth), (float)(cellHeight), HorizontalAlignment.Center, VerticalAlignment.Top);
-                canvas.DrawString("" + cell.hit, (float)((column * cellWidth)+10), (float)(row * cellHeight+10), (float)(cellWidth)-10, (float)(cellHeight)-10, HorizontalAlignment.Center, VerticalAlignment.Center);
+                if (time)
+                {
+                    canvas.DrawString("" + cell.time, (float)((column * cellWidth)), (float)(row * cellHeight), (float)(cellWidth), (float)(cellHeight), HorizontalAlignment.Center, VerticalAlignment.Top);
+                }
+                if (hits)
+                {
+                    canvas.DrawString("" + cell.hit, (float)((column * cellWidth) + 10), (float)(row * cellHeight + 10), (float)(cellWidth) - 10, (float)(cellHeight) - 10, HorizontalAlignment.Center, VerticalAlignment.Center);
+                }
             }
             foreach (var edge in maze.Edges)
             {

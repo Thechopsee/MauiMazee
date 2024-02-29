@@ -14,8 +14,6 @@
          VerticalOptions="Center">
         <HorizontalStackLayout
          HorizontalOptions="Center">
-
-
         </HorizontalStackLayout>
         <Grid  Margin="45,0,45,0">
             <Grid.ColumnDefinitions>
@@ -40,16 +38,32 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <HorizontalStackLayout>
-                    <Button Text="Position view"
+                <HorizontalStackLayout IsVisible="{Binding Vizualizershow}">
+                    <Button Text="Position"
                             Command="{Binding switchToPositionCommand}"
                             IsEnabled="{Binding PositionEnabled}"
                             />
-                    <Button Text="Cell view"
+                    <Button Text="Cell"
                              Command="{Binding switchToCellCommand}"
                             IsEnabled="{Binding CellEnabled}"
                             />
                 </HorizontalStackLayout>
+                <VerticalStackLayout IsVisible="{Binding Heatmapshow}">
+                    <HorizontalStackLayout >
+                        <Button Text="Time"
+                            Command="{Binding switchToTimeCommand}"
+                            IsEnabled="{Binding TimeEnabled}"
+                            />
+                        <Button Text="Hits"
+                             Command="{Binding switchToHitsCommand}"
+                            IsEnabled="{Binding HitsEnabled}"
+                            />
+                    </HorizontalStackLayout>
+                        <Button Text="All"
+                             Command="{Binding switchToAllHeatCommand}"
+                            IsEnabled="{Binding AllHeatEnabled}"
+                            />  
+                </VerticalStackLayout>
             </StackLayout>
 
             <VerticalStackLayout
