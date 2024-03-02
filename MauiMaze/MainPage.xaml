@@ -16,7 +16,7 @@
             VerticalOptions="Center">
 
             <Frame BorderColor="Gray"
-                    CornerRadius="10">
+                    CornerRadius="10" BackgroundColor="White">
                 <VerticalStackLayout
 
                     Spacing="25"

@@ -7,7 +7,7 @@
              Title="">
     <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
         <Frame BorderColor="Gray"
-                CornerRadius="10">
+                CornerRadius="10" BackgroundColor="White">
             <VerticalStackLayout
             HorizontalOptions="Center"
             VerticalOptions="Center"

@@ -26,11 +26,11 @@
          Grid.Column="0"
          MinimumWidthRequest="120"
          >
-                <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged">
+                <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200">
                     <ListView.ItemTemplate x:DataType="mdls:GameRecord">
                         <DataTemplate  >
                             <ViewCell>
-                                <HorizontalStackLayout>
+                                <HorizontalStackLayout >
                                     <Label Text="{Binding grID}" MinimumHeightRequest="50" />
                                     <Button Text=" " BackgroundColor="{Binding color}"/>
                                 </HorizontalStackLayout>
@@ -40,10 +40,12 @@
                 </ListView>
                 <HorizontalStackLayout IsVisible="{Binding Vizualizershow}">
                     <Button Text="Position"
+                            WidthRequest="100"
                             Command="{Binding switchToPositionCommand}"
                             IsEnabled="{Binding PositionEnabled}"
                             />
                     <Button Text="Cell"
+                            WidthRequest="100"
                              Command="{Binding switchToCellCommand}"
                             IsEnabled="{Binding CellEnabled}"
                             />
@@ -51,43 +53,54 @@
                 <VerticalStackLayout IsVisible="{Binding Heatmapshow}">
                     <HorizontalStackLayout >
                         <Button Text="Time"
+                            WidthRequest="100"
                             Command="{Binding switchToTimeCommand}"
                             IsEnabled="{Binding TimeEnabled}"
                             />
                         <Button Text="Hits"
+                                WidthRequest="100"
                              Command="{Binding switchToHitsCommand}"
                             IsEnabled="{Binding HitsEnabled}"
                             />
                     </HorizontalStackLayout>
-                        <Button Text="All"
+                    <Button Text="All"
+                                WidthRequest="200"
                              Command="{Binding switchToAllHeatCommand}"
                             IsEnabled="{Binding AllHeatEnabled}"
-                            />  
+                            />
                 </VerticalStackLayout>
+                <ActivityIndicator
+                    IsVisible="{Binding Recordshow}"
+                    IsRunning="False"
+                    WidthRequest="200"
+                    HeightRequest="95"
+                    />
+
+
             </StackLayout>
 
             <VerticalStackLayout
                 Grid.Column="2">
                 <HorizontalStackLayout>
-                    <Button Text="Vizualize" Command="{Binding switchViewCommand}" CommandParameter="1" IsEnabled="{Binding Vbs}"/>
-                    <Button Text="Heatmap" Command="{Binding switchViewCommand}" CommandParameter="2" IsEnabled="{Binding Hbs}"/>
-                    <Button Text="Records" Command="{Binding switchViewCommand}" CommandParameter="3" IsEnabled="{Binding Gbs}"/>
+                    <Button Text="Vizualize" Command="{Binding switchViewCommand}" CommandParameter="1" IsEnabled="{Binding Vbs}" WidthRequest="100"/>
+                    <Button Text="Heatmap" Command="{Binding switchViewCommand}" CommandParameter="2" IsEnabled="{Binding Hbs}" WidthRequest="100"/>
+                    <Button Text="Records" Command="{Binding switchViewCommand}" CommandParameter="3" IsEnabled="{Binding Gbs}" WidthRequest="100"/>
                 </HorizontalStackLayout>
                 <GraphicsView 
                      x:Name="canvas"
                      IsVisible="{Binding Vizualizershow}"
-                     MaximumWidthRequest="500"
-                     MinimumHeightRequest="300"
-
-                     HorizontalOptions="FillAndExpand"
+                     WidthRequest="500"
+                     HeightRequest="300"
+                     HorizontalOptions="StartAndExpand"
                      VerticalOptions="FillAndExpand"
                      />
                 <GraphicsView 
                      x:Name="heatmap"
-                     MaximumWidthRequest="500"
-                     MinimumHeightRequest="300"
+                     WidthRequest="500"
+                     HeightRequest="300"
+                    
                      IsVisible="{Binding Heatmapshow}"
-                     HorizontalOptions="FillAndExpand"
+                     HorizontalOptions="StartAndExpand"
                      VerticalOptions="FillAndExpand"/>
                 <VerticalStackLayout IsVisible="{Binding Recordshow}">
                     <Label Text="Hit Walls Count:"/>
