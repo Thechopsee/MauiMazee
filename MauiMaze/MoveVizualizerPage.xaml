@@ -21,12 +21,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <StackLayout 
-         MinimumHeightRequest="300"
+            <VerticalStackLayout 
          Grid.Column="0"
-         MinimumWidthRequest="120"
          >
-                <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200">
+                <Label Text="Records:" FontSize="16" Margin="0,20,0,0" />
+                <ScrollView MaximumHeightRequest="200" HorizontalScrollBarVisibility="Always">
+                    <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200" VerticalScrollBarVisibility="Always">
                     <ListView.ItemTemplate x:DataType="mdls:GameRecord">
                         <DataTemplate  >
                             <ViewCell>
@@ -38,7 +38,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <HorizontalStackLayout IsVisible="{Binding Vizualizershow}">
+                    </ScrollView>
+                        <HorizontalStackLayout IsVisible="{Binding Vizualizershow}">
                     <Button Text="Position"
                             WidthRequest="100"
                             Command="{Binding switchToPositionCommand}"
@@ -75,9 +76,16 @@
                     WidthRequest="200"
                     HeightRequest="95"
                     />
+                <Button
+x:Name="ALLButton"
+Text="Show All Data"
+IsEnabled="{Binding ShowAllEnabled}"
+Command="{Binding switchToAllCommand}"
+MinimumWidthRequest="200"
+HorizontalOptions="Center" />
 
 
-            </StackLayout>
+            </VerticalStackLayout>
 
             <VerticalStackLayout
                 Grid.Column="2">
@@ -112,13 +120,7 @@
             </VerticalStackLayout>
         </Grid>
         <HorizontalStackLayout VerticalOptions="FillAndExpand">
-            <Button
-         x:Name="ALLButton"
-         Text="Show All"
-         IsEnabled="{Binding ShowAllEnabled}"
-         Command="{Binding switchToAllCommand}"
-         MinimumWidthRequest="300"
-         HorizontalOptions="Center" />
+            
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

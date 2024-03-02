@@ -9,7 +9,7 @@
         <ListView ItemsSource="{Binding Users}" x:Name="recordsList" HorizontalOptions="Center"  >
             <ListView.ItemTemplate  >
                 <DataTemplate >
-                    <TextCell Text="{Binding lastname} "
+                    <TextCell Text="{Binding lastname} " TextColor="Black"
                               Detail="{Binding firstname}"
                               Command="{Binding goToVizualizerCommand}"
                              />
