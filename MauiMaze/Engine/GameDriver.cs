@@ -90,12 +90,13 @@ namespace MauiMaze.Engine
         }
         public void timerMove(object state)
         {
+            graphicsView.Invalidate();
             movePlayerToPosition(lastposx, lastposy);
         }
         public bool movePlayerToPosition(float x, float y)
         {
             
-            if (player.positionX==0 && player.positionY==0)
+            if (player.positionX<=0 && player.positionY<=0)
             {
                 mazeDrawable.reinitPlayer(player);
             }

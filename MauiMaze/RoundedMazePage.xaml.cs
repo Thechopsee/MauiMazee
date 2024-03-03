@@ -12,15 +12,21 @@ public partial class RoundedMazePage : ContentPage
 {
     BaseMazeDrawable mazeDrawable;
     GameDriver driver;
-    async void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
+    Timer timer;
+
+    void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
-        var touch = e.Touches.First();
+
+
         if (driver.ended)
         {
-            await Navigation.PushAsync(new RecordFullPage(driver.gameRecord,0)).ConfigureAwait(false);
+            Navigation.PushAsync(new RecordFullPage(driver.gameRecord, 0));
         }
-        driver.movePlayerToPosition(touch.X, touch.Y);
-
+        if (e is not null)
+        {
+            var touch = e.Touches.First();
+            driver.setPosition(touch.X, touch.Y);
+        }
     }
 
     private async void GoBackPop(object sender, EventArgs e)
@@ -55,14 +61,19 @@ public partial class RoundedMazePage : ContentPage
     public RoundedMazePage(int size)
 	{
 		InitializeComponent();
+        
         mazeDrawable = this.Resources["MazeDrawable"] as RoundedMazeDrawable;
         driver = new GameDriver(mazeDrawable, Canvas, size,1);
+        timer = new Timer(driver.timerMove, null, 0, 33);
+        Canvas.Invalidate();
     }
     public RoundedMazePage(RoundedMaze roundedMaze)
     {
         InitializeComponent();
+
         mazeDrawable = this.Resources["MazeDrawable"] as RoundedMazeDrawable;
         mazeDrawable.maze = roundedMaze;
-        driver = new GameDriver(mazeDrawable,roundedMaze, Canvas);
+        driver = new GameDriver(mazeDrawable, roundedMaze, Canvas);
+        timer = new Timer(driver.timerMove, null, 0, 33);
     }
 }

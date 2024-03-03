@@ -47,9 +47,9 @@ namespace MauiMaze.Drawables
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle((float)rm.end.X, (float)rm.end.Y, 10);
             //canvas.DrawRectangle((float)rm.end.X, rm.end.Y, rm.end.bottomX - rm.end.X, rm.end.bottomY - rm.end.Y);
+            canvas.StrokeColor = Colors.Red;
+            canvas.DrawCircle((float)rm.start.X, (float)rm.start.Y , 10);
             canvas.StrokeColor = Colors.Green;
-            //canvas.DrawCircle((float)rm.start.X, (float)rm.start.Y + rm.yoffsett, 10);
-
             foreach (var row in rm.grid)
             {
                 foreach (var cell in row)
@@ -79,11 +79,11 @@ namespace MauiMaze.Drawables
                 }
             }
 
-            if (player is null)
+            if (player is null ||player.positionX<=0)
             {
                 cellHeight = 20;
                 cellWidth = 20;
-               // player = new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
+               player = new Player((int)(maze.start.X-cellWidth), (int)(maze.start.Y-cellHeight), cellWidth, cellHeight);
             }
             else
             {
