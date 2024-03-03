@@ -70,7 +70,7 @@ namespace MauiMaze.ViewModels
                     await Shell.Current.Navigation.PushAsync(new MazePage(Mazesize));
                     return;
                 case MazeType.Rounded:
-                    await Shell.Current.Navigation.PushAsync(new RoundedMazePage(25,login));
+                    await Shell.Current.Navigation.PushAsync(new RoundedMazePage(Mazesize));
                     return;
             }
 

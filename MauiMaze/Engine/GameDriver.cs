@@ -52,7 +52,10 @@ namespace MauiMaze.Engine
             GameMaze maze;
             if (mazetype == 0)
             {
-                maze = new Maze(size, size);
+
+                Maze aze = new Maze(size, size);
+                aze.Edges = HuntAndKillMazeGenerator.GenerateMaze(10,10).ToArray();
+                maze = aze;
             }
             else
             {
@@ -61,6 +64,15 @@ namespace MauiMaze.Engine
             mazeDrawable.maze=maze;
             inicializeGameboard();
             
+        }
+        public GameDriver(BaseMazeDrawable md, RoundedMaze maze, GraphicsView gv)
+        {
+            graphicsView = gv;
+            mazeDrawable = md;
+            mazeDrawable.player = new Player(0, 0, md.cellWidth, md.cellHeight);
+            player = mazeDrawable.player;
+            mazeDrawable.maze = maze;
+            inicializeGameboard();
         }
         public GameDriver(BaseMazeDrawable md, Maze maze, GraphicsView gv)
         {

@@ -2,6 +2,7 @@
 using MauiMaze.Engine;
 using MauiMaze.Exceptions;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,75 +11,48 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.RoundedMaze
 {
-    public class Link
-    {
-        public int Row { get; set; }
-        public int Col { get; set; }
-    }
+
     public class RoundedMaze : GameMaze
     {
         public List<List<Cell>> grid = new List<List<Cell>>();
-        private int lineWidth = 4;
         private int size = 25;
         private int width = 0;
         private int rows = 0;
+        private int cols = 0;
         public int xoffsett { get; set; }
         public int yoffsett { get; set; }
 
         public RoundedMaze(Size size)
         {
-            this.size = (int)size.Height;
+            Width = (int)size.Width;
+            Height = (int)size.Height;
+            mazeType = MazeType.Rounded;
+            this.size = (int)size.Height+15;
+            Edges = HuntAndKillMazeGenerator.GenerateMaze((int)size.Height,(int)size.Width).ToArray();
         }
-
-        public Edge[] transformToEdgeGraph()
+        public RoundedMaze(Size size, Edge[] edges)
         {
-            List<Edge> edges=new List<Edge>();
-            int rowLenght=grid[0].Count;
-            for (int i = 0; i < grid.Count; i++)
-            {
-                for (int j = 0; j < grid[i].Count; j++)
-                {
-                    int startingid = grid[i][j].Row + (grid[i][j].Col * rowLenght);
-                   // List<Cell> listnei=GetNeighbors(grid[i][j]);
-
-                    foreach (Link c in grid[i][j].Links)
-                    {
-                        int endid = c.Row + (c.Col * rowLenght);
-                        edges.Add(new Edge(startingid, endid));
-                    }
-                }
-            }
-            return edges.ToArray();
-        }
-        public void generateProcedure(int height,int width)
-        {
-            this.width = height;
-            rows = (int)Math.Floor(this.width / 2.0 / size);
-            this.width = 2 * rows * size;
-            xoffsett = (width /2)-this.width/2;
-            yoffsett = 30;
-            end = new End((this.width / 2) + xoffsett, (this.width / 2)+yoffsett, (this.width / 2) + xoffsett+30, (this.width / 2)+yoffsett+30,0);
+            Width = (int)size.Width;
+            Height = (int)size.Height;
+            mazeType = MazeType.Rounded; 
+            this.size = (int)size.Height + 15;
+            this.Edges = edges;
+            rows = (int)Width;
+            cols = (int)Height;
             createGrid();
+            recostructFromEdges();
         }
-        void createGrid()
-        {
-            double rowHeight = 1.0 / rows;
 
+        void createGrid()
+        { 
             grid = new List<List<Cell>>();
             grid.Add(new List<Cell> { new Cell { Row = 0, Col = 0, Links = new List<Link>(), Outward = new List<Link>() } });
 
             for (int i = 1; i < rows; i++)
             {
-                double radius = (double)i / rows;
-                double circumference = 2 * Math.PI * radius;
-                int prevCount = grid[i - 1].Count;
-                double cellWidth = circumference / prevCount;
-                int ratio = (int)Math.Round(cellWidth / rowHeight);
-                int count = prevCount * ratio;
-
                 List<Cell> rowList = new List<Cell>();
 
-                for (int j = 0; j < count; j++)
+                for (int j = 0; j < cols; j++)
                 {
                     rowList.Add(new Cell { Row = i, Col = j, Links = new List<Link>(), Outward = new List<Link>() });
                 }
@@ -120,21 +94,21 @@ namespace MauiMaze.Models.RoundedMaze
                     double angleCcw = cell.Col * angle;
                     double angleCw = (cell.Col + 1) * angle;
 
-                    cell.InnerCcwX = (int)(Math.Round(center + (innerRadius * Math.Cos(angleCcw))) + lineWidth / 2)+xoffsett;
-                    cell.InnerCcwY = (int)(Math.Round(center + (innerRadius * Math.Sin(angleCcw))) + lineWidth / 2)+yoffsett;
-                    cell.OuterCcwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCcw))) + lineWidth / 2) + xoffsett;
-                    cell.OuterCcwY = (int)(Math.Round(center + (outerRadius * Math.Sin(angleCcw))) + lineWidth / 2) + yoffsett;
-                    cell.InnerCwX = (int)(Math.Round(center + (innerRadius * Math.Cos(angleCw))) + lineWidth / 2) + xoffsett;
-                    cell.InnerCwY = (int)(Math.Round(center + (innerRadius * Math.Sin(angleCw))) + lineWidth / 2) + yoffsett;
-                    cell.OuterCwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCw))) + lineWidth / 2) + xoffsett;
-                    cell.OuterCwY = (int)(Math.Round(center + (outerRadius * Math.Sin(angleCw))) + lineWidth / 2) + yoffsett;
+                    cell.InnerCcwX = (int)(Math.Round(center + (innerRadius * Math.Cos(angleCcw)))  )+xoffsett;
+                    cell.InnerCcwY = (int)(Math.Round(center + (innerRadius * Math.Sin(angleCcw)))  )+yoffsett;
+                    cell.OuterCcwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCcw))) ) + xoffsett;
+                    cell.OuterCcwY = (int)(Math.Round(center + (outerRadius * Math.Sin(angleCcw))) ) + yoffsett;
+                    cell.InnerCwX = (int)(Math.Round(center + (innerRadius * Math.Cos(angleCw))) ) + xoffsett;
+                    cell.InnerCwY = (int)(Math.Round(center + (innerRadius * Math.Sin(angleCw))) ) + yoffsett;
+                    cell.OuterCwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCw))) ) + xoffsett;
+                    cell.OuterCwY = (int)(Math.Round(center + (outerRadius * Math.Sin(angleCw))) ) + yoffsett;
 
                     double centerAngle = (angleCcw + angleCw) / 2.0;
 
-                    cell.CenterX = (int)((Math.Round(center + (innerRadius * Math.Cos(centerAngle))) + lineWidth / 2 +
-                                       Math.Round(center + (outerRadius * Math.Cos(centerAngle))) + lineWidth / 2) / 2);
-                    cell.CenterY = (int)((Math.Round(center + (innerRadius * Math.Sin(centerAngle))) + lineWidth / 2 +
-                                       Math.Round(center + (outerRadius * Math.Sin(centerAngle))) + lineWidth / 2) / 2);
+                    cell.CenterX = (int)((Math.Round(center + (innerRadius * Math.Cos(centerAngle)))  +
+                                       Math.Round(center + (outerRadius * Math.Cos(centerAngle)))) / 2);
+                    cell.CenterY = (int)((Math.Round(center + (innerRadius * Math.Sin(centerAngle)))  +
+                                       Math.Round(center + (outerRadius * Math.Sin(centerAngle))) ) / 2);
                     
                 }
             }
@@ -146,79 +120,42 @@ namespace MauiMaze.Models.RoundedMaze
             return cellA.Links.Any(link => link.Row == cellB.Row && link.Col == cellB.Col);
         }
 
-        public List<Cell> GetNeighbors(Cell cell)
+        private void recostructFromEdges()
         {
-            var list = new List<Cell>();
-
-            if (cell.Cw != null) list.Add(grid[cell.Cw.Row][cell.Cw.Col]);
-            if (cell.Ccw != null) list.Add(grid[cell.Ccw.Row][cell.Ccw.Col]);
-            if (cell.Inward != null) list.Add(grid[cell.Inward.Row][cell.Inward.Col]);
-
-            list.AddRange(cell.Outward.Select(outward => grid[outward.Row][outward.Col]));
-
-            return list;
-        }
-
-        public void SolveAndDraw(double width, double height)
-        {
-            generateProcedure((int)height,(int)height);
-           
-            Random random = new Random();
-            int randomRow = random.Next(rows);
-            int randomCol = random.Next(grid[randomRow].Count);
-
-            Cell current = grid[randomRow][randomCol];
-            Cell last = grid[grid.Count - 1][grid[grid.Count-1].Count- grid[grid.Count - 1].Count/4];
-            
-           while (current != null)
+            for (int i = 0; i < Edges.Length; i++)
             {
-                List<Cell> unvisitedNeighbors = GetNeighbors(current).Where(n => n.Links.Count == 0).ToList();
-                int length = unvisitedNeighbors.Count;
+                int rowc1 = (int)(Edges[i].Cell1 / Width);
+                int colc1 = (int)(Edges[i].Cell1 % Width);
 
-                if (length > 0)
+                int rowc2 = (int)(Edges[i].Cell2 / Width);
+                int colc2 = (int)(Edges[i].Cell2 % Width);
+
+                if (rowc1 < 2 || rowc2 < 2)
                 {
-                    int rand = random.Next(length);
-                    Cell neighbor = unvisitedNeighbors[rand];
-
-                    current.Links.Add(new Link { Row = neighbor.Row, Col = neighbor.Col });
-                    grid[neighbor.Row][neighbor.Col].Links.Add(new Link { Row = current.Row, Col = current.Col });
-
-                    current = neighbor;
+                    continue;
                 }
-                else
-                {
-                    current = null;
-
-                    for (int i = 0; i < grid.Count; i++)
-                    {
-                        for (int j = 0; j < grid[i].Count; j++)
-                        {
-                            List<Cell> visitedNeighbors = GetNeighbors(grid[i][j]).Where(n => n.Links.Count > 0).ToList();
-
-                            if (grid[i][j].Links.Count == 0 && visitedNeighbors.Count > 0)
-                            {
-                                current = grid[i][j];
-                                int rand = random.Next(visitedNeighbors.Count);
-                                Cell neighbor = visitedNeighbors[rand];
-
-                                current.Links.Add(new Link { Row = neighbor.Row, Col = neighbor.Col });
-                                grid[neighbor.Row][neighbor.Col].Links.Add(new Link { Row = current.Row, Col = current.Col });
-
-                                break;
-                            }
-                        }
-
-                        if (current != null)
-                            break;
-                    }
-                }
-            }
-            if (start is null)
-            {
-                start = new Start((int)last.CenterX + xoffsett,(int)last.CenterY,0);
+                grid[rowc1][colc1].Links.Add(new Link { Row = rowc2, Col = colc2 });
+                grid[rowc2][colc2].Links.Add(new Link { Row = rowc1, Col = colc1 });
             }
         }
+        public void Generate(double width, double height)
+        {
+            rows = (int)Width;
+            cols = (int)Height;
+            this.width = (int)height;
+                xoffsett = ((int)width / 2) - this.width / 2;
+                yoffsett = 0;
+                end = new End((this.width / 2) + xoffsett, (this.width / 2) + yoffsett, (this.width / 2) + xoffsett + 30, (this.width / 2) + yoffsett + 30, 0);
+            createGrid();
+            recostructFromEdges();
 
+
+
+            //if (start is null)
+            //{
+            //    start = new Start((int)last.CenterX + xoffsett, (int)last.CenterY, 0);
+            //}
+        }
        
     }
 }

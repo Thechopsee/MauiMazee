@@ -62,6 +62,7 @@
                                         CommandParameter="{Binding ID}"
                                 />
                                 <Button Text="Save Online" BackgroundColor="Green" 
+                             
                                     Command="{Binding saveOnlineCommand}"
                                     CommandParameter="{Binding ID}"
                                     IsVisible="{Binding Offline}"

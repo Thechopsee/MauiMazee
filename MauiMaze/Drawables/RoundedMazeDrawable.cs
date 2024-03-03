@@ -9,6 +9,7 @@ using MauiMaze.Models.RoundedMaze;
 using MauiMaze.Engine;
 using MauiMaze.Exceptions;
 using Microsoft.Maui.Controls.Compatibility;
+using MauiMaze.Models.ClassicMaze;
 
 namespace MauiMaze.Drawables
 {
@@ -18,11 +19,11 @@ namespace MauiMaze.Drawables
         {
             if (maze is null)
             {
-                maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(25,25));
+                maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(10, 10));
             }
-        }
-         
-        public void Draw(ICanvas canvas, RectF dirtyRect)
+        }   
+
+    public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             if (canvas is null)
             {
@@ -41,27 +42,32 @@ namespace MauiMaze.Drawables
             RoundedMaze rm = (RoundedMaze)maze;
             if (rm.end is null)
             {
-                rm.SolveAndDraw(dirtyRect.Width, dirtyRect.Height);
+                rm.Generate(dirtyRect.Width, dirtyRect.Height);
             }
             canvas.StrokeColor = Colors.Blue;
             canvas.DrawCircle((float)rm.end.X, (float)rm.end.Y, 10);
-            canvas.DrawRectangle((float)rm.end.X, rm.end.Y, rm.end.bottomX - rm.end.X, rm.end.bottomY - rm.end.Y);
-            canvas.StrokeColor = Colors.Red;
-            canvas.DrawCircle((float)rm.start.X, (float)rm.start.Y + rm.yoffsett, 10);
+            //canvas.DrawRectangle((float)rm.end.X, rm.end.Y, rm.end.bottomX - rm.end.X, rm.end.bottomY - rm.end.Y);
+            canvas.StrokeColor = Colors.Green;
+            //canvas.DrawCircle((float)rm.start.X, (float)rm.start.Y + rm.yoffsett, 10);
 
             foreach (var row in rm.grid)
             {
                 foreach (var cell in row)
                 {
+
+                    if (cell.Row < 2)
+                    {
+                        continue;
+                    }
                     float startX = cell.InnerCcwX;
                     float startY = cell.InnerCcwY;
 
-                    if (cell.Inward == null || !RoundedMaze.IsLinked(cell, cell.Inward))
+                    if (cell.Inward == null || RoundedMaze.IsLinked(cell, cell.Inward))
                     {
                         canvas.DrawLine(startX, startY, cell.InnerCwX, cell.InnerCwY);
                     }
 
-                    if (cell.Cw == null || !RoundedMaze.IsLinked(cell, cell.Cw))
+                    if (cell.Cw == null || RoundedMaze.IsLinked(cell, cell.Cw))
                     {
                         canvas.DrawLine(cell.InnerCwX, cell.InnerCwY, cell.OuterCwX, cell.OuterCwY);
                     }
@@ -77,7 +83,7 @@ namespace MauiMaze.Drawables
             {
                 cellHeight = 20;
                 cellWidth = 20;
-                player = new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
+               // player = new Player((int)maze.start.X, (int)maze.start.Y, cellWidth, cellHeight);
             }
             else
             {

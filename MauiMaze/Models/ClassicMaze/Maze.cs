@@ -1,4 +1,5 @@
 ﻿using MauiMaze.Engine;
+using Microsoft.Maui.ApplicationModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,17 @@ namespace MauiMaze.Models.ClassicMaze
 {
     public class Maze : GameMaze
     {
-        public Edge[] Edges { get; set; }
-        
+        public void setupFromMaze(GameMaze mz)
+        {
+            this.Edges = mz.Edges;
+            this.start = mz.start;
+            this.end = mz.end;
+            this.MazeID = mz.MazeID;
+            this.mazeType = mz.mazeType;
+        }
         public Maze(int width,int height)
         {
+            mazeType = ViewModels.MazeType.Classic;
             //Size size=new Size(width,height);
             var edgesToCheck = Generate(width, height);
             var sets = InitializeSets(width, height);

@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace MauiMaze.Models.RoundedMaze
 {
+    public struct Link
+    {
+        public int Row { get; set; }
+        public int Col { get; set; }
+    }
     public class Cell
     {
         public int Row { get; set; }

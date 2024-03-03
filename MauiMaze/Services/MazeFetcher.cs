@@ -1,14 +1,12 @@
 ﻿
+using MauiMaze.Engine;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Models.DTOs;
+using MauiMaze.Models.RoundedMaze;
 using MauiMaze.ViewModels;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MauiMaze.Services
 {
@@ -36,34 +34,59 @@ namespace MauiMaze.Services
                 else
                 {
                    mazeDescriptions[i]=JsonConvert.DeserializeObject<Maze>(maze);
-                   Descriptions[i] = new MazeDescription(Int32.Parse(splited[i]),MazeType.Classic,DateTime.Now,LoginCases.Offline);
+                   Descriptions[i] = new MazeDescription(Int32.Parse(splited[i]), mazeDescriptions[i].mazeType,DateTime.Now,LoginCases.Offline);
                 }
             }
             return (mazeDescriptions,Descriptions);
         }
-        public static async Task<Maze> getMazeLocalbyID(int id)
+        public static async Task<GameMaze> getMazeLocalbyID(int id)
         {
 
             string maze = await SecureStorage.Default.GetAsync("maze" + id);
-
-            return JsonConvert.DeserializeObject<Maze>(maze);
+            GameMaze gm = JsonConvert.DeserializeObject<GameMaze>(maze);
+            if (gm.mazeType == MazeType.Rounded)
+            {
+                RoundedMaze rm = new RoundedMaze(new Size(gm.Width, gm.Height), gm.Edges);
+                return rm;
+            }
+            else
+            {
+                return gm;
+            }
 
             
         }
-        public static async Task saveMazeLocally(Maze maze)
+        public static async Task saveMazeLocally(GameMaze maze)
         {
             string data = await SecureStorage.Default.GetAsync("mazelist");
             if (data is null || data == " ")
             {
                 await SecureStorage.Default.SetAsync("mazelist", "1");
-                await SecureStorage.Default.SetAsync("maze1", JsonConvert.SerializeObject(maze));
+                if (maze.mazeType == MazeType.Classic)
+                {
+                    await SecureStorage.Default.SetAsync("maze1", JsonConvert.SerializeObject(maze));
+                }
+                else
+                {
+                    GameMaze gm = (GameMaze)maze.Clone();
+                    await SecureStorage.Default.SetAsync("maze1", JsonConvert.SerializeObject(gm));
+                }
+                
             }
             else
             {
                 string[] splited = data.Split(";");
                 int last = Int32.Parse(splited[splited.Length - 1]);
                 await SecureStorage.Default.SetAsync("mazelist", data + ";" + (last + 1));
-                await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(maze));
+                if (maze.mazeType == MazeType.Classic)
+                {
+                    await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(maze));
+                }
+                else
+                {
+                    GameMaze gm = (GameMaze)maze.Clone();
+                    await SecureStorage.Default.SetAsync("maze" + (last + 1), JsonConvert.SerializeObject(gm));
+                }
             }
         }
         public static async Task deleteMazelocaly(int mid)
@@ -186,6 +209,7 @@ namespace MauiMaze.Services
                     await MazeFetcher.deleteMazelocaly(m.ID);
                 }
             }
+            await SecureStorage.Default.SetAsync("mazelist", " ");
             return deletedIDs.ToArray();
         }
 

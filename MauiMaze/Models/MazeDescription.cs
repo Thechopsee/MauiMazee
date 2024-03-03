@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Models.RoundedMaze;
 using MauiMaze.Models.DTOs;
 using MauiMaze.Services;
 using MauiMaze.ViewModels;
@@ -34,16 +36,21 @@ namespace MauiMaze.Models
             this.local = true;
             this.description = "" + ID + mt;
             this.whereIsMazeSaved = lc;
+            
             if (UserDataProvider.GetInstance().getUserID() != -1)
             {
                 Offline = true;
+            }
+            if (mazeType == MazeType.Rounded)
+            {
+                offline = false;
             }
         }
 
         [RelayCommand]
         public async Task GoToMoves()
         {
-            Maze mz;
+            GameMaze mz;
             if (local && ID >= 0)
             {
                  mz= await MazeFetcher.getMazeLocalbyID(ID);
@@ -53,12 +60,14 @@ namespace MauiMaze.Models
                  mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
             }
             mz.MazeID = ID;
-            await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(mz,whereIsMazeSaved)).ConfigureAwait(true);
+            Maze maz = new Maze(mz.Width,mz.Height);
+            maz.setupFromMaze(mz);
+            await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(maz,whereIsMazeSaved)).ConfigureAwait(true);
         }
         [RelayCommand]
         public async Task GoToPlay()
         {
-            Maze mz;
+            GameMaze mz;
             if (local && ID >= 0)
             {
                 mz = await MazeFetcher.getMazeLocalbyID(ID);
@@ -68,8 +77,16 @@ namespace MauiMaze.Models
             {
                 mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
             }
-            
-            await Shell.Current.Navigation.PushAsync(new MazePage(mz)).ConfigureAwait(true);
+            if (mz.mazeType == MazeType.Classic)
+            {
+                Maze maz = new Maze(mz.Width, mz.Height);
+                maz.setupFromMaze(mz);
+                await Shell.Current.Navigation.PushAsync(new MazePage(maz)).ConfigureAwait(true);
+            }
+            else
+            {
+                await Shell.Current.Navigation.PushAsync(new RoundedMazePage((MauiMaze.Models.RoundedMaze.RoundedMaze)mz)).ConfigureAwait(true);
+            }
         }
         [RelayCommand]
         public async Task deleteM(int id)
@@ -81,7 +98,7 @@ namespace MauiMaze.Models
         [RelayCommand]
         public async Task saveOnline(int id)
         {
-            Maze mz = await MazeFetcher.getMazeLocalbyID(id).ConfigureAwait(true);
+            GameMaze mz = await MazeFetcher.getMazeLocalbyID(id).ConfigureAwait(true);
             mz.MazeID = 0;
             int idd = UserDataProvider.GetInstance().getUserID();
             if (idd != -1)
