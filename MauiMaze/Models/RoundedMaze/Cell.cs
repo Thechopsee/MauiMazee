@@ -16,9 +16,7 @@ namespace MauiMaze.Models.RoundedMaze
         public int Row { get; set; }
         public int Col { get; set; }
         public List<Link> Links { get; set; }
-        public List<Link> Outward { get; set; }
         public Cell Cw { get; set; }
-        public Cell Ccw { get; set; }
         public Cell Inward { get; set; }
         public float InnerCcwX { get; set; }
         public float InnerCcwY { get; set; }

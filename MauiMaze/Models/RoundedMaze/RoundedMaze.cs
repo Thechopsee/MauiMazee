@@ -46,7 +46,7 @@ namespace MauiMaze.Models.RoundedMaze
         void createGrid()
         { 
             grid = new List<List<Cell>>();
-            grid.Add(new List<Cell> { new Cell { Row = 0, Col = 0, Links = new List<Link>(), Outward = new List<Link>() } });
+            grid.Add(new List<Cell> { new Cell { Row = 0, Col = 0, Links = new List<Link>() } });
 
             for (int i = 1; i < rows; i++)
             {
@@ -54,7 +54,7 @@ namespace MauiMaze.Models.RoundedMaze
 
                 for (int j = 0; j < cols; j++)
                 {
-                    rowList.Add(new Cell { Row = i, Col = j, Links = new List<Link>(), Outward = new List<Link>() });
+                    rowList.Add(new Cell { Row = i, Col = j, Links = new List<Link>() });
                 }
 
                 grid.Add(rowList);
@@ -68,13 +68,11 @@ namespace MauiMaze.Models.RoundedMaze
                     if (cell.Row > 0)
                     {
                         cell.Cw = new Cell { Row = i, Col = (j == grid[i].Count - 1 ? 0 : j + 1) };
-                        cell.Ccw = new Cell { Row = i, Col = (j == 0 ? grid[i].Count - 1 : j - 1) };
 
                         double ratio = (double)grid[i].Count / grid[i - 1].Count;
                         Cell parent = grid[i - 1][(int)Math.Floor(j / ratio)];
 
                         cell.Inward = new Cell { Row = parent.Row, Col = parent.Col };
-                        parent.Outward.Add(new Link { Row = cell.Row, Col = cell.Col });
                     }
                 }
             }
@@ -96,8 +94,8 @@ namespace MauiMaze.Models.RoundedMaze
 
                     cell.InnerCcwX = (int)(Math.Round(center + (innerRadius * Math.Cos(angleCcw)))  )+xoffsett;
                     cell.InnerCcwY = (int)(Math.Round(center + (innerRadius * Math.Sin(angleCcw)))  )+yoffsett;
-                    cell.OuterCcwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCcw))) ) + xoffsett;
-                    cell.OuterCcwY = (int)(Math.Round(center + (outerRadius * Math.Sin(angleCcw))) ) + yoffsett;
+                    cell.OuterCcwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCcw))) ) +xoffsett;
+                    cell.OuterCcwY = (int)(Math.Round(center + (outerRadius * Math.Sin(angleCcw))) ) +yoffsett;
                     cell.InnerCwX = (int)(Math.Round(center + (innerRadius * Math.Cos(angleCw))) ) + xoffsett;
                     cell.InnerCwY = (int)(Math.Round(center + (innerRadius * Math.Sin(angleCw))) ) + yoffsett;
                     cell.OuterCwX = (int)(Math.Round(center + (outerRadius * Math.Cos(angleCw))) ) + xoffsett;
