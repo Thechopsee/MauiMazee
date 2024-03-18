@@ -25,7 +25,7 @@ namespace MauiMaze.Drawables
             }
             else
             {
-                mazeDrawable = new RoundedMazeDrawable();
+                mazeDrawable = new RoundedMazeDrawable(null);
             }
             mazeDrawable.maze = maze;
         }

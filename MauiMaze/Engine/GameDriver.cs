@@ -1,8 +1,10 @@
 ﻿
 
 using MauiMaze.Drawables;
+using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Models.Generatory;
 using MauiMaze.Models.RoundedMaze;
 using MauiMaze.Services;
 using Microsoft.Maui.Controls;
@@ -43,7 +45,7 @@ namespace MauiMaze.Engine
             }
             graphicsView.Invalidate();
         }
-        public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype)
+        public GameDriver(BaseMazeDrawable md,GraphicsView gv,int size,int mazetype,GeneratorEnum generator)
         {
             graphicsView = gv;
             mazeDrawable = md;
@@ -53,13 +55,11 @@ namespace MauiMaze.Engine
             if (mazetype == 0)
             {
 
-                Maze aze = new Maze(size, size);
-                aze.Edges = HuntAndKillMazeGenerator.GenerateMaze(10,10).ToArray();
-                maze = aze;
+                maze = new Maze(size, size, Helpers.GeneratorEnum.Sets);
             }
             else
             {
-                maze = new RoundedMaze(new Size(size,size));
+                maze = new RoundedMaze(new Size(size,size),generator);
             }
             mazeDrawable.maze=maze;
             inicializeGameboard();

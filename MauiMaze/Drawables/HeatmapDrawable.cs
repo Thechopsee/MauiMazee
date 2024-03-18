@@ -72,13 +72,17 @@ namespace MauiMaze.Drawables
                 }
             }
 
-            if (maze.end is not null || maze.start is not null)
+            if (maze.end is not null || maze.start is not null )
             {
                 canvas.StrokeColor = Colors.Blue;
                 canvas.DrawCircle(maze.end.X + (float)(cellWidth / 2), maze.end.Y + (float)(cellHeight / 2), (float)Math.Min(cellWidth, cellHeight) / 3);
                 canvas.StrokeColor = Colors.Red;
                 canvas.DrawCircle(maze.start.X, maze.start.Y, (float)Math.Min(cellWidth, cellHeight) / 3);
                 canvas.StrokeColor = Colors.Green;
+                
+            }
+            if (cellData.Length > 0)
+            {
                 int column = cellData[maze.start.cell].num % maze.Width;
                 int row = cellData[maze.start.cell].num / maze.Width;
                 canvas.DrawString("" + cellData[maze.start.cell].time, (float)((column * cellWidth)), (float)(row * cellHeight), (float)(cellWidth), (float)(cellHeight), HorizontalAlignment.Center, VerticalAlignment.Top);

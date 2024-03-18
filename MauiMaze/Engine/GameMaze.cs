@@ -18,7 +18,6 @@ namespace MauiMaze.Engine
         public int MazeID { get; set; }
         public End end { get; set; }
         public Start start { get; set; }
-        public bool firstrun { get; set; }
         public Edge[] Edges { get; set; }
         public MazeType mazeType { get; set; }
 

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace MauiMaze.ViewModels
 {
     public partial class LoginPageViewModel : ObservableObject
@@ -50,7 +49,7 @@ namespace MauiMaze.ViewModels
                         }
                         else if(Role == RoleEnum.Reseacher) 
                         {
-                            UserDataDTO[] users=await UserComunicator.getUsers(Email.Trim(), Password.Trim());
+                            UserDataDTO[] users=await UserComunicator.getUsers();
                             UserListPageViewModel uvm = new UserListPageViewModel(users);
                             await Shell.Current.Navigation.PushAsync(new UserListPage(uvm));
                         }

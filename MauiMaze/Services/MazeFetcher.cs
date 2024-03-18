@@ -110,11 +110,12 @@ namespace MauiMaze.Services
        
         public static async Task<bool> SaveMazeOnline(int userIDD, MazeDTO maze)
         {
-            string apiUrl = ServiceConfig.serverAdress + "saveMaze";
+            string apiUrl = ServiceConfig.serverAdress + "mazes";
 
             var userData = new
             {
                 userID = userIDD,
+                AT = UserDataProvider.GetInstance().getUserAT(),
                 mazedto = maze
             };
             using (HttpClient client = new HttpClient())
@@ -131,18 +132,11 @@ namespace MauiMaze.Services
         public static async Task<MazeDescription[]> getMazeList(int userid)
         {
             await getMazeCountForUser(userid);
-            string apiUrl = ServiceConfig.serverAdress+"loadMazeList";
-
-            var userData = new
-            {
-                userID = userid,
-            };
+            string apiUrl = ServiceConfig.serverAdress+"users/"+userid+"/mazes";
 
             using (HttpClient client = new HttpClient())
             {
-                string jsonUserData = JsonConvert.SerializeObject(userData);
-                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await client.PostAsync(apiUrl,null).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 if (response.IsSuccessStatusCode)
@@ -172,7 +166,7 @@ namespace MauiMaze.Services
         public static async Task<int> getMazeCountForUser(int userid)
         {
             int rsp = 0;
-            string apiUrl = ServiceConfig.serverAdress + "loadMazeCount";
+            string apiUrl = ServiceConfig.serverAdress + "users/" + userid + "/mcount";
 
             var userData = new
             {
@@ -215,25 +209,18 @@ namespace MauiMaze.Services
 
         public static async Task<Maze> getMaze(int mazeid)
         {
-            string apiUrl = ServiceConfig.serverAdress +"loadMaze";
-
-            var userData = new
-            {
-                mazeID = mazeid,
-            };
+            string apiUrl = ServiceConfig.serverAdress +"mazes/"+mazeid;
 
             using (HttpClient client = new HttpClient())
             {
-                string jsonUserData = JsonConvert.SerializeObject(userData);
-                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await client.PostAsync(apiUrl, null).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                if (response.IsSuccessStatusCode)
                 {
                     MazeDTO mm = JsonConvert.DeserializeObject<MazeDTO>(responseContent);
 
-                    Maze mz=new Maze(mm.size,mm.size);
+                    Maze mz=new Maze(mm.size,mm.size, Helpers.GeneratorEnum.Sets);
                     mz.MazeID = mazeid;
                     mz.Edges = mm.edges;
                     mz.start = new Engine.Start(-1,-1,mm.startCell);
@@ -242,7 +229,7 @@ namespace MauiMaze.Services
                 }
                 else
                 {
-                    return new Maze(1, 1);
+                    return new Maze(1, 1, Helpers.GeneratorEnum.Sets);
                 }
 
             }

@@ -4,9 +4,21 @@
              x:Class="MauiMaze.ReportBugPage"
              Title="ReportBugPage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <StackLayout>
+            <Label Text="Sender:" />
+            <Entry x:Name="senderEntry" Placeholder="Sender" />
+        </StackLayout>
+
+        <StackLayout>
+            <Label Text="Subject:" />
+            <Entry x:Name="subjectEntry" Placeholder="Subject" />
+        </StackLayout>
+
+        <StackLayout>
+            <Label Text="Bug description:" />
+            <Editor x:Name="textEditor" Placeholder="Text" HeightRequest="150" />
+        </StackLayout>
+
+        <Button Text="Submit" Clicked="SubmitButton_Clicked" x:Name="submitBTn" />
     </VerticalStackLayout>
 </ContentPage>

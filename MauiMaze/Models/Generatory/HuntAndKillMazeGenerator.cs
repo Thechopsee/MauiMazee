@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace MauiMaze.Models.RoundedMaze
+namespace MauiMaze.Models.Generatory
 {
-    public class HuntAndKillMazeGenerator
+    public class HuntAndKillMazeGenerator :IGenerator
     {
-        public static List<Edge> GenerateMaze(int rows, int cols)
+        public List<Edge> GenerateMaze(int rows, int cols)
         {
             var edges = new List<Edge>();
             var random = new Random();
@@ -30,7 +30,7 @@ namespace MauiMaze.Models.RoundedMaze
                     cell++;
                 }
             }
-            
+
             var visited = new bool[rows, cols];
 
             int currentRow = random.Next(rows);
@@ -50,7 +50,7 @@ namespace MauiMaze.Models.RoundedMaze
 
                     int currentCell = currentRow * cols + currentCol;
                     int neighborCell = neighborRow * cols + neighborCol;
-                    edges.RemoveAll(edge => (edge.Cell1 == currentCell && edge.Cell2 == neighborCell) || (edge.Cell1 == neighborCell && edge.Cell2 == currentCell));
+                    edges.RemoveAll(edge => edge.Cell1 == currentCell && edge.Cell2 == neighborCell || edge.Cell1 == neighborCell && edge.Cell2 == currentCell);
 
                     currentRow = neighborRow;
                     currentCol = neighborCol;
@@ -67,7 +67,7 @@ namespace MauiMaze.Models.RoundedMaze
                             {
                                 int currentCell = frow * cols + fcol;
                                 int newCell = r * cols + c;
-                                edges.RemoveAll(edge => (edge.Cell1 == currentCell && edge.Cell2 == newCell) || (edge.Cell1 == newCell && edge.Cell2 == currentCell));
+                                edges.RemoveAll(edge => edge.Cell1 == currentCell && edge.Cell2 == newCell || edge.Cell1 == newCell && edge.Cell2 == currentCell);
 
                                 visited[r, c] = true;
 
@@ -105,21 +105,21 @@ namespace MauiMaze.Models.RoundedMaze
             return unvisitedNeighbors;
         }
 
-        private static (bool,int,int) HasVisitedNeighbor(int row, int col, bool[,] visited, int rows, int cols)
+        private static (bool, int, int) HasVisitedNeighbor(int row, int col, bool[,] visited, int rows, int cols)
         {
             if (row > 0 && visited[row - 1, col])
-                return (true,row-1,col);
+                return (true, row - 1, col);
 
             if (row < rows - 1 && visited[row + 1, col])
-                return (true,row+1,col);
+                return (true, row + 1, col);
 
             if (col > 0 && visited[row, col - 1])
-                return (true,row,col-1);
+                return (true, row, col - 1);
 
             if (col < cols - 1 && visited[row, col + 1])
-                return (true, row, col + 1) ;
+                return (true, row, col + 1);
 
-            return (false,-1,-1);
+            return (false, -1, -1);
         }
     }
 }

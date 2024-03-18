@@ -9,6 +9,7 @@ using MauiMaze.Services;
 using MauiMaze.Models;
 using MauiMaze.Popups;
 using MauiMaze.Exceptions;
+using MauiMaze.Helpers;
 #if IOS || ANDROID || MACCATALYST
 using Microsoft.Maui.Graphics.Platform;
 #elif WINDOWS
@@ -40,11 +41,11 @@ public partial class MazePage : ContentPage
             driver.setPosition(touch.X, touch.Y);
         }
     }
-    public MazePage(int size)
+    public MazePage(int size,GeneratorEnum generator)
     {
         InitializeComponent();
         mazeDrawable = this.Resources["MazeDrawable"] as MazeDrawable;
-        driver = new GameDriver(mazeDrawable, canvas, size, 0);
+        driver = new GameDriver(mazeDrawable, canvas, size, 0,generator);
     }
     public MazePage(Maze maze) {
         if (maze is null)
