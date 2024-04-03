@@ -51,6 +51,14 @@ namespace MauiMaze.Services
             }
             return RoleEnum.User;
         }
+        public string getUserAT()
+        {
+            if (user is not null)
+            {
+                return user.personalData.code;
+            }
+            return "-1";
+        }
         DateTime expireDate;
         private bool IsExpired => checkExpiration();
 
@@ -66,7 +74,8 @@ namespace MauiMaze.Services
             {
                 expireDate = DateTime.Now;
                 expireDate.AddMonths(1);
-                user = new User(vysl.id, vysl.firstname,vysl.role);
+                
+                user = new User(vysl.id, vysl.firstname, new UserDataModel(vysl), vysl.role);
                 return true;
             }
             else

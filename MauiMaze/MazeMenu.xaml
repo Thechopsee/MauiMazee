@@ -21,6 +21,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -49,6 +50,32 @@
                 
             </StackLayout>
 
+            <StackLayout 
+             MinimumHeightRequest="200"
+             Grid.Column="1"
+             MinimumWidthRequest="120"
+             VerticalOptions="FillAndExpand">
+                <Button
+     
+                 Text="Sets"
+                 Command="{Binding setsClickCommand}"
+                 MinimumWidthRequest="100"
+                 SemanticProperties.Hint="Counts the number of times you click"
+                 BackgroundColor="{Binding SetsColor}"
+                 HorizontalOptions="Center" 
+                 VerticalOptions="FillAndExpand"/>
+                <Button
+     
+                 Text="Hunt N Kill"
+                 MinimumWidthRequest="100"
+                 SemanticProperties.Hint="Counts the number of times you click"
+                 Command="{Binding huntClickCommand}"
+                    BackgroundColor="{Binding HuntColor}"
+                 VerticalOptions="FillAndExpand"
+                     HorizontalOptions="CenterAndExpand"/>
+
+            </StackLayout>
+
 
 
             <VerticalStackLayout
@@ -56,7 +83,7 @@
                 Padding="30,0"
                 MinimumWidthRequest="120"
                 VerticalOptions="CenterAndExpand"
-                Grid.Column="1">
+                Grid.Column="2">
 
                 <Label Text="Size of maze"
            VerticalOptions="Center"
@@ -81,7 +108,7 @@
             x:Name="canvas"
             MaximumWidthRequest="300"
             MinimumHeightRequest="100"
-            Grid.Column="2"
+            Grid.Column="3"
             HorizontalOptions="FillAndExpand"
             VerticalOptions="FillAndExpand"
             Drawable="{StaticResource MazeDrawable}" />

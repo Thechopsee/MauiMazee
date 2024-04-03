@@ -17,6 +17,7 @@ namespace MauiMaze.Models
         public string email { get; set; }
         public string firstname { get; set; }
         public string lastname { get; set; }
+        public string code { get; set; }
         public UserDataModel(UserDataDTO dto)
         {
             this.id = dto.id;
@@ -24,6 +25,7 @@ namespace MauiMaze.Models
             this.email = dto.email;
             this.firstname = dto.firstname;
             this.lastname = dto.lastname;
+            this.code = dto.code;
         }
         [RelayCommand]
         public async Task goToVizualizer()

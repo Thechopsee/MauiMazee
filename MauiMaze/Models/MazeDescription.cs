@@ -60,7 +60,7 @@ namespace MauiMaze.Models
                  mz = await MazeFetcher.getMaze(ID).ConfigureAwait(true);
             }
             mz.MazeID = ID;
-            Maze maz = new Maze(mz.Width,mz.Height);
+            Maze maz = new Maze(mz.Width,mz.Height,Helpers.GeneratorEnum.Sets);
             maz.setupFromMaze(mz);
             await Shell.Current.Navigation.PushAsync(new MoveVizualizerPage(maz,whereIsMazeSaved)).ConfigureAwait(true);
         }
@@ -79,7 +79,7 @@ namespace MauiMaze.Models
             }
             if (mz.mazeType == MazeType.Classic)
             {
-                Maze maz = new Maze(mz.Width, mz.Height);
+                Maze maz = new Maze(mz.Width, mz.Height, Helpers.GeneratorEnum.Sets);
                 maz.setupFromMaze(mz);
                 await Shell.Current.Navigation.PushAsync(new MazePage(maz)).ConfigureAwait(true);
             }

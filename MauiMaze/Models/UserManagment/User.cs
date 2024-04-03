@@ -13,11 +13,12 @@ namespace MauiMaze.Models.UserManagment
         private readonly int role;
         public string Name { get; set; }
 
-        public PersonalData personalData { get; set; }
+        public UserDataModel personalData { get; set; }
 
-        public User(int Id,string Name, int role = 0)
+        public User(int Id,string Name,UserDataModel udm ,int role = 0)
         {
             this.Id = Id;
+            personalData = udm;
             this.Name = Name;
             this.role = role;
         }

@@ -1,7 +1,9 @@
 ﻿
 using MauiMaze.Engine;
 using MauiMaze.Exceptions;
+using MauiMaze.Helpers;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Models.Generatory;
 using MauiMaze.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -22,13 +24,20 @@ namespace MauiMaze.Models.RoundedMaze
         public int xoffsett { get; set; }
         public int yoffsett { get; set; }
 
-        public RoundedMaze(Size size)
+        public RoundedMaze(Size size,GeneratorEnum ge)
         {
             Width = (int)size.Width;
             Height = (int)size.Height;
             mazeType = MazeType.Rounded;
             this.size = (int)size.Height+15;
-            Edges = HuntAndKillMazeGenerator.GenerateMaze((int)size.Height,(int)size.Width).ToArray();
+            if (ge == GeneratorEnum.Sets)
+            {
+                Edges = new SetsGenerator().GenerateMaze((int)size.Width, (int)size.Height).ToArray();
+            }
+            else
+            {
+                Edges = new HuntAndKillMazeGenerator().GenerateMaze((int)size.Height, (int)size.Width).ToArray();
+            }
         }
         public RoundedMaze(Size size, Edge[] edges)
         {

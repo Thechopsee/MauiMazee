@@ -10,18 +10,22 @@ using MauiMaze.Engine;
 using MauiMaze.Exceptions;
 using Microsoft.Maui.Controls.Compatibility;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Helpers;
 
 namespace MauiMaze.Drawables
 {
     public class RoundedMazeDrawable : BaseMazeDrawable,IDrawable
     {
-        public RoundedMazeDrawable()
+        public RoundedMazeDrawable(GeneratorEnum? ge)
         {
+            GeneratorEnum generator = ge ?? GeneratorEnum.Sets;
             if (maze is null)
             {
-                maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(10, 10));
+                maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(10, 10),generator);
             }
-        }   
+        }
+        public RoundedMazeDrawable() { maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(10, 10), GeneratorEnum.Sets); }
+
 
     public void Draw(ICanvas canvas, RectF dirtyRect)
         {

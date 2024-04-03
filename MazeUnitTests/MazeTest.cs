@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Models.RoundedMaze;
 
 namespace MazeUnitTests
 {
@@ -11,22 +13,71 @@ namespace MazeUnitTests
     {
         
         [Fact]
-        public void canBeMazeSolved()
+        public void canBeMazeSolvedSets()
         {
-            Maze maze = new Maze(10, 10);
+            Maze maze = new Maze(10, 10,MauiMaze.Helpers.GeneratorEnum.Sets);
             maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
             maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 84);
             Assert.True(SolveMaze(maze));   
         }
         [Fact]
-        public void cantBeMazeSolved()
+        public void cantBeMazeSolvedSets()
         {
-            Maze maze = new Maze(10, 10);
+            Maze maze = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.Sets);
             maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
             maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 100);
             Assert.False(SolveMaze(maze));
         }
-        public bool SolveMaze(Maze maze)
+        [Fact]
+        public void canBeMazeSolvedHNK()
+        {
+            Maze maze = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.HuntNKill);
+            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
+            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 84);
+            Assert.True(SolveMaze(maze));
+        }
+        [Fact]
+        public void cantBeMazeSolvedHNK()
+        {
+            Maze maze = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.HuntNKill);
+            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
+            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 100);
+            Assert.False(SolveMaze(maze));
+        }
+        [Fact]
+        public void canBeMazeSolvedSets_R()
+        {
+            GameMaze maze = new RoundedMaze(new Size(10,10), MauiMaze.Helpers.GeneratorEnum.Sets);
+            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
+            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 84);
+            Assert.True(SolveMaze(maze));
+        }
+        [Fact]
+        public void cantBeMazeSolvedSets_R()
+        {
+            GameMaze maze = new RoundedMaze(new Size(10, 10), MauiMaze.Helpers.GeneratorEnum.Sets);
+            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
+            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 100);
+            Assert.False(SolveMaze(maze));
+        }
+        [Fact]
+        public void canBeMazeSolvedHNK_R()
+        {
+            GameMaze maze = new RoundedMaze(new Size(10, 10), MauiMaze.Helpers.GeneratorEnum.HuntNKill);
+            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
+            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 84);
+            Assert.True(SolveMaze(maze));
+        }
+        [Fact]
+        public void cantBeMazeSolvedHNK_R()
+        {
+            GameMaze maze = new RoundedMaze(new Size(10, 10), MauiMaze.Helpers.GeneratorEnum.HuntNKill);
+            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
+            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 100);
+            Assert.False(SolveMaze(maze));
+        }
+
+        public bool SolveMaze(GameMaze maze)
         {
             var visited = new HashSet<int>();
             var queue = new Queue<int>();
@@ -40,7 +91,7 @@ namespace MazeUnitTests
 
                 if (currentCell == maze.end.cell)
                 {
-                    return true; // Path found
+                    return true; 
                 }
 
                 var adjacentCells = GetAdjacentCells(currentCell,maze);
@@ -54,32 +105,28 @@ namespace MazeUnitTests
                 }
             }
 
-            return false; // No path found
+            return false; 
         }
 
-        private List<int> GetAdjacentCells(int cellIndex,Maze maze)
+        private List<int> GetAdjacentCells(int cellIndex,GameMaze maze)
         {
             var adjacentCells = new List<int>();
 
-            // Check north
             if (cellIndex - maze.Width >= 0)
             {
                 adjacentCells.Add(cellIndex - maze.Width);
             }
 
-            // Check south
             if (cellIndex + maze.Width < maze.Width * maze.Height)
             {
                 adjacentCells.Add(cellIndex + maze.Width);
             }
 
-            // Check west
             if (cellIndex % maze.Width != 0)
             {
                 adjacentCells.Add(cellIndex - 1);
             }
 
-            // Check east
             if ((cellIndex + 1) % maze.Width != 0)
             {
                 adjacentCells.Add(cellIndex + 1);

@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Views;
 using MauiMaze.Drawables;
 using MauiMaze.Engine;
+using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Models.RoundedMaze;
 using MauiMaze.Popups;
@@ -58,12 +59,12 @@ public partial class RoundedMazePage : ContentPage
         }
     }
 
-    public RoundedMazePage(int size)
+    public RoundedMazePage(int size,GeneratorEnum gen)
 	{
 		InitializeComponent();
         
         mazeDrawable = this.Resources["MazeDrawable"] as RoundedMazeDrawable;
-        driver = new GameDriver(mazeDrawable, Canvas, size,1);
+        driver = new GameDriver(mazeDrawable, Canvas, size,1,gen);
         timer = new Timer(driver.timerMove, null, 0, 33);
         Canvas.Invalidate();
     }

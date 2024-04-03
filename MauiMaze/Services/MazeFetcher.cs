@@ -110,11 +110,12 @@ namespace MauiMaze.Services
        
         public static async Task<bool> SaveMazeOnline(int userIDD, MazeDTO maze, HttpClient? httpClient = null)
         {
-            string apiUrl = ServiceConfig.serverAdress + "saveMaze";
+            string apiUrl = ServiceConfig.serverAdress + "mazes";
 
             var userData = new
             {
                 userID = userIDD,
+                AT = UserDataProvider.GetInstance().getUserAT(),
                 mazedto = maze
             };
             if (httpClient is null)
@@ -135,12 +136,7 @@ namespace MauiMaze.Services
         public static async Task<MazeDescription[]> getMazeList(int userid, HttpClient? httpClient = null)
         {
             await getMazeCountForUser(userid);
-            string apiUrl = ServiceConfig.serverAdress+"loadMazeList";
-
-            var userData = new
-            {
-                userID = userid,
-            };
+            string apiUrl = ServiceConfig.serverAdress+"users/"+userid+"/mazes";
 
             if (httpClient is null)
             {
@@ -178,7 +174,7 @@ namespace MauiMaze.Services
         public static async Task<int> getMazeCountForUser(int userid, HttpClient? httpClient = null)
         {
             int rsp = 0;
-            string apiUrl = ServiceConfig.serverAdress + "loadMazeCount";
+            string apiUrl = ServiceConfig.serverAdress + "users/" + userid + "/mcount";
 
             var userData = new
             {
@@ -223,12 +219,7 @@ namespace MauiMaze.Services
 
         public static async Task<Maze> getMaze(int mazeid, HttpClient? httpClient = null)
         {
-            string apiUrl = ServiceConfig.serverAdress +"loadMaze";
-
-            var userData = new
-            {
-                mazeID = mazeid,
-            };
+            string apiUrl = ServiceConfig.serverAdress +"mazes/"+mazeid;
 
             if (httpClient is null)
             {
@@ -245,7 +236,7 @@ namespace MauiMaze.Services
                 {
                     MazeDTO mm = JsonConvert.DeserializeObject<MazeDTO>(responseContent);
 
-                    Maze mz=new Maze(mm.size,mm.size);
+                    Maze mz=new Maze(mm.size,mm.size, Helpers.GeneratorEnum.Sets);
                     mz.MazeID = mazeid;
                     mz.Edges = mm.edges;
                     mz.start = new Engine.Start(-1,-1,mm.startCell);
@@ -254,7 +245,7 @@ namespace MauiMaze.Services
                 }
                 else
                 {
-                    return new Maze(1, 1);
+                    return new Maze(1, 1, Helpers.GeneratorEnum.Sets);
                 }
 
             }

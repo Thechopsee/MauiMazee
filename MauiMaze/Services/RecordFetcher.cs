@@ -79,15 +79,19 @@ namespace MauiMaze.Services
 
         public static async Task<bool> SaveRecordOnline(GameRecordDTO gameRecord, HttpClient? httpClient = null)
         {
-            string apiUrl = ServiceConfig.serverAdress + "saveRecord";
-
+            string apiUrl = ServiceConfig.serverAdress + "records";
+            var userData = new
+            {
+                AT = UserDataProvider.GetInstance().getUserID(),
+                GR = gameRecord
+            };
             if (httpClient is null)
             {
                 httpClient = new HttpClient();
             }
             using (httpClient)
             {
-                string jsonUserData = JsonConvert.SerializeObject(gameRecord);
+                string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
@@ -98,7 +102,7 @@ namespace MauiMaze.Services
         }
         public static async Task<GameRecord[]> loadRecordsByMaze(int mid, HttpClient? httpClient = null)
         {
-            string apiUrl = ServiceConfig.serverAdress + "loadRecordByMaze";
+            string apiUrl = ServiceConfig.serverAdress + "mazes/"+mid+"/records";
 
             if (httpClient is null)
             {
@@ -126,7 +130,7 @@ namespace MauiMaze.Services
         }
         public static async Task<GameRecord[]> loadRecordsByUser(int uid, HttpClient? httpClient = null)
         {
-            string apiUrl = ServiceConfig.serverAdress + "loadRecordByUser";
+            string apiUrl = ServiceConfig.serverAdress + "users/"+uid+"/records";
 
             if (httpClient is null)
             {
@@ -134,7 +138,7 @@ namespace MauiMaze.Services
             }
             using (httpClient)
             {
-                string jsonUserData = JsonConvert.SerializeObject(new { userID = uid });
+                string jsonUserData = JsonConvert.SerializeObject(new { userID = uid ,AT= UserDataProvider.GetInstance().getUserAT() });
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
