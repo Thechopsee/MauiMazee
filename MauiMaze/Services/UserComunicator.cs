@@ -12,7 +12,7 @@ namespace MauiMaze.Services
 {
     public class UserComunicator
     {
-        public static async Task<UserDataDTO> tryToLogin(string emaill,string pas)
+        public static async Task<UserDataDTO> tryToLogin(string emaill,string pas,HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "login";
 
@@ -21,27 +21,32 @@ namespace MauiMaze.Services
                 email = emaill,
                 password = pas
             };
-
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
             {
-                string jsonUserData = JsonConvert.SerializeObject(userData);
-                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(false);
-                string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                UserDataDTO dto = JsonConvert.DeserializeObject<UserDataDTO>(responseContent);
-                if (response.IsSuccessStatusCode)
-                {
-                    return dto;
-                }
-                else
-                {
-                    UserDataDTO tmp = new();
-                    tmp.id = -1;
-                    return tmp;
-                }
+                httpClient = new HttpClient();
             }
+                using (httpClient)
+                {
+                    string jsonUserData = JsonConvert.SerializeObject(userData);
+                    var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(false);
+                    string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    UserDataDTO dto = JsonConvert.DeserializeObject<UserDataDTO>(responseContent);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return dto;
+                    }
+                    else
+                    {
+                        UserDataDTO tmp = new();
+                        tmp.id = -1;
+                        return tmp;
+                    }
+                }
+            
+            
         }
-        public static async Task<UserDataDTO[]> getUsers(string emaill, string pas)
+        public static async Task<UserDataDTO[]> getUsers(string emaill, string pas, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "loadUsers";
 
@@ -51,11 +56,15 @@ namespace MauiMaze.Services
                 password = pas
             };
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(false);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(false);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 UserDataDTO[] dto = JsonConvert.DeserializeObject<UserDataDTO[]>(responseContent);
                 if (response.IsSuccessStatusCode)
@@ -70,7 +79,7 @@ namespace MauiMaze.Services
             }
         }
 
-        public static async Task<int> tryToRegister(string email,string pas ,string code)
+        public static async Task<int> tryToRegister(string email,string pas ,string code, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "register";
 
@@ -81,11 +90,15 @@ namespace MauiMaze.Services
                 code=code,
             };
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(false);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(false);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
                 if (response.StatusCode == HttpStatusCode.OK)
@@ -101,9 +114,6 @@ namespace MauiMaze.Services
                     return 2;
                 }
             }
-
-
-
         }
 
     }

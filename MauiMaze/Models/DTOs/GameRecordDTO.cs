@@ -41,10 +41,13 @@ namespace MauiMaze.Models.DTOs
             gr.hitWallsCount = hitWallsCount;
             gr.timeInMilliSeconds = timeInMilliSeconds;
             gr.grID = gr.grID;
-            string[] splited_path = cellPathString.Split("->");
-            foreach (string s in splited_path)
+            if (cellPathString is not null)
             {
-                gr.cellPath.Add(int.Parse(s));
+                string[] splited_path = cellPathString.Split("->");
+                foreach (string s in splited_path)
+                {
+                    gr.cellPath.Add(int.Parse(s));
+                }
             }
             return gr;
         }

@@ -108,7 +108,7 @@ namespace MauiMaze.Services
 
         }
        
-        public static async Task<bool> SaveMazeOnline(int userIDD, MazeDTO maze)
+        public static async Task<bool> SaveMazeOnline(int userIDD, MazeDTO maze, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "saveMaze";
 
@@ -117,18 +117,22 @@ namespace MauiMaze.Services
                 userID = userIDD,
                 mazedto = maze
             };
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 return response.IsSuccessStatusCode;
                
             }
         }
-        public static async Task<MazeDescription[]> getMazeList(int userid)
+        public static async Task<MazeDescription[]> getMazeList(int userid, HttpClient? httpClient = null)
         {
             await getMazeCountForUser(userid);
             string apiUrl = ServiceConfig.serverAdress+"loadMazeList";
@@ -138,19 +142,21 @@ namespace MauiMaze.Services
                 userID = userid,
             };
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 if (response.IsSuccessStatusCode)
                 {
-                   // await Application.Current.MainPage.DisplayAlert("Upozornění", "run " + JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
                     MazeDescriptionDTO mm = JsonConvert.DeserializeObject<MazeDescriptionDTO>(responseContent);
                     MazeDescription[] mazeDescriptions = new MazeDescription[mm.descriptions.Count];
-                   // await Application.Current.MainPage.DisplayAlert("Upozornění", "count" + mm.descriptions.Count, "OK");
                     for (int i = 0; i < mazeDescriptions.Length; i++)
                     {
                         MazeDescription md = new();
@@ -165,11 +171,11 @@ namespace MauiMaze.Services
                 }
                 else
                 {
-                    return new MazeDescription[2];
+                    return new MazeDescription[0];
                 }
             }
         }
-        public static async Task<int> getMazeCountForUser(int userid)
+        public static async Task<int> getMazeCountForUser(int userid, HttpClient? httpClient = null)
         {
             int rsp = 0;
             string apiUrl = ServiceConfig.serverAdress + "loadMazeCount";
@@ -178,14 +184,16 @@ namespace MauiMaze.Services
             {
                 userID = userid,
             };
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
-
-                //await Application.Current.MainPage.DisplayAlert("Upozornění", "run "+ JsonConvert.DeserializeObject(responseContent).ToString(), "OK");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -213,7 +221,7 @@ namespace MauiMaze.Services
             return deletedIDs.ToArray();
         }
 
-        public static async Task<Maze> getMaze(int mazeid)
+        public static async Task<Maze> getMaze(int mazeid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress +"loadMaze";
 
@@ -222,11 +230,15 @@ namespace MauiMaze.Services
                 mazeID = mazeid,
             };
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(userData);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                if (response.IsSuccessStatusCode)

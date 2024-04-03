@@ -99,7 +99,6 @@ namespace MauiMaze.Services
                     else
                     {
                         Application.Current.MainPage.DisplayAlert("Upozornění", "expired ", "OK");
-                        //TODO connect with UserFetcher
                     }
                 }
                 return false;

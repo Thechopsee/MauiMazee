@@ -257,7 +257,7 @@ namespace MauiMaze.ViewModels
                 HeatMapView.Invalidate();
             }
         }
-        public MoveVizualizerViewModel(GraphicsView graphicsView,ListView listview,Maze maze,LoginCases lc, GraphicsView heatMapView)
+        public MoveVizualizerViewModel(GraphicsView graphicsView, ListView listview, Maze maze, LoginCases lc, GraphicsView heatMapView)
         {
             Hbs = true;
             Gbs = true;
@@ -268,7 +268,7 @@ namespace MauiMaze.ViewModels
             TimeEnabled = true;
             HitsEnabled = true;
             this.graphicsView = graphicsView;
-            this.heatMapView= heatMapView;
+            this.heatMapView = heatMapView;
 
             this.listview = listview;
 
@@ -280,8 +280,15 @@ namespace MauiMaze.ViewModels
                 Vizualizershow = false;
                 Recordshow = true;
             }
-            getRecordsAsync(maze,lc,heatMapView);
+            getRecordsAsync(maze, lc, heatMapView);
 
+        }
+        public MoveVizualizerViewModel()
+        {
+            if (Application.Current is not null)
+            {
+                throw new Exception("only fore test");
+            }
 
 
         }

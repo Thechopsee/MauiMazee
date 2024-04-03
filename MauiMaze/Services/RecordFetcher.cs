@@ -6,6 +6,7 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,9 +14,11 @@ namespace MauiMaze.Services
 {
     public class RecordFetcher
     {
-        public static async Task deleteRecordsByMazeOffline(int mid)
+        public static async Task deleteRecordsByMazeOffline(int mid )
         {
-            string data = await SecureStorage.Default.GetAsync("recordsCounts" + mid).ConfigureAwait(false);
+            string data= await SecureStorage.Default.GetAsync("recordsCounts" + mid).ConfigureAwait(false);
+            
+
             if (data is null)
             {
                 return;
@@ -74,30 +77,38 @@ namespace MauiMaze.Services
         }
 
 
-        public static async Task<bool> SaveRecordOnline(GameRecordDTO gameRecord)
+        public static async Task<bool> SaveRecordOnline(GameRecordDTO gameRecord, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "saveRecord";
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(gameRecord);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 return response.IsSuccessStatusCode;
 
             }
         }
-        public static async Task<GameRecord[]> loadRecordsByMaze(int mid)
+        public static async Task<GameRecord[]> loadRecordsByMaze(int mid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "loadRecordByMaze";
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(new { mazeID = mid });
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
                 if (response.IsSuccessStatusCode)
                 {
@@ -113,15 +124,19 @@ namespace MauiMaze.Services
             }
 
         }
-        public static async Task<GameRecord[]> loadRecordsByUser(int uid)
+        public static async Task<GameRecord[]> loadRecordsByUser(int uid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "loadRecordByUser";
 
-            using (HttpClient client = new HttpClient())
+            if (httpClient is null)
+            {
+                httpClient = new HttpClient();
+            }
+            using (httpClient)
             {
                 string jsonUserData = JsonConvert.SerializeObject(new { userID = uid });
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
                 if (response.IsSuccessStatusCode)
                 {
@@ -136,20 +151,5 @@ namespace MauiMaze.Services
                 return new List<GameRecord>().ToArray();
             }
         }
-            //public static async Task<List<GameRecord>> FetchRecords(int uid)
-            //{
-            //    var local = await FetchLocal();
-            //    //get online
-            //    //check if offline is online
-            //    //save offline to online
-            //        //check maze id
-            //        //if current userid have maze with mazeid ->synchronize
-            //        //else dont synchronize wait to maze to be synchronized
-            //        //else manual synchro later
-
-            //    //delete synchronized
-
-            //   return RecordRepository.GetInstance().getRecords();
-            //}
-        }
+    }
 }
