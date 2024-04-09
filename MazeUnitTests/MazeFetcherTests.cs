@@ -119,7 +119,7 @@ namespace MazeUnitTests
             expectedMaze.size = 10;
             expectedMaze.startCell = 5;
             expectedMaze.endCell = 6;
-            expectedMaze.edges = new Maze(10, 10,MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
+            expectedMaze.edges = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
@@ -128,10 +128,44 @@ namespace MazeUnitTests
             var httpClient = new HttpClient(mockHttp);
             var result = await MazeFetcher.getMaze(mazeId, httpClient);
 
-            Assert.Equal(10,result.Width);
+            Assert.Equal(10, result.Width);
             Assert.Equal(10, result.Height);
             Assert.Equal(1, result.MazeID);
             Assert.NotEmpty(result.Edges);
+        }
+        [Fact]
+        public async Task IsStartandEndSettedProperly()
+            {
+                int mazeId = 1;
+                var expectedMaze = new MazeDTO();
+                expectedMaze.size = 10;
+                expectedMaze.startCell = 5;
+                expectedMaze.endCell = 6;
+                expectedMaze.edges = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
+
+                var mockHttp = new MockHttpMessageHandler();
+                mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
+                    .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedMaze));
+
+                var httpClient = new HttpClient(mockHttp);
+                var result = await MazeFetcher.getMaze(mazeId, httpClient);
+                int id = 0;
+                Assert.Equal(5, result.start.cell);
+                Assert.Equal(6, result.end.cell);
+            }
+
+        [Fact]
+        public async Task IsSendedRight()
+        {
+            int mazeId = 1;
+            var expectedMaze = new MazeDTO();
+            expectedMaze.size = 10;
+            expectedMaze.startCell = 5;
+            expectedMaze.endCell = 6;
+            expectedMaze.edges = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
+            string expected = JsonConvert.SerializeObject(expectedMaze);
+            string edges = JsonConvert.SerializeObject(expectedMaze.edges);
+            string neco = "{\"size\":10,\"startCell\":5,\"endCell\":6,\"edges\":" + edges + "}";
         }
 
         [Fact]
@@ -140,7 +174,7 @@ namespace MazeUnitTests
             int mazeId = 1;
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes/1")
                 .Respond(HttpStatusCode.InternalServerError);
             var httpClient = new HttpClient(mockHttp);
             var result = await MazeFetcher.getMaze(mazeId, httpClient);

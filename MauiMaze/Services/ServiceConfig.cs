@@ -8,7 +8,7 @@ namespace MauiMaze.Services
 {
     public class ServiceConfig
     {
-         //internal static string serverAdress="http://85.162.168.74:3040/";
-           public static string serverAdress = "http://10.0.0.23:8087/";
+         public static string serverAdress="http://85.162.168.74:3040/";
+           //public static string serverAdress = "http://10.0.0.23:8087/";
     }
 }

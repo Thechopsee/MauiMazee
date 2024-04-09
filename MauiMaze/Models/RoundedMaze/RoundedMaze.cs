@@ -88,7 +88,7 @@ namespace MauiMaze.Models.RoundedMaze
 
             PositionCells();
         }
-        void PositionCells()
+        public void PositionCells()
         {
             double center = width / 2.0;
             foreach (var row in grid)
