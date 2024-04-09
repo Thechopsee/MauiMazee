@@ -52,8 +52,6 @@ namespace MazeUnitTests
         [Fact]
         public async Task GetUsers_SuccessfulResponse_ReturnsUserDataArray()
         {
-            string email = "test@example.com";
-            string password = "password";
             var expectedUserData = new[] { new UserDataDTO(), new UserDataDTO() }; 
 
             var mockHttp = new MockHttpMessageHandler();
@@ -61,7 +59,7 @@ namespace MazeUnitTests
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedUserData)); 
 
             var httpClient = new HttpClient(mockHttp);
-            var result = await UserComunicator.getUsers(email, password,httpClient);
+            var result = await UserComunicator.getUsers(httpClient);
 
             Assert.NotNull(result);
             Assert.Equal(expectedUserData.Length, result.Length);
@@ -70,16 +68,13 @@ namespace MazeUnitTests
         [Fact]
         public async Task GetUsers_UnsuccessfulResponse_ReturnsEmptyUserDataArray()
         {
-            string email = "test@example.com";
-            string password = "password";
-
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When(ServiceConfig.serverAdress + "loadUsers")
                 .Respond(HttpStatusCode.BadRequest); 
 
 
             var httpClient = new HttpClient(mockHttp);
-            var result = await UserComunicator.getUsers(email, password, httpClient);
+            var result = await UserComunicator.getUsers(httpClient);
 
             Assert.NotNull(result);
             Assert.Empty(result);

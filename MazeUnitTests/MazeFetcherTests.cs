@@ -100,7 +100,7 @@ namespace MazeUnitTests
         public async Task GetMaze_SuccessfulRequest_ReturnsMaze()
         {
             int mazeId = 1;
-            var expectedMaze = new Maze(10,10); 
+            var expectedMaze = new Maze(10,10,MauiMaze.Helpers.GeneratorEnum.Sets); 
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
@@ -119,7 +119,7 @@ namespace MazeUnitTests
             expectedMaze.size = 10;
             expectedMaze.startCell = 5;
             expectedMaze.endCell = 6;
-            expectedMaze.edges = new Maze(10, 10).Edges;
+            expectedMaze.edges = new Maze(10, 10,MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When(ServiceConfig.serverAdress + "loadMaze")

@@ -76,6 +76,13 @@ namespace MazeUnitTests
             maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 100);
             Assert.False(SolveMaze(maze));
         }
+        [Fact]
+        public void measurrementsIscorrect()
+        {
+            GameMaze maze = new RoundedMaze(new Size(10, 10), MauiMaze.Helpers.GeneratorEnum.HuntNKill);
+            Assert.Equal(10, maze.Width);
+            Assert.Equal(10,maze.Height);
+        }
 
         public bool SolveMaze(GameMaze maze)
         {

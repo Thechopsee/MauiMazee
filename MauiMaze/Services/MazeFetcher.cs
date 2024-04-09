@@ -144,7 +144,7 @@ namespace MauiMaze.Services
             }
             using (httpClient)
             {
-                string jsonUserData = JsonConvert.SerializeObject(userData);
+                string jsonUserData = JsonConvert.SerializeObject(null);
                 var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
@@ -227,9 +227,7 @@ namespace MauiMaze.Services
             }
             using (httpClient)
             {
-                string jsonUserData = JsonConvert.SerializeObject(userData);
-                var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(true);
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, null).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                if (response.IsSuccessStatusCode)
