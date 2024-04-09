@@ -12,7 +12,17 @@ using MauiMaze.Helpers;
 namespace MauiMaze.Drawables
 {
     public class MazeDrawable : BaseMazeDrawable,IDrawable
-    {   
+    {
+        public void initStartEnd(int Start,int End)
+        {
+            float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
+            float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
+            maze.start = new Start((int)startX, (int)startY, Start);
+
+            float endX = (float)(End % maze.Width * cellWidth + cellWidth);
+            float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight);
+            maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
+        }
         public override void drawWalls(ICanvas canvas, RectF dirtyRect)
         {
             Maze maze = (Maze)this.maze;
@@ -69,15 +79,7 @@ namespace MauiMaze.Drawables
                     if (maze.end.X == -1)
                     {
 
-                        int Start = maze.start.cell;
-                        int End = maze.end.cell;
-                        float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
-                        float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
-                        maze.start = new Start((int)startX, (int)startY, Start);
-
-                        float endX = (float)(End % maze.Width * cellWidth + cellWidth);
-                        float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight);
-                        maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
+                        initStartEnd(maze.start.cell,maze.end.cell);
                     }
                 }
             }
@@ -99,25 +101,11 @@ namespace MauiMaze.Drawables
                     int horniHranice = maze.Width*maze.Height;
                     Random random = new Random();
                     int End = random.Next(dolniHranice, horniHranice-1 );
-                    float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
-                    float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
-                    maze.start = new Start((int)startX, (int)startY, Start);
-
-                    float endX = (float)(End % maze.Width * cellWidth + cellWidth);
-                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight );
-                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
+                    initStartEnd(Start, End);
                 }
                 else if (maze.end.X == -1 )
                 {
-                    int Start = maze.start.cell;
-                    int End = maze.end.cell;
-                    float startX = (float)(Start % maze.Width * cellWidth + cellWidth / 2);
-                    float startY = (float)(Math.Floor((double)Start / maze.Width) * cellHeight + cellHeight / 2);
-                    maze.start = new Start((int)startX, (int)startY, Start);
-
-                    float endX = (float)(End % maze.Width * cellWidth + cellWidth);
-                    float endY = (float)(Math.Floor((double)End / maze.Width) * cellHeight);
-                    maze.end = new End((int)endX, (int)endY, (int)endX + ((int)cellWidth), (int)endY + ((int)cellHeight), End);
+                    initStartEnd(maze.start.cell,maze.end.cell);
                 }
 
                 drawStartAndEnd(canvas);

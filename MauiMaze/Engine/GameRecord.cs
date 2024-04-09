@@ -36,16 +36,19 @@ namespace MauiMaze.Engine
         }
         public string pathToStr()
         {
-            string stringpath = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
             for (int i = 0; i < cellPath.Count; i++)
             {
-                stringpath += cellPath[i];
+                stringBuilder.Append(cellPath[i]);
+
                 if (i != cellPath.Count - 1)
                 {
-                    stringpath += "->";
+                    stringBuilder.Append("->");
                 }
             }
-            return stringpath;
+
+            return stringBuilder.ToString();
         }
         public void addCellMoveRecord(int cellID)
         {

@@ -16,8 +16,8 @@ namespace MazeUnitTests
         public void canBeMazeSolvedSets()
         {
             Maze maze = new Maze(10, 10,MauiMaze.Helpers.GeneratorEnum.Sets);
-            maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
-            maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 84);
+            maze.start = new Start(-1, -1, 0);
+            maze.end = new End(-1, -1, -1, -1, 84);
             Assert.True(SolveMaze(maze));   
         }
         [Fact]

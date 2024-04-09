@@ -18,8 +18,8 @@ namespace MazeUnitTests
         [Fact]
         public async Task TryToLogin_ValidCredentials_ReturnsUserDataDTO()
         {
-            string email = "test@example.com";
-            string password = "password";
+            const string email = "test@example.com";
+            const string password = "password";
 
             var mockHttp = new MockHttpMessageHandler();
             mockHttp.When("http://10.0.0.23:8087/login")
