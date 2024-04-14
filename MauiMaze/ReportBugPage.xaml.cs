@@ -8,7 +8,7 @@ public partial class ReportBugPage : ContentPage
 	{
 		InitializeComponent();
 	}
-    private void SubmitButton_Clicked(object sender, EventArgs e)
+    public void SubmitButton_Clicked(object sender, EventArgs e)
     {
         string senderEmail = senderEntry.Text;
         string subject = subjectEntry.Text;
@@ -43,7 +43,7 @@ public partial class ReportBugPage : ContentPage
             Shell.Current.Navigation.PopAsync();
         }
     }
-    private bool IsValidEmail(string email)
+    public bool IsValidEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;

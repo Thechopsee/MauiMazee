@@ -29,7 +29,7 @@ namespace MauiMaze.ViewModels
         [ObservableProperty]
         public bool loading;
         [RelayCommand]
-        async Task register()
+        public async Task register()
         {
             Loading = true;
             bool failed = false;

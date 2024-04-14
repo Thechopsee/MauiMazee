@@ -46,7 +46,7 @@ namespace MauiMaze.Services
             
             
         }
-        public static async Task<UserDataDTO[]> getUsers(string emaill, string pas, HttpClient? httpClient = null)
+        public static async Task<UserDataDTO[]> getUsers( HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "users";
 

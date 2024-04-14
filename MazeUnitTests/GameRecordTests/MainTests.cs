@@ -39,7 +39,7 @@ namespace MazeUnitTests.GameRecordTests
                 gr.addMoveRecord(new MoveRecord(0, 0.1, 0.1, 1, 1, 1));
             }
             gr.addMoveRecord(new MoveRecord(0, 0.5, 0.5, 0, 10, 1));
-            Maze maze = new Maze(10, 10);
+            Maze maze = new Maze(10, 10,GeneratorEnum.Sets);
             CellData[] cd = mvvm.CountCellData(maze, gr);
             Assert.NotNull(cd);
             Assert.Equal(11, cd[1].time);
@@ -56,7 +56,7 @@ namespace MazeUnitTests.GameRecordTests
             {
                 gr.addMoveRecord(new MoveRecord(0, 0.1+((float)i/100), 0.1+((float)i / 100), 1, 2, 1));
             }
-            Maze maze = new Maze(10,10);
+            Maze maze = new Maze(10,10,GeneratorEnum.Sets);
             CellData[] cd=mvvm.CountCellData(maze,gr);
             Assert.NotNull(cd);
             Assert.Equal(10, cd[1].time);

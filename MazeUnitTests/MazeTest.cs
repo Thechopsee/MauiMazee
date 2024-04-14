@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MauiMaze.Engine;
+using MauiMaze.Helpers;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Models.RoundedMaze;
 
@@ -75,6 +76,39 @@ namespace MazeUnitTests
             maze.start = new MauiMaze.Engine.Start(-1, -1, 0);
             maze.end = new MauiMaze.Engine.End(-1, -1, -1, -1, 100);
             Assert.False(SolveMaze(maze));
+        }
+        [Fact]
+        public void measurrementsIscorrect()
+        {
+            GameMaze maze = new RoundedMaze(new Size(10, 10), MauiMaze.Helpers.GeneratorEnum.HuntNKill);
+            Assert.Equal(10, maze.Width);
+            Assert.Equal(10,maze.Height);
+        }
+        [Fact]
+        public void PositionCells_CorrectlyPositionsCells()
+        {
+            RoundedMaze maze = new RoundedMaze(new Size(5, 5), GeneratorEnum.Sets);
+            maze.xoffsett = 10;
+            maze.yoffsett = 20;
+
+            maze.PositionCells();
+
+            foreach (var row in maze.grid)
+            {
+                foreach (var cell in row)
+                {
+                    Assert.Equal(cell.InnerCcwX, cell.InnerCcwX + 10);
+                    Assert.Equal(cell.InnerCcwY, cell.InnerCcwY + 20);
+                    Assert.Equal(cell.OuterCcwX, cell.OuterCcwX + 10);
+                    Assert.Equal(cell.OuterCcwY, cell.OuterCcwY + 20);
+                    Assert.Equal(cell.InnerCwX, cell.InnerCwX + 10);
+                    Assert.Equal(cell.InnerCwY, cell.InnerCwY + 20);
+                    Assert.Equal(cell.OuterCwX, cell.OuterCwX + 10);
+                    Assert.Equal(cell.OuterCwY, cell.OuterCwY + 20);
+                    Assert.Equal(cell.CenterX, cell.CenterX + 10);
+                    Assert.Equal(cell.CenterY, cell.CenterY + 20);
+                }
+            }
         }
 
         public bool SolveMaze(GameMaze maze)
