@@ -21,58 +21,73 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout 
-         Grid.Column="0"
-         >
-                <Label Text="Records:" FontSize="16" Margin="0,20,0,0" />
-                <ScrollView MaximumHeightRequest="200" VerticalScrollBarVisibility="Always">
+            
+
+                <Grid Grid.Column="0" RowDefinitions="1*,4*,2*,1*" ColumnDefinitions="1*">
+
+
+                <Label Text="Records:" FontSize="16" Margin="0,20,0,0" Grid.Column="0" Grid.Row="0"/>
+                <ScrollView  Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Always">
                     <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200" VerticalScrollBarVisibility="Always">
                     <ListView.ItemTemplate x:DataType="mdls:GameRecord" >
                         <DataTemplate  >
                                 <ViewCell >
-                                    <Button Text="{Binding grID}       " TextColor="White"  BackgroundColor="{Binding color}" HorizontalOptions="CenterAndExpand"/> 
+
+                                    <Button Text="{Binding grID}" TextColor="White"  BackgroundColor="{Binding color}" WidthRequest="200" HorizontalOptions="CenterAndExpand"/> 
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                    </ScrollView>
-                        <VerticalStackLayout IsVisible="{Binding Vizualizershow}">
-                        <HorizontalStackLayout>
-                <Button Text="Position"
+                </ScrollView>
+                <Grid  Grid.Column="0" Grid.Row="2" RowDefinitions="1*,1*" ColumnDefinitions="1*,1*" IsVisible="{Binding Vizualizershow}">
+                    <Button Text="Position"
+                        HorizontalOptions="CenterAndExpand"
+                          Grid.Column="0" Grid.Row="0"
                             WidthRequest="100"
                             Command="{Binding switchToPositionCommand}"
                             IsEnabled="{Binding PositionEnabled}"
+                            
                             />
-                    <Button Text="Cell"
-                            WidthRequest="100"
+                        <Button Text="Cell"
+                            HorizontalOptions="CenterAndExpand"
+                            Grid.Column="1" Grid.Row="0"
+                                WidthRequest="100"
                              Command="{Binding switchToCellCommand}"
                             IsEnabled="{Binding CellEnabled}"
                             />
-                        </HorizontalStackLayout>
-                <Button Text="Play"
-                            WidthRequest="200"
+                        <Button Text="Play"
+                        HorizontalOptions="CenterAndExpand"
+                                WidthRequest="200"
+                        Grid.ColumnSpan="2"  Grid.Column="0" Grid.Row="1"
                             Command="{Binding playCommand}"
                             />
-                </VerticalStackLayout>
-                <VerticalStackLayout IsVisible="{Binding Heatmapshow}">
+                </Grid>
+                <Grid  Grid.Column="0" Grid.Row="2" RowDefinitions="1*,1*" ColumnDefinitions="1*,1*" IsVisible="{Binding Heatmapshow}">
                     <HorizontalStackLayout >
                         <Button Text="Time"
-                            WidthRequest="100"
+                                 HorizontalOptions="CenterAndExpand"
+                          Grid.Column="0" Grid.Row="0"
+                                WidthRequest="100"
                             Command="{Binding switchToTimeCommand}"
                             IsEnabled="{Binding TimeEnabled}"
                             />
                         <Button Text="Hits"
+                                 HorizontalOptions="CenterAndExpand"
+                          Grid.Column="1" Grid.Row="0"
                                 WidthRequest="100"
                              Command="{Binding switchToHitsCommand}"
                             IsEnabled="{Binding HitsEnabled}"
                             />
                     </HorizontalStackLayout>
                     <Button Text="All"
-                                WidthRequest="200"
+                            HorizontalOptions="CenterAndExpand"
+                            WidthRequest="200"
+                            Grid.ColumnSpan="2"  Grid.Column="0" Grid.Row="1"
                              Command="{Binding switchToAllHeatCommand}"
                             IsEnabled="{Binding AllHeatEnabled}"
                             />
-                </VerticalStackLayout>
+                </Grid>
+                <Grid  Grid.Column="0" Grid.Row="2" RowDefinitions="1*,1*" ColumnDefinitions="1*,1*"></Grid>
                 <ActivityIndicator
                     IsVisible="{Binding Recordshow}"
                     IsRunning="False"
@@ -84,14 +99,15 @@
                     Text="Show All Data"
                     IsEnabled="{Binding ShowAllEnabled}"
                     Command="{Binding switchToAllCommand}"
-                    MinimumWidthRequest="200"
-                    HorizontalOptions="Center" />
+                    HorizontalOptions="CenterAndExpand"
+                    WidthRequest="200"
+                    Grid.Column="0" Grid.Row="3"/>
 
 
-            </VerticalStackLayout>
+            </Grid>
 
             <VerticalStackLayout
-                Grid.Column="2">
+                Grid.Column="1">
                 <HorizontalStackLayout>
                     <Button Text="Vizualize" Command="{Binding switchViewCommand}" CommandParameter="1" IsEnabled="{Binding Vbs}" WidthRequest="100"/>
                     <Button Text="Heatmap" Command="{Binding switchViewCommand}" CommandParameter="2" IsEnabled="{Binding Hbs}" WidthRequest="100"/>
