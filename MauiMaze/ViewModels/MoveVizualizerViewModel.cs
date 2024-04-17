@@ -75,6 +75,33 @@ namespace MauiMaze.ViewModels
             GraphicsView.Invalidate();
         }
         [RelayCommand]
+        public async Task play()
+        {
+            MoveVizualizerDrawable md = (MoveVizualizerDrawable)GraphicsView.Drawable;
+            Player player = new Player(0, 0, 0, 0);
+            md.mazeDrawable.reinitPlayer(player);
+            md.mazeDrawable.player = player;
+            player.dummy = true;
+            GraphicsView.Drawable = md;
+            GraphicsView.Invalidate();
+            GraphicsView.Invalidate();
+            GraphicsView.Invalidate();
+            await Task.Run(async () =>
+            {
+                for (int i = 0; i < ActualGamerecord.moves.Count; i++)
+                {
+                    await Task.Delay(ActualGamerecord.moves[i].deltaTinMilisec);
+                    (int newX,int newY)=MoveVizualizerDrawable.GetPlayerPositionInMazeSize(ActualGamerecord.moves[i].percentagex, ActualGamerecord.moves[i].percentagey, (int)md.mazeDrawable.mazeWidth,(int) md.mazeDrawable.mazeHeight);
+                   // double newX = ActualGamerecord.moves[i].percentagex * md.mazeDrawable.mazeWidth;
+                    //double newY = ActualGamerecord.moves[i].percentagey * md.mazeDrawable.mazeHeight;
+                    md.mazeDrawable.player.positionX = (int)(newX-(md.mazeDrawable.cellWidth));
+                    md.mazeDrawable.player.positionY = (int)(newY - (md.mazeDrawable.cellHeight));
+                    GraphicsView.Invalidate();
+                }
+            });
+
+        }
+        [RelayCommand]
         public void switchToTime()
         {
             TimeEnabled = false;

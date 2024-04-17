@@ -25,22 +25,20 @@
          Grid.Column="0"
          >
                 <Label Text="Records:" FontSize="16" Margin="0,20,0,0" />
-                <ScrollView MaximumHeightRequest="200" HorizontalScrollBarVisibility="Always">
+                <ScrollView MaximumHeightRequest="200" VerticalScrollBarVisibility="Always">
                     <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200" VerticalScrollBarVisibility="Always">
-                    <ListView.ItemTemplate x:DataType="mdls:GameRecord">
+                    <ListView.ItemTemplate x:DataType="mdls:GameRecord" >
                         <DataTemplate  >
-                            <ViewCell>
-                                <HorizontalStackLayout >
-                                    <Label Text="{Binding grID}" MinimumHeightRequest="50" />
-                                    <Button Text=" " BackgroundColor="{Binding color}"/>
-                                </HorizontalStackLayout>
+                                <ViewCell >
+                                    <Button Text="{Binding grID}       " TextColor="White"  BackgroundColor="{Binding color}" HorizontalOptions="CenterAndExpand"/> 
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
                     </ScrollView>
-                        <HorizontalStackLayout IsVisible="{Binding Vizualizershow}">
-                    <Button Text="Position"
+                        <VerticalStackLayout IsVisible="{Binding Vizualizershow}">
+                        <HorizontalStackLayout>
+                <Button Text="Position"
                             WidthRequest="100"
                             Command="{Binding switchToPositionCommand}"
                             IsEnabled="{Binding PositionEnabled}"
@@ -50,7 +48,12 @@
                              Command="{Binding switchToCellCommand}"
                             IsEnabled="{Binding CellEnabled}"
                             />
-                </HorizontalStackLayout>
+                        </HorizontalStackLayout>
+                <Button Text="Play"
+                            WidthRequest="200"
+                            Command="{Binding playCommand}"
+                            />
+                </VerticalStackLayout>
                 <VerticalStackLayout IsVisible="{Binding Heatmapshow}">
                     <HorizontalStackLayout >
                         <Button Text="Time"
@@ -77,12 +80,12 @@
                     HeightRequest="95"
                     />
                 <Button
-x:Name="ALLButton"
-Text="Show All Data"
-IsEnabled="{Binding ShowAllEnabled}"
-Command="{Binding switchToAllCommand}"
-MinimumWidthRequest="200"
-HorizontalOptions="Center" />
+                    x:Name="ALLButton"
+                    Text="Show All Data"
+                    IsEnabled="{Binding ShowAllEnabled}"
+                    Command="{Binding switchToAllCommand}"
+                    MinimumWidthRequest="200"
+                    HorizontalOptions="Center" />
 
 
             </VerticalStackLayout>

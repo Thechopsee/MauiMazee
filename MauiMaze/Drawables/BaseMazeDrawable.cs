@@ -24,6 +24,7 @@ namespace MauiMaze.Drawables
 
         public void reinitPlayer(Player player)
         {
+            //asi odstranit?
             if (player is null) { player = new Player(0,0,32,32); };
             if (maze.start is null)
             {
@@ -32,7 +33,7 @@ namespace MauiMaze.Drawables
             player.reInit((int)maze.start.X, (int)maze.start.Y ,cellWidth,cellHeight);
             
         }
-        protected virtual void drawPlayer(ICanvas canvas) {
+        public virtual void drawPlayer(ICanvas canvas) {
             if (canvas is null)
             {
                 throw new CanvasNotAvailableExpectation("");

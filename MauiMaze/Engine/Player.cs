@@ -10,6 +10,7 @@ namespace MauiMaze.Engine
 {
     public class Player
     {
+        public bool dummy { get; set; }
         private float _positionX;
         public float positionX
         {

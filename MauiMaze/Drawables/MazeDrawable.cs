@@ -46,11 +46,14 @@ namespace MauiMaze.Drawables
                     {
                         movefor = dirtyRect.Width;
                     }
-                    if (player is not null)
+                    if (player is not null )
                     {
-                        for (int i = (int)x; i < movefor - 1; i++)
+                        if (!player.dummy)
                         {
-                            walls[i, (int)y] = true;
+                            for (int i = (int)x; i < movefor - 1; i++)
+                            {
+                                walls[i, (int)y] = true;
+                            }
                         }
                     }
 
@@ -65,11 +68,14 @@ namespace MauiMaze.Drawables
                     {
                         movefor = dirtyRect.Height;
                     }
-                    if (player is not null)
+                    if (player is not null )
                     {
-                        for (int i = (int)y + 1; i < movefor - 1; i++)
+                        if (!player.dummy)
                         {
-                            walls[(int)x, i] = true;
+                            for (int i = (int)y + 1; i < movefor - 1; i++)
+                            {
+                                walls[(int)x, i] = true;
+                            }
                         }
                     }
                 }
@@ -92,20 +98,24 @@ namespace MauiMaze.Drawables
 
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
             drawWalls(canvas,dirtyRect);
-            if (player is not null)
+            if (player is not null )
             {
-                if (maze.start is null || maze.end is null)
+                if (!player.dummy)
                 {
-                    int Start = 0;
-                    int dolniHranice = (int)((maze.Width*maze.Height)*0.75);
-                    int horniHranice = maze.Width*maze.Height;
-                    Random random = new Random();
-                    int End = random.Next(dolniHranice, horniHranice-1 );
-                    initStartEnd(Start, End);
-                }
-                else if (maze.end.X == -1 )
-                {
-                    initStartEnd(maze.start.cell,maze.end.cell);
+                    if (maze.start is null || maze.end is null)
+                    {
+
+                        int Start = 0;
+                        int dolniHranice = (int)((maze.Width * maze.Height) * 0.75);
+                        int horniHranice = maze.Width * maze.Height;
+                        Random random = new Random();
+                        int End = random.Next(dolniHranice, horniHranice - 1);
+                        initStartEnd(Start, End);
+                    }
+                    else if (maze.end.X == -1)
+                    {
+                        initStartEnd(maze.start.cell, maze.end.cell);
+                    }
                 }
 
                 drawStartAndEnd(canvas);

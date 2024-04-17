@@ -91,6 +91,10 @@ namespace MauiMaze.Drawables
                 {
                     drawMotion(canvas, gameRecords.ElementAt(actualID), actualID, dirtyRect);
                 }
+                if (mazeDrawable.player is not null)
+                {
+                    mazeDrawable.drawPlayer(canvas);
+                }
             }
         }
     }
