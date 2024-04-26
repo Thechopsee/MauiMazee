@@ -50,9 +50,19 @@ namespace MauiMaze.Drawables
                     {
                         if (!player.dummy)
                         {
-                            for (int i = (int)x; i < movefor - 1; i++)
+                            for (int i = (int)x; i < movefor; i++)
                             {
                                 walls[i, (int)y] = true;
+                                if (walls.GetLength(1) < y+1 || walls.GetLength(1) == y+2 )
+                                {
+                                    walls[i, (int)y - 1] = true;
+                                    walls[i, (int)y - 2] = true;
+                                }
+                                else
+                                {
+                                walls[i, (int)y+1] = true;
+                                walls[i, (int)y+2] = true;
+                                }
                             }
                         }
                     }
@@ -72,9 +82,19 @@ namespace MauiMaze.Drawables
                     {
                         if (!player.dummy)
                         {
-                            for (int i = (int)y + 1; i < movefor - 1; i++)
+                            for (int i = (int)y; i < movefor; i++)
                             {
                                 walls[(int)x, i] = true;
+                                if (walls.GetLength(0) < x + 1 || walls.GetLength(0) == x + 2)
+                                {
+                                    walls[(int)x-1, i] = true;
+                                    walls[(int)x-2, i] = true;
+                                }
+                                else
+                                {
+                                    walls[(int)x + 1, i] = true;
+                                    walls[(int)x + 2, i] = true;
+                                }
                             }
                         }
                     }
@@ -122,9 +142,7 @@ namespace MauiMaze.Drawables
                 drawPlayer(canvas);
                 drawHitbox(canvas);
             }
-
             drawStartAndEnd(canvas);
-            
         }
     }   
 }

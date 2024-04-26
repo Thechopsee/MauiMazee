@@ -19,10 +19,8 @@ public partial class MoveVizualizerPage : ContentPage
         mv = new MoveVizualizerViewModel(canvas, recordsList, maze, lc, heatmap);
         BindingContext = mv;
         this.Loaded += refreshCanvas;
-        
-        
 
-
+       
     }
     public  void refreshCanvas(object sender, EventArgs es)
     {

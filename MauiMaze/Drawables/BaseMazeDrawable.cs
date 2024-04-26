@@ -1,4 +1,5 @@
-﻿using MauiMaze.Engine;
+﻿
+using MauiMaze.Engine;
 using MauiMaze.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,12 @@ namespace MauiMaze.Drawables
 
         public void reinitPlayer(Player player)
         {
-            //asi odstranit?
             if (player is null) { player = new Player(0,0,32,32); };
             if (maze.start is null)
             {
                 return;
             }
-            player.reInit((int)maze.start.X, (int)maze.start.Y ,cellWidth,cellHeight);
+            player.reInit((int)0, (int)0 ,cellWidth,cellHeight);
             
         }
         public virtual void drawPlayer(ICanvas canvas) {
@@ -38,10 +38,11 @@ namespace MauiMaze.Drawables
             {
                 throw new CanvasNotAvailableExpectation("");
             }
-            float plX = (float)(player.positionX + player.playerSizeX);
-            float plY = (float)(player.positionY + player.playerSizeY);
+            float plX = (float)(player.positionX + (player.playerSizeX/2));
+            float plY = (float)(player.positionY + (player.playerSizeY/2));
             canvas.StrokeColor = Colors.Orange;
             canvas.DrawCircle(plX, plY, MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY))/3);
+            canvas.DrawRectangle(player.positionX, player.positionY, (float)player.playerSizeX, (float)player.playerSizeY);
         }
         public void drawStartAndEnd(ICanvas canvas)
         {
@@ -67,7 +68,7 @@ namespace MauiMaze.Drawables
             canvas.StrokeColor = Colors.Magenta;
             canvas.StrokeSize = 2;
             float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));
-            canvas.DrawRectangle(player.positionX + (float)player.playerSizeX - (minsize / 1.5f) / 2, player.positionY + (float)player.playerSizeY - (minsize / 1.5f) / 2, minsize / 1.5f, minsize / 1.5f);
+            canvas.DrawRectangle(player.hitbox.X,player.hitbox.Y, player.hitbox.Size, player.hitbox.Size);
         }
         
     }

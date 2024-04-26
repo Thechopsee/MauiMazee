@@ -28,7 +28,7 @@ namespace MauiMaze.Services
                 using (httpClient)
                 {
                     string jsonUserData = JsonConvert.SerializeObject(userData);
-                    var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
+                     var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
                     HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(false);
                     string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     UserDataDTO dto = JsonConvert.DeserializeObject<UserDataDTO>(responseContent);
