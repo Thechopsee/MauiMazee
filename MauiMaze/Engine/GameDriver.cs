@@ -92,7 +92,6 @@ namespace MauiMaze.Engine
         }
         public void timerMove(object state)
         {
-            graphicsView.Invalidate();
             lock (moveLock)
             {
                 movePlayerToPosition(lastposx, lastposy);
@@ -356,7 +355,7 @@ namespace MauiMaze.Engine
                 int y = points[i].Item2;
 
 
-                (bool, bool, bool) hitcheck = checkCollision(x, y, (int)(x + player.hitbox.Size), (int)(y + player.hitbox.Size), walls);
+                (bool, bool, bool) hitcheck = checkCollision(x-1, y-1, (int)(x + player.hitbox.Size)+1, (int)(y + player.hitbox.Size)+1, walls);
                 if (hitcheck.Item1)
                 {
                     float xrep = x + (hitcheck.Item3 ? 0 : 3)*stepy;
@@ -366,8 +365,8 @@ namespace MauiMaze.Engine
                     {
                         if (i !=0)
                         {
-                            player.positionX = (int)x - (int)((player.playerSizeX - player.hitbox.Size) / 2);
-                            player.positionY = (int)y - (int)((player.playerSizeY - player.hitbox.Size) / 2);
+                            player.positionX = oldPlayerX;
+                            player.positionY = oldPlayerY;
                         }
                         else
                         {
