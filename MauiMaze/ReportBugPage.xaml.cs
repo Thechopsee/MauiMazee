@@ -42,6 +42,7 @@ public partial class ReportBugPage : ContentPage
         {
             Shell.Current.Navigation.PopAsync();
         }
+        submitBTn.IsEnabled = true;
     }
     public bool IsValidEmail(string email)
     {

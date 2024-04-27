@@ -126,21 +126,13 @@ namespace MauiMaze.Engine
                     playercln.positionY = (int)(y - (player.playerSizeY / 2));
                     bool areHitted = false;
                     (bool vysl, playercln) = checkTrajectory(oldHitbox, oldHitboy, oldPlayerX, oldPlayery, mazeDrawable.walls, playercln);
-                    //bool vysl = true;
                     if (vysl)
                     {
-
                         areHitted = true;
-                        player.positionX = playercln.positionX;
-                        player.positionY = playercln.positionY;
                     }
-                    else
-                    {
-
-                        player.positionX = playercln.positionX;
-                        player.positionY = playercln.positionY;
+                    player.positionX = playercln.positionX;
+                    player.positionY = playercln.positionY;
   
-                    }
                     if (checkEnd())
                     {
                         endGameprocedure();
@@ -192,11 +184,11 @@ namespace MauiMaze.Engine
             
             if (movecounter <= 0)
             {
-                double playerXPercentage = ((player.positionX + player.playerSizeX) / mazeDrawable.mazeWidth);
-                double playerYPercentage = ((player.positionY + player.playerSizeY) / mazeDrawable.mazeHeight);
+                double playerXPercentage = ((player.positionX + (player.playerSizeX / 2)) / mazeDrawable.mazeWidth);
+                double playerYPercentage = ((player.positionY + (player.playerSizeY/2)) / mazeDrawable.mazeHeight);
                 double mazesize = mazeDrawable.maze.Width;
-                double xid = ((player.positionX + player.playerSizeX) / mazeDrawable.cellWidth);
-                double yid = ((player.positionY + player.playerSizeY) / mazeDrawable.cellHeight);
+                double xid = ((player.positionX + (player.playerSizeX / 2)) / mazeDrawable.cellWidth);
+                double yid = ((player.positionY + (player.playerSizeY / 2)) / mazeDrawable.cellHeight);
                 int cellID = (int)mazesize * (int)Math.Floor(yid) + (int)Math.Floor(xid);
                 gameRecord.addCellMoveRecord(cellID);
                 long now = gameRecord.stopwatch.ElapsedMilliseconds;
@@ -343,8 +335,6 @@ namespace MauiMaze.Engine
             float xorigin = oldHitbox;
             float yorigin = oldHitboy;
 
-
-
             float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
 
             (List<(int, int)> points,int stepx,int stepy) = Calculatepoints((int)xorigin, (int)yorigin, (int)xnew, (int)ynew);
@@ -384,31 +374,9 @@ namespace MauiMaze.Engine
 
 
                 }
-                else
-                {
-
-                }
-
-
-                //if (hitcheck.Item1)
-                //{
-                //    float xrep = (xorigin + (i - 1) * stepX) + (stepX * (hitcheck.Item3 ? 0 : 3));
-                //    float yrep = (yorigin + (i - 1) * stepY) + (stepY * (hitcheck.Item2 ? 0 : 3));
-                //    player.recalculateHitbox();
-                //    (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size), (int)(yrep + player.hitbox.Size), walls);
-                //    player.recalculateHitbox();
-
-
-                //    float minsize = (float)Math.Min(player.playerSizeX, player.playerSizeY);
-                //    player.positionX = xrep - (float)((player.playerSizeX - player.hitbox.Size) / 2);
-                //    player.positionY = yrep - (float)((player.playerSizeY - player.hitbox.Size) / 2);
-                //    return (true, player);
-                //}
 
             }
-
             return (false, player);
-
         }
         private void endGameprocedure()
         {

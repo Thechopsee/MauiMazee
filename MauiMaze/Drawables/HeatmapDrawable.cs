@@ -32,7 +32,6 @@ namespace MauiMaze.Drawables
             double cellWidth = dirtyRect.Width / this.maze.Width;
             double cellHeight = dirtyRect.Height / this.maze.Height;
             
-
             Maze maze = this.maze;
 
             foreach (var cell in cellData)

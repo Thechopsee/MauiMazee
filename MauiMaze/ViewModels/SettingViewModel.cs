@@ -61,14 +61,14 @@ namespace MauiMaze.ViewModels
             {
                 TexturedEnabled = true;
                 SimplifyEnabled = false;
-                SettingsData.SimplyfiedGraphic = true;
+                SettingsData.SetsGenerator = true;
                 saveSettings();
             }
             else if (TexturedEnabled)
             {
                 TexturedEnabled = false;
                 SimplifyEnabled = true;
-                SettingsData.SimplyfiedGraphic = false;
+                SettingsData.SetsGenerator = false;
                 saveSettings();
             }
         }
@@ -95,7 +95,7 @@ namespace MauiMaze.ViewModels
         public async void tryToLoadSetting(object sender, EventArgs e)
         {
             SettingsData = await SettingsDataFetcher.getSettings();
-            if (SettingsData.SimplyfiedGraphic)
+            if (SettingsData.SetsGenerator)
             {
                 SimplifyEnabled = false;
                 TexturedEnabled = true;

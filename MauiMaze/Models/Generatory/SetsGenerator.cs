@@ -11,7 +11,6 @@ namespace MauiMaze.Models.Generatory
     {
         public List<Edge> GenerateMaze(int rows, int cols)
         {
-            //Size size=new Size(width,height);
             var edgesToCheck = Generate(cols, rows);
             var sets = InitializeSets(cols, rows);
 

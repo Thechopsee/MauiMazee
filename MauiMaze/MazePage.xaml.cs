@@ -68,7 +68,10 @@ public partial class MazePage : ContentPage
         {
             if ((bool)result)
             {
-                timer.Dispose();
+                if (timer is not null)
+                {
+                    timer.Dispose();
+                }
                 await Navigation.PopAsync().ConfigureAwait(false);
 
             }

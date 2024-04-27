@@ -20,18 +20,20 @@ namespace MauiMaze.Drawables
         public double cellHeight { get; set; }
         public bool[,] walls { get; set; }
 
-
         public virtual void drawWalls(ICanvas canvas, RectF dirtyRect) { }
+
 
         public void reinitPlayer(Player player)
         {
-            if (player is null) { player = new Player(0,0,32,32); };
+            if (player is null) 
+            { 
+                player = new Player(0,0,32,32); 
+            };
             if (maze.start is null)
             {
                 return;
             }
             player.reInit((int)0, (int)0 ,cellWidth,cellHeight);
-            
         }
         public virtual void drawPlayer(ICanvas canvas) {
             if (canvas is null)
@@ -42,7 +44,7 @@ namespace MauiMaze.Drawables
             float plY = (float)(player.positionY + (player.playerSizeY/2));
             canvas.StrokeColor = Colors.Orange;
             canvas.DrawCircle(plX, plY, MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY))/3);
-            canvas.DrawRectangle(player.positionX, player.positionY, (float)player.playerSizeX, (float)player.playerSizeY);
+            //canvas.DrawRectangle(player.positionX, player.positionY, (float)player.playerSizeX, (float)player.playerSizeY);
         }
         public void drawStartAndEnd(ICanvas canvas)
         {
@@ -67,7 +69,6 @@ namespace MauiMaze.Drawables
             }
             canvas.StrokeColor = Colors.Magenta;
             canvas.StrokeSize = 2;
-            float minsize = MathF.Min((float)player.playerSizeX, ((float)player.playerSizeY));
             canvas.DrawRectangle(player.hitbox.X,player.hitbox.Y, player.hitbox.Size, player.hitbox.Size);
         }
         

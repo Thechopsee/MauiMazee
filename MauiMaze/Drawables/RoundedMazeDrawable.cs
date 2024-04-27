@@ -85,8 +85,8 @@ namespace MauiMaze.Drawables
 
             if (player is null ||player.positionX<=0)
             {
-                cellHeight = 20;
-                cellWidth = 20;
+               cellHeight = 20;
+               cellWidth = 20;
                player = new Player((int)(maze.start.X-cellWidth), (int)(maze.start.Y-cellHeight), cellWidth, cellHeight);
             }
             else

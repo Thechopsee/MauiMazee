@@ -94,8 +94,8 @@ namespace MauiMaze.ViewModels
                     (int newX,int newY)=MoveVizualizerDrawable.GetPlayerPositionInMazeSize(ActualGamerecord.moves[i].percentagex, ActualGamerecord.moves[i].percentagey, (int)md.mazeDrawable.mazeWidth,(int) md.mazeDrawable.mazeHeight);
                    // double newX = ActualGamerecord.moves[i].percentagex * md.mazeDrawable.mazeWidth;
                     //double newY = ActualGamerecord.moves[i].percentagey * md.mazeDrawable.mazeHeight;
-                    md.mazeDrawable.player.positionX = (int)(newX-(md.mazeDrawable.cellWidth));
-                    md.mazeDrawable.player.positionY = (int)(newY - (md.mazeDrawable.cellHeight));
+                    md.mazeDrawable.player.positionX = (int)(newX-(md.mazeDrawable.cellWidth/2));
+                    md.mazeDrawable.player.positionY = (int)(newY - (md.mazeDrawable.cellHeight/2));
                     GraphicsView.Invalidate();
                 }
             });

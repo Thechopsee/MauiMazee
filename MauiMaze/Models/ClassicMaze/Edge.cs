@@ -26,5 +26,11 @@ namespace MauiMaze.Models.ClassicMaze
 
         public static bool operator ==(Edge left, Edge right) => Equals(left, right);
         public static bool operator !=(Edge left, Edge right) => !Equals(left, right);
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Edge);
+        }
+
     }
 }

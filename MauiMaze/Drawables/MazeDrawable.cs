@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MauiMaze.Engine;
+﻿using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Helpers;
-
-
 
 namespace MauiMaze.Drawables
 {

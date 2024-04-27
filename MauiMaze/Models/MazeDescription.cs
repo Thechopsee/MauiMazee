@@ -23,7 +23,6 @@ namespace MauiMaze.Models
 
         [ObservableProperty]
         bool offline;
-
         public string description { get; set; }
 
         private bool local = false;
