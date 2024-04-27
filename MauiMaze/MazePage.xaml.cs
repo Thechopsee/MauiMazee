@@ -33,6 +33,7 @@ public partial class MazePage : ContentPage
         }
         if (driver.ended)
         {
+            timer.Dispose();
             Navigation.PushAsync(new RecordFullPage(driver.gameRecord, 0));
         }
         if (e is not null)
@@ -67,7 +68,9 @@ public partial class MazePage : ContentPage
         {
             if ((bool)result)
             {
+                timer.Dispose();
                 await Navigation.PopAsync().ConfigureAwait(false);
+
             }
         }
         

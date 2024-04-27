@@ -29,6 +29,9 @@ namespace MauiMaze.Engine
         private float lastposy { get; set; }
         public GameRecord gameRecord { get; set; }
 
+        private static object syncObject = new object();
+        private readonly object moveLock = new object();
+
         private long lastTime = 0;
         public int movecounter = 3;
 
@@ -90,7 +93,10 @@ namespace MauiMaze.Engine
         public void timerMove(object state)
         {
             graphicsView.Invalidate();
-            movePlayerToPosition(lastposx, lastposy);
+            lock (moveLock)
+            {
+                movePlayerToPosition(lastposx, lastposy);
+            }
         }
         public bool movePlayerToPosition(float x, float y)
         {
@@ -105,46 +111,56 @@ namespace MauiMaze.Engine
             }
 
 
-            float oldPlayerX = player.positionX;
-            float oldPlayery = player.positionY;
+            int oldPlayerX = player.positionX;
+            int oldPlayery = player.positionY;
             float oldHitbox = player.hitbox.X;
             float oldHitboy = player.hitbox.Y;
             
             double distance = Math.Sqrt(Math.Pow(x - player.hitbox.X, 2) + Math.Pow(y - player.hitbox.Y, 2));
-
-            if (distance < player.playerSizeY)
+            Monitor.Enter(syncObject);
+            try
             {
-                Player playercln = (Player)player.Clone();
-                playercln.positionX = (float)(x - (player.playerSizeX / 2));
-                playercln.positionY = (float)(y - (player.playerSizeY / 2));
-                bool areHitted = false;
-                (bool vysl, playercln) = checkTrajectory(oldHitbox, oldHitboy, oldPlayerX, oldPlayery, mazeDrawable.walls, playercln);
-                //bool vysl = true;
-                if (vysl)
+                if (distance < player.playerSizeY)
                 {
-                    areHitted = true;
-                    player.positionX = playercln.positionX;
-                    player.positionY = playercln.positionY;
-                    graphicsView.Invalidate();
-                }
-                else
-                {
-                    player.positionX = playercln.positionX;
-                    player.positionY = playercln.positionY;
-                }
-                if (checkEnd())
-                { 
-                    endGameprocedure();
-                }
-                
-                mazeDrawable.player = player;
-                graphicsView.Invalidate();
+                    Player playercln = (Player)player.Clone();
+                    playercln.positionX = (int)(x - (player.playerSizeX / 2));
+                    playercln.positionY = (int)(y - (player.playerSizeY / 2));
+                    bool areHitted = false;
+                    (bool vysl, playercln) = checkTrajectory(oldHitbox, oldHitboy, oldPlayerX, oldPlayery, mazeDrawable.walls, playercln);
+                    //bool vysl = true;
+                    if (vysl)
+                    {
 
-                saveMove(areHitted);
-                lastposx = -100;
-                lastposy = -100;
-                return true;
+                        areHitted = true;
+                        player.positionX = playercln.positionX;
+                        player.positionY = playercln.positionY;
+                    }
+                    else
+                    {
+
+                        player.positionX = playercln.positionX;
+                        player.positionY = playercln.positionY;
+  
+                    }
+                    if (checkEnd())
+                    {
+                        endGameprocedure();
+                    }
+
+                    mazeDrawable.player = player;
+                    graphicsView.Invalidate();
+
+                    saveMove(areHitted);
+                    lastposx = -100;
+                    lastposy = -100;
+                    return true;
+                }
             }
+            finally
+            {
+                Monitor.Exit(syncObject);
+            }
+
             return false;
         }
 
@@ -164,32 +180,6 @@ namespace MauiMaze.Engine
                         currY >= 0 && currY < walls.GetLength(1) &&
                         walls[currX, currY])
                     {
-                        if (walls[currX, currY + 1] || walls[currX, currY - 1])
-                        {
-                            collisionY = true;
-                        }
-                        if (walls[currX + 1, currY] || walls[currX - 1, currY])
-                        {
-                            collisionX = true;
-                        }
-                        if ((currY + 5 > endY || currY < startY + 5) && collisionY)
-                        {
-                            if ((!walls[currX, currY + 1] && !walls[currX, currY + 2]) || (!walls[currX, currY - 1] && !walls[currX, currY - 2]))
-                            {
-                                collisionX = true;
-                                collisionY = false;
-                            }
-                        }
-                        if ((currX + 5 > endX || currX < startX + 5) && collisionX)
-                        {
-                            if ((!walls[currX + 1, currY] && !walls[currX + 2, currY]) || (!walls[currX - 1, currY] && !walls[currX - 2, currY]))
-                            {
-
-                                collisionX = false;
-                                collisionY = true;
-                            }
-
-                        }
                         return (true, collisionX, collisionY);
 
                     }
@@ -226,7 +216,7 @@ namespace MauiMaze.Engine
         {
             return player.checkHit(mazeDrawable.maze.end.X, mazeDrawable.maze.end.Y, mazeDrawable.maze.end.bottomX, mazeDrawable.maze.end.bottomY);
         }
-        List<(int, int)> Calculatepoints(int x0, int y0, int x1, int y1)
+        (List<(int, int)>,int,int) Calculatepoints(int x0, int y0, int x1, int y1)
         {
             List<(int, int)> points = new List<(int, int)>();
 
@@ -262,92 +252,10 @@ namespace MauiMaze.Engine
                 }
             }
 
-            return points;
+            return (points,stepx,stepy);
         }
-        //old Good solution but not as good as actual
-        public (bool, Player) checkTrajectory(float oldHitbox, float oldHitboy, float oldPlayerX, float oldPlayerY, bool[,] walls, Player player)
-        {
-            float xnew = player.hitbox.X;
-            float ynew = player.hitbox.Y;
-            float xorigin = oldHitbox;
-            float yorigin = oldHitboy;
-
-
-            float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
-
-            int numberOfDots = (int)(distance);
-
-
-            if (numberOfDots == 0)
-            {
-                return (false, player);
-            }
-
-            float xdiv = xnew - xorigin;
-            float ydiv = ynew - yorigin;
-            // float stepX=xdiv / distance;
-            // float stepY= ydiv / distance;
-            float stepX;
-            float stepY;
-            if (xdiv / distance < 0)
-            {
-                stepX = -1;
-            }
-            else if (xdiv / distance == 0)
-            {
-                stepX = 0;
-            }
-            else
-            {
-                stepX = 1;
-            }
-            if (ydiv / distance < 0)
-            {
-                stepY = -1;
-            }
-            else if (ydiv / distance == 0)
-            {
-                stepY = 0;
-            }
-            else
-            {
-                stepY = 1;
-            }
-
-            for (int i = 0; i <= numberOfDots - 1; i++)
-            {
-                int x = (int)(xorigin + i * stepX);
-                int y = (int)(yorigin + i * stepY);
-
-
-                (bool, bool, bool) hitcheck = checkCollision(x, y, (int)(x + player.hitbox.Size), (int)(y + player.hitbox.Size), walls);
-                if (hitcheck.Item1)
-                {
-                    float xrep = (xorigin + (i - 1) * stepX) + (stepX * (hitcheck.Item3 ? 0 : 3));
-                    float yrep = (yorigin + (i - 1) * stepY) + (stepY * (hitcheck.Item2 ? 0 : 3));
-                    player.recalculateHitbox();
-                    (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size - 1), (int)(yrep + player.hitbox.Size - 1), walls);
-                    player.recalculateHitbox();
-                    if (hitcheck2.Item1)
-                    {
-                        player.positionX = oldPlayerX;
-                        player.positionY = oldPlayerY;
-                        return (true, player);
-                    }
-
-                    float minsize = (float)Math.Min(player.playerSizeX, player.playerSizeY);
-                    player.positionX = xrep - (float)(player.playerSizeX - (minsize / 1.5f)) / 2;
-                    player.positionY = yrep - (float)(player.playerSizeY - (minsize / 1.5f)) / 2;
-                    return (true, player);
-                }
-
-            }
-
-            return (false, player);
-
-        }
-
-        //public (bool,Player) checkTrajectory(float oldHitbox, float oldHitboy, float oldPlayerX, float oldPlayerY, bool[,] walls,Player player)
+        ////old Good solution but not as good as actual
+        //public (bool, Player) checkTrajectory(float oldHitbox, float oldHitboy, float oldPlayerX, float oldPlayerY, bool[,] walls, Player player)
         //{
         //    float xnew = player.hitbox.X;
         //    float ynew = player.hitbox.Y;
@@ -357,69 +265,152 @@ namespace MauiMaze.Engine
 
         //    float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
 
-        //    List<(int, int)> points = Calculatepoints((int)xorigin, (int)yorigin, (int)xnew, (int)ynew);
+        //    int numberOfDots = (int)(distance);
 
-        //    for (int i = 0; i <= points.Count - 1; i++)
+
+        //    if (numberOfDots == 0)
         //    {
-        //        int x = points[i].Item1;
-        //        int y = points[i].Item2;
+        //        return (false, player);
+        //    }
+
+        //    float xdiv = xnew - xorigin;
+        //    float ydiv = ynew - yorigin;
+        //    // float stepX=xdiv / distance;
+        //    // float stepY= ydiv / distance;
+        //    float stepX;
+        //    float stepY;
+        //    if (xdiv / distance < 0)
+        //    {
+        //        stepX = -1;
+        //    }
+        //    else if (xdiv / distance == 0)
+        //    {
+        //        stepX = 0;
+        //    }
+        //    else
+        //    {
+        //        stepX = 1;
+        //    }
+        //    if (ydiv / distance < 0)
+        //    {
+        //        stepY = -1;
+        //    }
+        //    else if (ydiv / distance == 0)
+        //    {
+        //        stepY = 0;
+        //    }
+        //    else
+        //    {
+        //        stepY = 1;
+        //    }
+
+        //    for (int i = 0; i <= numberOfDots - 1; i++)
+        //    {
+        //        int x = (int)(xorigin + i * stepX);
+        //        int y = (int)(yorigin + i * stepY);
 
 
-        //        (bool, bool, bool) hitcheck = checkCollision(x-2, y-2, (int)(x + player.hitbox.Size)+2, (int)(y + player.hitbox.Size)+2, walls);
+        //        (bool, bool, bool) hitcheck = checkCollision(x, y, (int)(x + player.hitbox.Size), (int)(y + player.hitbox.Size), walls);
         //        if (hitcheck.Item1)
         //        {
-        //            //float xrep = x + (hitcheck.Item3 ? 0 : 3);
-        //            //float yrep = y + (hitcheck.Item2 ? 0 : 3);
-        //            //(bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size), (int)(yrep + player.hitbox.Size), walls);
-        //            if (true)
+        //            float xrep = (xorigin + (i - 1) * stepX) + (stepX * (hitcheck.Item3 ? 0 : 3));
+        //            float yrep = (yorigin + (i - 1) * stepY) + (stepY * (hitcheck.Item2 ? 0 : 3));
+        //            player.recalculateHitbox();
+        //            (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size - 1), (int)(yrep + player.hitbox.Size - 1), walls);
+        //            player.recalculateHitbox();
+        //            if (hitcheck2.Item1)
         //            {
-        //                if (i > 1)
-        //                {
-        //                    player.positionX = points[i - 2].Item1 - (float)((player.playerSizeX - player.hitbox.Size) / 2);
-        //                    player.positionY = points[i - 2].Item2 - (float)((player.playerSizeY - player.hitbox.Size) / 2);
-        //                }
-        //                else
-        //                {
-        //                    player.positionX = oldPlayerX;
-        //                    player.positionY = oldPlayerY;
-        //                }
-        //                return (true, player);
-        //            }
-        //            else
-        //            {
-        //                //player.positionX = xrep - (float)((player.playerSizeX - player.hitbox.Size) / 2);
-        //                //player.positionY = yrep - (float)((player.playerSizeY - player.hitbox.Size) / 2);
+        //                player.positionX = oldPlayerX;
+        //                player.positionY = oldPlayerY;
         //                return (true, player);
         //            }
 
-
+        //            float minsize = (float)Math.Min(player.playerSizeX, player.playerSizeY);
+        //            player.positionX = xrep - (float)(player.playerSizeX - (minsize / 1.5f)) / 2;
+        //            player.positionY = yrep - (float)(player.playerSizeY - (minsize / 1.5f)) / 2;
+        //            return (true, player);
         //        }
-        //        else
-        //        {
-
-        //        }
-
-
-        //        //if (hitcheck.Item1)
-        //        //{
-        //        //    float xrep = (xorigin + (i - 1) * stepX) + (stepX * (hitcheck.Item3 ? 0 : 3));
-        //        //    float yrep = (yorigin + (i - 1) * stepY) + (stepY * (hitcheck.Item2 ? 0 : 3));
-        //        //    player.recalculateHitbox();
-        //        //    (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size), (int)(yrep + player.hitbox.Size), walls);
-        //        //    player.recalculateHitbox();
-
-
-        //        //    float minsize = (float)Math.Min(player.playerSizeX, player.playerSizeY);
-        //        //    player.positionX = xrep - (float)((player.playerSizeX - player.hitbox.Size) / 2);
-        //        //    player.positionY = yrep - (float)((player.playerSizeY - player.hitbox.Size) / 2);
-        //        //    return (true, player);
-        //        //}
 
         //    }
 
         //    return (false, player);
 
         //}
+
+        public (bool, Player) checkTrajectory(float oldHitbox, float oldHitboy, int oldPlayerX, int oldPlayerY, bool[,] walls, Player player)
+        {
+            float xnew = player.hitbox.X;
+            float ynew = player.hitbox.Y;
+            float xorigin = oldHitbox;
+            float yorigin = oldHitboy;
+
+
+
+            float distance = (float)Math.Sqrt((xnew - xorigin) * (xnew - xorigin) + (ynew - yorigin) * (ynew - yorigin));
+
+            (List<(int, int)> points,int stepx,int stepy) = Calculatepoints((int)xorigin, (int)yorigin, (int)xnew, (int)ynew);
+
+            for (int i = 0; i <= points.Count - 1; i++)
+            {
+                int x = points[i].Item1;
+                int y = points[i].Item2;
+
+
+                (bool, bool, bool) hitcheck = checkCollision(x, y, (int)(x + player.hitbox.Size), (int)(y + player.hitbox.Size), walls);
+                if (hitcheck.Item1)
+                {
+                    float xrep = x + (hitcheck.Item3 ? 0 : 3)*stepy;
+                    float yrep = y + (hitcheck.Item2 ? 0 : 3)*stepx;
+                    (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size), (int)(yrep + player.hitbox.Size), walls);
+                    if (true)
+                    {
+                        if (i !=0)
+                        {
+                            player.positionX = (int)x - (int)((player.playerSizeX - player.hitbox.Size) / 2);
+                            player.positionY = (int)y - (int)((player.playerSizeY - player.hitbox.Size) / 2);
+                        }
+                        else
+                        {
+                            player.positionX = oldPlayerX;
+                            player.positionY = oldPlayerY;
+                        }
+                        return (true, player);
+                    }
+                    else
+                    {
+                        player.positionX = (int)xrep - (int)((player.playerSizeX - player.hitbox.Size) / 2);
+                        player.positionY = (int)yrep - (int)((player.playerSizeY - player.hitbox.Size) / 2);
+                        return (true, player);
+                    }
+
+
+                }
+                else
+                {
+
+                }
+
+
+                //if (hitcheck.Item1)
+                //{
+                //    float xrep = (xorigin + (i - 1) * stepX) + (stepX * (hitcheck.Item3 ? 0 : 3));
+                //    float yrep = (yorigin + (i - 1) * stepY) + (stepY * (hitcheck.Item2 ? 0 : 3));
+                //    player.recalculateHitbox();
+                //    (bool, bool, bool) hitcheck2 = checkCollision((int)xrep, (int)yrep, (int)(xrep + player.hitbox.Size), (int)(yrep + player.hitbox.Size), walls);
+                //    player.recalculateHitbox();
+
+
+                //    float minsize = (float)Math.Min(player.playerSizeX, player.playerSizeY);
+                //    player.positionX = xrep - (float)((player.playerSizeX - player.hitbox.Size) / 2);
+                //    player.positionY = yrep - (float)((player.playerSizeY - player.hitbox.Size) / 2);
+                //    return (true, player);
+                //}
+
+            }
+
+            return (false, player);
+
+        }
         private void endGameprocedure()
         {
             gameRecord.stopMeasuremnt();

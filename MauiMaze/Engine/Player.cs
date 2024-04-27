@@ -11,8 +11,8 @@ namespace MauiMaze.Engine
     public class Player : ICloneable
     {
         public bool dummy { get; set; }
-        private float _positionX;
-        public float positionX
+        private int _positionX;
+        public int positionX
         {
             get { return _positionX; }
             set
@@ -22,8 +22,8 @@ namespace MauiMaze.Engine
             }
         }
 
-        private float _positionY;
-        public float positionY
+        private int _positionY;
+        public int positionY
         {
             get { return _positionY; }
             set

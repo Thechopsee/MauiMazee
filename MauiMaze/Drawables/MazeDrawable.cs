@@ -50,7 +50,7 @@ namespace MauiMaze.Drawables
                     {
                         if (!player.dummy)
                         {
-                            for (int i = (int)x; i < movefor; i++)
+                            for (int i = (int)x; i < movefor-1; i++)
                             {
                                 walls[i, (int)y] = true;
                                 if (walls.GetLength(1) < y+1 || walls.GetLength(1) == y+2 )
@@ -82,7 +82,7 @@ namespace MauiMaze.Drawables
                     {
                         if (!player.dummy)
                         {
-                            for (int i = (int)y; i < movefor; i++)
+                            for (int i = (int)y; i < movefor-1; i++)
                             {
                                 walls[(int)x, i] = true;
                                 if (walls.GetLength(0) < x + 1 || walls.GetLength(0) == x + 2)
