@@ -11,7 +11,6 @@ public partial class Settings : ContentPage
         this.Loaded += swm.tryToLoadSetting;
         InitializeComponent();
 		
-		
 		BindingContext = swm;
 		
 		swm.SimplifyEnabled = !swm.SimplifyEnabled;

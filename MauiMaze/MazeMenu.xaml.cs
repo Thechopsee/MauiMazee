@@ -15,8 +15,4 @@ public partial class MazeMenu : ContentPage
 		InitializeComponent();
         BindingContext = new MazeMenuViewModel(canvas,classicButton,roundedButton,login);
     }
-
-
-
-
 }

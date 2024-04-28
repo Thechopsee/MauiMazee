@@ -17,8 +17,6 @@ public partial class RoundedMazePage : ContentPage
 
     void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
-
-
         if (driver.ended)
         {
             Navigation.PushAsync(new RecordFullPage(driver.gameRecord, 0));

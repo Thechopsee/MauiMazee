@@ -9,8 +9,6 @@ public partial class LoginPage : ContentPage
 	{
 		InitializeComponent();
 		LoginPageViewModel lvm = new LoginPageViewModel();
-        lvm.Email = "admin";
-        lvm.Password = "admin";
 		lvm.Role = role;
 		BindingContext = lvm;
     }

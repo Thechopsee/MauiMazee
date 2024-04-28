@@ -48,7 +48,6 @@ public partial class ReportBugPage : ContentPage
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;
-
         try
         {
             var addr = new System.Net.Mail.MailAddress(email);

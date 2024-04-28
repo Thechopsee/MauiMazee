@@ -30,14 +30,9 @@ namespace MauiMaze.ViewModels
             {
                 UserOfflineProcedure();
             }
-            else
-            { 
-                //TODO set Welcome text
-            }
         }
         public void UserOfflineProcedure()
         {
-            //IsHistoryButtonVisible = false;
             IsRecordsButtonVisible = false;
             IsDailyButtonVisible = false;
             ExitText = "Exit 🚪";

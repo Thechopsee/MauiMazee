@@ -68,8 +68,6 @@ namespace MauiMaze.Services
             }
             await SecureStorage.Default.SetAsync("recordsCounts" + gr.mazeID, ""+(len+1));
             string json = JsonConvert.SerializeObject(gr);
-            //SQLiteAsyncConnection Database = new SQLiteAsyncConnection(Constantss.DatabasePath, Constantss.Flags);
-            //var result = await Database.CreateTableAsync<MoveRecord>();
             gr.moves = new List<MoveRecord>();
             await SecureStorage.Default.SetAsync("records+" + gr.mazeID + "+" + (len + 1), JsonConvert.SerializeObject(gr)) ;
             string red = await SecureStorage.Default.GetAsync("records+" + gr.mazeID + "+" + (len + 1));

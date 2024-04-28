@@ -7,13 +7,11 @@ namespace MauiMaze;
 
 public partial class RecordFullPage : ContentPage
 {
-    public ViewModels.RecordFullPageViewModel ViewModel { get; } 
+    public RecordFullPageViewModel ViewModel { get; } 
     public RecordFullPage(GameRecord record,int camefrom)
 	{
 		InitializeComponent();
-        ViewModel = new ViewModels.RecordFullPageViewModel(record, camefrom);
+        ViewModel = new RecordFullPageViewModel(record, camefrom);
         BindingContext = ViewModel;
     }
-
-
 }
