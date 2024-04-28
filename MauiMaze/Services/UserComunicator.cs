@@ -78,7 +78,7 @@ namespace MauiMaze.Services
             }
         }
 
-        public static async Task<int> tryToRegister(string email,string pas ,string code, HttpClient? httpClient = null)
+        public static async Task<int> tryToRegister(string email,string pas ,string code,string first,string last, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "register";
 
@@ -87,6 +87,8 @@ namespace MauiMaze.Services
                 email = email,
                 password = pas,
                 code=code,
+                first=first,
+                last=last,
             };
 
             if (httpClient is null)

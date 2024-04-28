@@ -153,7 +153,7 @@ namespace MauiMaze.Models.RoundedMaze
             xoffsett = ((int)width / 2) - this.width / 2;
             yoffsett = 0;
             end = new End((this.width / 2) + xoffsett, (this.width / 2) + yoffsett, (this.width / 2) + xoffsett + 30, (this.width / 2) + yoffsett + 30, 0);
-            start = new Start((this.width / 2)+42 , (this.width / 2) ,1);
+            start = new Start((this.width / 2)+xoffsett , (this.width / 14) ,1);
             createGrid();
             recostructFromEdges();
         }

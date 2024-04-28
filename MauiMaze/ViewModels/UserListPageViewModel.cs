@@ -38,7 +38,7 @@ namespace MauiMaze.ViewModels
             {
                 await VCFetcher.GenerateNewCodes();
             }
-            Codes=(await VCFetcher.getUnusedCodes()).ToList();
+            await getList();
         }
     }
 }

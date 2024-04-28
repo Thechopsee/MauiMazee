@@ -55,6 +55,11 @@ namespace MauiMaze.ViewModels
             EnglishLanguage = false;
         }
         [RelayCommand]
+        public void goToReportPage()
+        {
+            Shell.Current.Navigation.PushAsync(new ReportBugPage());
+        }
+        [RelayCommand]
         public void switchGraphic()
         {
             if (SimplifyEnabled)

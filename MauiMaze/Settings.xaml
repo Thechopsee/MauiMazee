@@ -96,6 +96,7 @@
                 Text="Report Bug"
                 MaximumWidthRequest="200"
                 MinimumWidthRequest="200"
+                Command="{Binding goToReportPageCommand}"
                 />
         </VerticalStackLayout>
     </VerticalStackLayout>

@@ -39,6 +39,7 @@ namespace MauiMaze.Drawables
             float top = dirtyRect.Top;
             float right = dirtyRect.Right;
             float bottom = dirtyRect.Bottom;
+
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
 
             canvas.DrawRectangle(left, top, right, bottom);
@@ -87,7 +88,7 @@ namespace MauiMaze.Drawables
             {
                cellHeight = 20;
                cellWidth = 20;
-               player = new Player((int)(maze.start.X-cellWidth), (int)(maze.start.Y-cellHeight), cellWidth, cellHeight);
+               player = new Player((int)(maze.start.X), (int)(maze.start.Y), cellWidth, cellHeight);
             }
             else
             {

@@ -102,7 +102,18 @@ namespace MauiMaze.Engine
             
             if (player.positionX<=0 && player.positionY<=0)
             {
-                mazeDrawable.reinitPlayer(player);
+                if (mazeDrawable.GetType() != typeof(RoundedMazeDrawable))
+                {
+                    mazeDrawable.reinitPlayer(player);
+                }
+                else
+                {
+                    if (mazeDrawable.maze.start is not null)
+                    {
+                        player.reInit(mazeDrawable.maze.start.X, mazeDrawable.maze.start.Y, player.playerSizeX, player.playerSizeY);
+
+                    }
+                }
             }
             if (player.playerSizeX != mazeDrawable.cellWidth) {
                 player.playerSizeX = mazeDrawable.cellWidth;

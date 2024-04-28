@@ -20,7 +20,7 @@ namespace MauiMaze.Services
             }
             using (httpClient)
             {
-                var content = new StringContent(null, Encoding.UTF8, "application/json");
+                var content = new StringContent("{}", Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
@@ -45,7 +45,7 @@ namespace MauiMaze.Services
             }
             using (httpClient)
             {
-                var content = new StringContent(null, Encoding.UTF8, "application/json");
+                var content = new StringContent("{}", Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.GetAsync(apiUrl).ConfigureAwait(true);
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
                 return;

@@ -22,6 +22,10 @@ namespace MauiMaze.ViewModels
         public string rePassword;
         [ObservableProperty]
         public string code;
+        [ObservableProperty]
+        public string first;
+        [ObservableProperty]
+        public string last;
 
         [ObservableProperty]
         public string errorMessage;
@@ -34,6 +38,32 @@ namespace MauiMaze.ViewModels
             Loading = true;
             bool failed = false;
             ErrorMessage = "";
+            if (First is not null)
+            {
+                if (First.Trim().Length <= 0)
+                {
+                    ErrorMessage += "First name bad format\n";
+                    failed = true;
+                }
+            }
+            else
+            {
+                ErrorMessage += "First name is empty\n";
+                failed = true;
+            }
+            if (Last is not null)
+            {
+                if (Last.Trim().Length <= 0)
+                {
+                    ErrorMessage += "Last name bad format\n";
+                    failed = true;
+                }
+            }
+            else
+            {
+                ErrorMessage += "Last name is empty\n";
+                failed = true;
+            }
             if (IsValidEmail() is false)
             {
                 ErrorMessage += "Email has bad format\n";
@@ -68,7 +98,7 @@ namespace MauiMaze.ViewModels
             }
             if (!failed)
             {
-               int status =await UserComunicator.tryToRegister(Email,Password,Code);
+               int status =await UserComunicator.tryToRegister(Email,Password,Code,First,Last);
                 if (status == 1)
                 {
                     ErrorMessage = "Wrong or Used Code";
