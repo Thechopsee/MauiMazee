@@ -28,12 +28,11 @@ namespace MauiMaze.ViewModels
         bool loading;
         [ObservableProperty]
         bool showLocal;
-
         public MazeHistoryViewModel()
         {
             if (UserDataProvider.GetInstance().getUserID() != -1)
             {
-                    LoggedIn = true;
+                LoggedIn = true;
             }
             if (UserDataProvider.GetInstance().getUserRole() == RoleEnum.Reseacher )
             {
@@ -51,7 +50,6 @@ namespace MauiMaze.ViewModels
         {
             if (UserDataProvider.GetInstance().getUserID() != -1)
             {
-
                 Records = (await MazeFetcher.getMazeList(UserDataProvider.GetInstance().getUserID())).ToList();
             }
             (Mazes, Md) = await MazeFetcher.getOfflineMazes();
@@ -68,8 +66,5 @@ namespace MauiMaze.ViewModels
             await MazeFetcher.deleteMazelocaly(id);
             await Shell.Current.Navigation.PushAsync(new MazeHistoryPage());
         }
-
-
-
     }
 }

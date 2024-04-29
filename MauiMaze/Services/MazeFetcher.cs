@@ -121,7 +121,6 @@ namespace MauiMaze.Services
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 return response.IsSuccessStatusCode;
-               
             }
         }
         public static async Task<MazeDescription[]> getMazeList(int userid, HttpClient? httpClient = null)
@@ -204,7 +203,6 @@ namespace MauiMaze.Services
             await SecureStorage.Default.SetAsync("mazelist", " ");
             return deletedIDs.ToArray();
         }
-
         public static async Task<Maze> getMaze(int mazeid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress +"mazes/"+mazeid;

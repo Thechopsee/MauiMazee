@@ -65,7 +65,6 @@ namespace MauiMaze.ViewModels
             {
                 huntClick();
             }
-
         }
        
         [RelayCommand]
@@ -153,7 +152,6 @@ namespace MauiMaze.ViewModels
                 canvas.Drawable = new RoundedMazeDrawable(generator);
                 canvas.Invalidate();
             }
-            
         }
     }
 }

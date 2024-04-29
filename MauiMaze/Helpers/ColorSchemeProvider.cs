@@ -79,10 +79,7 @@ namespace MauiMaze.Helpers
                 int b = (int)((endColor.Blue + subRatio * (0 - endColor.Blue))*255);
                 color = Color.FromRgb(r, g, b);
             }
-
             return color;
         }
-
-
     }
 }

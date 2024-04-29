@@ -90,7 +90,6 @@ namespace MauiMaze.ViewModels
                     await RecordFetcher.deleteRecordsByMazeOffline(deletedIDs[i]);
                 }
             }
-            
         }
         public SettingViewModel() {
             CzechLanguage = false;

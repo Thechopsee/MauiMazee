@@ -11,7 +11,6 @@ namespace MauiMaze.Models.Generatory
             var edges = new List<Edge>();
             var random = new Random();
 
-
             var cell = 0;
             for (var row = 0; row < rows; row++)
             {
@@ -26,13 +25,10 @@ namespace MauiMaze.Models.Generatory
                     {
                         edges.Add(new Edge(cell, cell + Convert.ToInt32(cols)));
                     }
-
                     cell++;
                 }
             }
-
             var visited = new bool[rows, cols];
-
             int currentRow = random.Next(rows);
             int currentCol = random.Next(cols);
 
@@ -77,12 +73,10 @@ namespace MauiMaze.Models.Generatory
                             }
                         }
                     }
-
                     if (!found)
                         break;
                 }
             }
-
             return edges;
         }
 

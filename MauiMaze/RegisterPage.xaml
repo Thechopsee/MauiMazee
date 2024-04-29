@@ -21,10 +21,8 @@
              MinimumHeightRequest="50"
              Grid.Column="1" Grid.Row="0" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
         <Label
-            Text="First Name:"  Grid.Column="0" Grid.Row="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
-            />
+            Text="First Name:"  Grid.Column="0" Grid.Row="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
         <Entry
-            
              Text="{Binding First}"
              MinimumWidthRequest="200"
              MaximumWidthRequest="350"
@@ -79,15 +77,10 @@
              Placeholder="Enter Code"
              Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
         </Grid>
-        <Label
-            Text="{Binding ErrorMessage}" Grid.Column="1" Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
-            />
+        <Label Text="{Binding ErrorMessage}" Grid.Column="1" Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
         <ActivityIndicator IsRunning="{Binding Loading}"
-                           x:Name="loading"
-                           
-                           />
-
+                           x:Name="loading"/>
         <Button
              x:Name="SubmitButton"
              MinimumWidthRequest="200"

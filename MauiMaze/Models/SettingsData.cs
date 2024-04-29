@@ -11,7 +11,6 @@ namespace MauiMaze
         public int test { get; set; }
         public string language { get; set; }
         public bool SetsGenerator { get; set; }
-
         public SettingsData() { test = 8; SetsGenerator = true; }
     }
 }

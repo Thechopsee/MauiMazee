@@ -28,12 +28,9 @@ namespace MauiMaze.Drawables
         {
             canvas.StrokeColor = Colors.Black;
             canvas.StrokeSize = 4;
-            
             double cellWidth = dirtyRect.Width / this.maze.Width;
             double cellHeight = dirtyRect.Height / this.maze.Height;
-            
             Maze maze = this.maze;
-
             foreach (var cell in cellData)
             {
                 int column = cell.num % maze.Width;
@@ -70,7 +67,6 @@ namespace MauiMaze.Drawables
                     canvas.DrawLine(x, y, x, y + (float)cellHeight);
                 }
             }
-
             if (maze.end is not null || maze.start is not null )
             {
                 canvas.StrokeColor = Colors.Blue;

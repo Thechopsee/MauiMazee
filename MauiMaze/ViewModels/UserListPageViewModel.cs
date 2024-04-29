@@ -25,7 +25,6 @@ namespace MauiMaze.ViewModels
             {
                 this.Users.Add(new UserDataModel(user));
             }
-
         }
         private async Task getList()
         {

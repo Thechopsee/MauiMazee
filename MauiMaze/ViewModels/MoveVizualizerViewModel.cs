@@ -31,21 +31,18 @@ namespace MauiMaze.ViewModels
         public bool positionEnabled;
         [ObservableProperty]
         public bool showAllEnabled;
-
         [ObservableProperty]
         public bool timeEnabled;
         [ObservableProperty]
         public bool hitsEnabled;
         [ObservableProperty]
         public bool allHeatEnabled;
-
         [ObservableProperty]
         public bool heatmapshow;
         [ObservableProperty]
         public bool vizualizershow;
         [ObservableProperty]
         public bool recordshow;
-
         [ObservableProperty]
         public bool vbs;
         [ObservableProperty]
@@ -54,6 +51,7 @@ namespace MauiMaze.ViewModels
         public bool gbs;
 
         public Maze maze { get; set; }
+        private LoginCases lc { get; set; }
         [RelayCommand]
         public void switchToCell()
         {
@@ -181,9 +179,7 @@ namespace MauiMaze.ViewModels
                     { 
                         maxhits= data.hit;
                     }
-
                 }
-                
                 foreach (CellData c in cdl)
                 {
                     if (!HitsEnabled)
@@ -201,10 +197,8 @@ namespace MauiMaze.ViewModels
                     {
                         c.color = ColorSchemeProvider.getHeatmapColor(c.time, 0, maxtime);
                     }
-
                 }
                 HeatMapView.Drawable = new HeatmapDrawable(maze, cdl.ToArray());
-
             }
             else if (Recordshow)
             {
@@ -229,7 +223,6 @@ namespace MauiMaze.ViewModels
         public void switchView(string num)
         {
             int obj = Int32.Parse(num);
-            LoginCases lc = UserDataProvider.GetInstance().getLoginCase();
             if (lc == LoginCases.Offline)
             {
                 return;
@@ -270,7 +263,6 @@ namespace MauiMaze.ViewModels
                 MoveVizualizerDrawable md = (MoveVizualizerDrawable)GraphicsView.Drawable;
                 md.showAll = false;
                 md.actualID = gr.grID;
-                
                 GraphicsView.Drawable = md;
                 GraphicsView.Invalidate();
             }
@@ -294,9 +286,8 @@ namespace MauiMaze.ViewModels
             HitsEnabled = true;
             this.graphicsView = graphicsView;
             this.heatMapView = heatMapView;
-
             this.listview = listview;
-
+            this.lc = lc;
             if (lc == LoginCases.Offline)
             {
                 Hbs = false;
@@ -304,6 +295,7 @@ namespace MauiMaze.ViewModels
                 Vbs = false;
                 Vizualizershow = false;
                 Recordshow = true;
+
             }
             getRecordsAsync(maze, lc, heatMapView);
 
@@ -312,10 +304,8 @@ namespace MauiMaze.ViewModels
         {
             if (Application.Current is not null)
             {
-                throw new Exception("only fore test");
+                throw new Exception("only for test");
             }
-
-
         }
         public CellData[] CountCellData(Maze maze,GameRecord record) {
 
@@ -367,7 +357,6 @@ namespace MauiMaze.ViewModels
         {
             int time = 0;
             int hit = 0;
-
             foreach (MoveRecord m in record.moves)
             {
                 if (m.cell == cell)
@@ -392,7 +381,6 @@ namespace MauiMaze.ViewModels
             {
                 gr = await RecordFetcher.loadRecordsByMaze(maze.MazeID).ConfigureAwait(true);
             }
-            
             MoveVizualizerDrawable md = new MoveVizualizerDrawable();
 
             for (int i = 0; i < gr.Count(); i++)
@@ -411,7 +399,5 @@ namespace MauiMaze.ViewModels
             CellData[] cd = CountCellData(maze, ActualGamerecord);
             HeatMapView.Drawable = new HeatmapDrawable(maze, cd);
         }
-
-        
     }
 }

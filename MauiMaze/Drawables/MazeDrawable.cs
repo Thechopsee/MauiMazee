@@ -92,7 +92,6 @@ namespace MauiMaze.Drawables
                         }
                     }
                 }
-
                 if (maze.start is not null)
                 {
                     if (maze.end.X == -1)
@@ -117,7 +116,6 @@ namespace MauiMaze.Drawables
                 {
                     if (maze.start is null || maze.end is null)
                     {
-
                         int Start = 0;
                         int dolniHranice = (int)((maze.Width * maze.Height) * 0.75);
                         int horniHranice = maze.Width * maze.Height;
@@ -130,7 +128,6 @@ namespace MauiMaze.Drawables
                         initStartEnd(maze.start.cell, maze.end.cell);
                     }
                 }
-
                 drawStartAndEnd(canvas);
                 drawPlayer(canvas);
                 drawHitbox(canvas);

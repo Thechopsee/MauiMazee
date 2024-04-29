@@ -86,10 +86,10 @@
                 Grid.Column="2">
 
                 <Label Text="Size of maze"
-           VerticalOptions="Center"
-           HorizontalTextAlignment="Center"
-           FontSize="18"
-           FontAttributes="Bold"/>
+                   VerticalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   FontSize="18"
+                   FontAttributes="Bold"/>
                 <Slider VerticalOptions="Center" 
                 x:Name="sizeSlider"
                 Minimum="5"

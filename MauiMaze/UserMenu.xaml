@@ -12,7 +12,6 @@
         <Label 
             Text="{Binding WelcomeText}"
             x:Name="welcomelabel"
-            
             VerticalOptions="Center" 
             FontSize="20"
             HorizontalOptions="Center" 
@@ -47,9 +46,6 @@
                 HorizontalOptions="Center"
                 BackgroundColor="#a2b223"
                 MinimumWidthRequest="200"
-                
-                Command="{Binding LogoutCommand}"
-                
-                />
+                Command="{Binding LogoutCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

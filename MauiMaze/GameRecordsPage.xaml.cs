@@ -7,13 +7,9 @@ namespace MauiMaze;
 
 public partial class GameRecordsPage : ContentPage
 {
-	private int userID;
-	public GameRecordsPage(int userID)
+	public GameRecordsPage()
     {
         InitializeComponent();
         BindingContext = new GameRecordPageViewModel();
-        this.userID = userID;
     }
-
-
 }

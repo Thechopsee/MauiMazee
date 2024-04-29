@@ -1,11 +1,5 @@
-﻿
-using MauiMaze.Engine;
+﻿using MauiMaze.Engine;
 using MauiMaze.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MauiMaze.Drawables
 {
@@ -21,8 +15,6 @@ namespace MauiMaze.Drawables
         public bool[,] walls { get; set; }
 
         public virtual void drawWalls(ICanvas canvas, RectF dirtyRect) { }
-
-
         public void reinitPlayer(Player player)
         {
             if (player is null) 

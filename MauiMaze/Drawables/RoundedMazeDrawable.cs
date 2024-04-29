@@ -25,8 +25,6 @@ namespace MauiMaze.Drawables
             }
         }
         public RoundedMazeDrawable() { maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(10, 10), GeneratorEnum.Sets); }
-
-
     public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             if (canvas is null)
@@ -39,7 +37,6 @@ namespace MauiMaze.Drawables
             float top = dirtyRect.Top;
             float right = dirtyRect.Right;
             float bottom = dirtyRect.Bottom;
-
             walls = new bool[(int)dirtyRect.Width, (int)dirtyRect.Height];
 
             canvas.DrawRectangle(left, top, right, bottom);

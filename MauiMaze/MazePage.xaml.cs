@@ -73,10 +73,8 @@ public partial class MazePage : ContentPage
                     timer.Dispose();
                 }
                 await Navigation.PopAsync().ConfigureAwait(false);
-
             }
         }
-        
     }
 
     private async void SaveMaze(object sender, EventArgs e)

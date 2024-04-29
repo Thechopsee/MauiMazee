@@ -21,7 +21,6 @@ namespace MauiMaze.Engine
                 recalculateHitbox();
             }
         }
-
         private int _positionY;
         public int positionY
         {
@@ -32,17 +31,13 @@ namespace MauiMaze.Engine
                 recalculateHitbox();
             }
         }
-
         public double playerSizeX { get; set; }
         public double playerSizeY { get; set; }
-
         public Hitbox hitbox { get; set; }
-
         public bool checkHit(float X, float Y, float Xbottom, float Ybottom)
         {
             return (hitbox.X < Xbottom && hitbox.Y < Ybottom && hitbox.X > X && hitbox.Y > Y);
         }
-
         public void recalculateHitbox()
         {
             float minsize = MathF.Min((float)playerSizeX, (float)playerSizeY);
@@ -50,7 +45,6 @@ namespace MauiMaze.Engine
             hitbox.Y = positionY + (float)(playerSizeY - (minsize / 1.5f)) / 2;
             hitbox.Size = minsize / 1.5f;
         }
-
         public void reInit(int x, int y, double sx, double sy)
         {
             positionX = x;
@@ -58,7 +52,6 @@ namespace MauiMaze.Engine
             playerSizeX = sx;
             playerSizeY = sy;
         }
-
         public Player(int positionx, int positiony, double playerSizeX, double playerSizeY)
         {
             this.hitbox = new Hitbox();
@@ -67,7 +60,6 @@ namespace MauiMaze.Engine
             this.playerSizeX = playerSizeX;
             this.playerSizeY = playerSizeY;
         }
-
         public object Clone()
         {
             return new Player((int)this.positionX, (int)this.positionY, this.playerSizeX, this.playerSizeY)

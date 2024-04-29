@@ -20,13 +20,10 @@ namespace MauiMaze.Models
         public MazeType mazeType { get; set; }
         public DateTime creationDate { get; set; }
         public LoginCases whereIsMazeSaved { get; set; }
-
         [ObservableProperty]
         bool offline;
         public string description { get; set; }
-
         private bool local = false;
-
         public MazeDescription() { }
         public MazeDescription(int id,MazeType mt,DateTime cD,LoginCases lc) {
             this.ID = id;

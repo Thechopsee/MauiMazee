@@ -61,21 +61,6 @@
                 MinimumWidthRequest="200"
                 />
         </VerticalStackLayout>
-        <!--<Button
-            x:Name="changeCzech"
-            MaximumWidthRequest="200"
-            Text="Česky"
-            IsEnabled="{Binding CzechLanguage}"
-            Command="{Binding changeCzechCommand}"
-            MinimumWidthRequest="200"/>
-        <Button
-            x:Name="changeEnglish"
-            MaximumWidthRequest="200"
-            Text="English"
-
-            IsEnabled="{Binding EnglishLanguage}"
-            Command="{Binding changeEnglishCommand}"
-            MinimumWidthRequest="200"/>-->
         <VerticalStackLayout HorizontalOptions="Center">
             <Label 
             FontSize="17"

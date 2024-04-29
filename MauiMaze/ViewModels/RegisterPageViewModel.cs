@@ -26,12 +26,11 @@ namespace MauiMaze.ViewModels
         public string first;
         [ObservableProperty]
         public string last;
-
         [ObservableProperty]
         public string errorMessage;
-
         [ObservableProperty]
         public bool loading;
+
         [RelayCommand]
         public async Task register()
         {
@@ -88,7 +87,6 @@ namespace MauiMaze.ViewModels
                 {
                     ErrorMessage += "Bad Code";
                     failed = true;
-
                 }
             }
             else
@@ -115,8 +113,7 @@ namespace MauiMaze.ViewModels
             }
             Loading = false;
         }
-
-         bool IsValidEmail()
+        bool IsValidEmail()
         {
             return MailAddress.TryCreate(Email, out _);
         }

@@ -56,7 +56,6 @@ namespace MauiMaze.Engine
             GameMaze maze;
             if (mazetype == 0)
             {
-
                 maze = new Maze(size, size, Helpers.GeneratorEnum.Sets);
             }
             else
@@ -111,7 +110,6 @@ namespace MauiMaze.Engine
                     if (mazeDrawable.maze.start is not null)
                     {
                         player.reInit(mazeDrawable.maze.start.X, mazeDrawable.maze.start.Y, player.playerSizeX, player.playerSizeY);
-
                     }
                 }
             }
@@ -119,8 +117,6 @@ namespace MauiMaze.Engine
                 player.playerSizeX = mazeDrawable.cellWidth;
                 player.playerSizeY =mazeDrawable.cellHeight;
             }
-
-
             int oldPlayerX = player.positionX;
             int oldPlayery = player.positionY;
             float oldHitbox = player.hitbox.X;
@@ -148,7 +144,6 @@ namespace MauiMaze.Engine
                     {
                         endGameprocedure();
                     }
-
                     mazeDrawable.player = player;
                     graphicsView.Invalidate();
 
@@ -183,7 +178,6 @@ namespace MauiMaze.Engine
                         walls[currX, currY])
                     {
                         return (true, collisionX, collisionY);
-
                     }
                 }
             }
@@ -192,7 +186,6 @@ namespace MauiMaze.Engine
 
         private void saveMove(bool hit)
         {
-            
             if (movecounter <= 0)
             {
                 double playerXPercentage = ((player.positionX + (player.playerSizeX / 2)) / mazeDrawable.mazeWidth);
@@ -207,7 +200,6 @@ namespace MauiMaze.Engine
                 lastTime = now;
                 gameRecord.addMoveRecord(new MoveRecord(-1, playerXPercentage, playerYPercentage, Convert.ToInt32(hit),delta,cellID));
                 movecounter += 3;
-
             }
             else
             {
@@ -382,10 +374,7 @@ namespace MauiMaze.Engine
                         player.positionY = (int)yrep - (int)((player.playerSizeY - player.hitbox.Size) / 2);
                         return (true, player);
                     }
-
-
                 }
-
             }
             return (false, player);
         }

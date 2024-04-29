@@ -21,9 +21,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            
-
-                <Grid Grid.Column="0" RowDefinitions="1*,4*,2*,1*" ColumnDefinitions="1*">
+            <Grid Grid.Column="0" RowDefinitions="1*,4*,2*,1*" ColumnDefinitions="1*">
 
 
                 <Label Text="Records:" FontSize="16" Margin="0,20,0,0" Grid.Column="0" Grid.Row="0"/>

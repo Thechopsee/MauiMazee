@@ -12,7 +12,6 @@ namespace MauiMaze.Helpers
         public Color color { get; set; }
         public int time { get; set; }
         public int hit { get; set; }
-        
         public CellData(int num,Color color,int time,int hit) {
             this.num = num;
             this.color = color;

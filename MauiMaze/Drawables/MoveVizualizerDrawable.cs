@@ -43,7 +43,6 @@ namespace MauiMaze.Drawables
             {
                 for (int i = 0; i < gr.moves.Count - 1; i++)
                 {
-
                     (int, int) position = GetPlayerPositionInMazeSize(gr.moves[i].percentagex, gr.moves[i].percentagey, (int)dirtyRect.Width, (int)dirtyRect.Height);
                     (int, int) position1 = GetPlayerPositionInMazeSize(gr.moves[i + 1].percentagex, gr.moves[i + 1].percentagey, (int)dirtyRect.Width, (int)dirtyRect.Height);
                     canvas.DrawLine(position.Item1, position.Item2, position1.Item1, position1.Item2);

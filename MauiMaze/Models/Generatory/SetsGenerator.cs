@@ -33,10 +33,8 @@ namespace MauiMaze.Models.Generatory
                 {
                     mazeEdges.Add(edge);
                 }
-
                 edgesToCheck.RemoveAt(edgeIndex);
             }
-
             return edgesToCheck.Concat(mazeEdges).ToList();
         }
 
@@ -62,7 +60,6 @@ namespace MauiMaze.Models.Generatory
                     cell++;
                 }
             }
-
             return edges;
         }
 

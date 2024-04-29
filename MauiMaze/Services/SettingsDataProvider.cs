@@ -21,7 +21,6 @@ namespace MauiMaze.Services
             {
                 return JsonConvert.DeserializeObject<SettingsData>(data);
             }
-            
         }
         public static async void saveSettings(SettingsData data)
         {

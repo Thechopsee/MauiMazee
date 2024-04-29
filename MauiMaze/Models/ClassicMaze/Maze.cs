@@ -34,8 +34,5 @@ namespace MauiMaze.Models.ClassicMaze
             this.Width= width;
             this.Height= height;
         }
-
-        
-
     }
 }
