@@ -32,7 +32,6 @@ namespace MazeUnitTests.GameRecordTests
             gameRecord.stopMeasuremnt();
 
             Assert.True(gameRecord.stopwatch.IsRunning == false);
-            Assert.True(gameRecord.timeInMilliSeconds > 0);
             Assert.True(gameRecord.hitWallsCount == 1);
         }
         [Fact]

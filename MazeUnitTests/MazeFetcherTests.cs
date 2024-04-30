@@ -25,7 +25,7 @@ namespace MazeUnitTests
             expectedMazeDescriptions.descriptions.Add(new string[] { "1","1", "Classic", "2024-04-01" });
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMazeList")
+            mockHttp.When(ServiceConfig.serverAdress + "users/1/mazes")
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedMazeDescriptions));
 
             var httpClient = new HttpClient(mockHttp);
@@ -41,7 +41,7 @@ namespace MazeUnitTests
         {
             int userId = 1;
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMazeList")
+            mockHttp.When(ServiceConfig.serverAdress + "users/1/mazes")
                 .Respond(HttpStatusCode.InternalServerError);
 
             var httpClient = new HttpClient(mockHttp);
@@ -56,7 +56,7 @@ namespace MazeUnitTests
             int userId = 1;
             var mazeDto = new MazeDTO();
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "saveMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes")
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(mockHttp);
@@ -72,7 +72,7 @@ namespace MazeUnitTests
             int userId = 1;
             var mazeDto = new MazeDTO();
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "saveMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes")
                 .Respond(HttpStatusCode.InternalServerError);
 
             var httpClient = new HttpClient(mockHttp);
@@ -87,7 +87,7 @@ namespace MazeUnitTests
             int userId = 1;
             var mazeDto = new MazeDTO();
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "saveMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes")
                 .Respond(HttpStatusCode.BadRequest);
 
             var httpClient = new HttpClient(mockHttp);
@@ -103,7 +103,7 @@ namespace MazeUnitTests
             var expectedMaze = new Maze(10,10,MauiMaze.Helpers.GeneratorEnum.Sets); 
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes/1")
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedMaze));
 
             var httpClient = new HttpClient(mockHttp);
@@ -122,7 +122,7 @@ namespace MazeUnitTests
             expectedMaze.edges = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes/1")
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedMaze));
 
             var httpClient = new HttpClient(mockHttp);
@@ -144,7 +144,7 @@ namespace MazeUnitTests
                 expectedMaze.edges = new Maze(10, 10, MauiMaze.Helpers.GeneratorEnum.Sets).Edges;
 
                 var mockHttp = new MockHttpMessageHandler();
-                mockHttp.When(ServiceConfig.serverAdress + "loadMaze")
+                mockHttp.When(ServiceConfig.serverAdress + "mazes/1")
                     .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedMaze));
 
                 var httpClient = new HttpClient(mockHttp);
@@ -187,7 +187,7 @@ namespace MazeUnitTests
             int expectedCount = 5;
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMazeCount")
+            mockHttp.When(ServiceConfig.serverAdress + "users/1/mcount")
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(new MazeCountDTO { message = expectedCount }));
 
             var httpClient = new HttpClient(mockHttp);
@@ -201,7 +201,7 @@ namespace MazeUnitTests
         {
             int userId = 1;
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadMazeCount")
+            mockHttp.When(ServiceConfig.serverAdress + "users/1/mcount")
                 .Respond(HttpStatusCode.InternalServerError);
             var httpClient = new HttpClient(mockHttp);
             var result = await MazeFetcher.getMazeCountForUser(userId, httpClient);
