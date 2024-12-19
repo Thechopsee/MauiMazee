@@ -12,7 +12,6 @@ namespace MauiMaze.Models.UserManagment
         public int Id { get; set; }
         private readonly int role;
         public string Name { get; set; }
-
         public UserDataModel personalData { get; set; }
 
         public User(int Id,string Name,UserDataModel udm ,int role = 0)

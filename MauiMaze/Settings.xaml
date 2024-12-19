@@ -14,15 +14,15 @@
             <Label 
             FontSize="17"
              FontAttributes="Bold"
-            Text="Audio:"
+            Text="Maze:"
             VerticalOptions="Center" 
              />
             
-            <Label Text="Volume:" HorizontalOptions="Center"/>
+            <Label Text="Base Size:" HorizontalOptions="Center"/>
             <Slider VerticalOptions="Center" 
             x:Name="sizeSlider"
-            Minimum="0"
-            Maximum="10"
+            Minimum="5"
+            Maximum="18"
             MaximumWidthRequest="200"
             DragCompletedCommand ="{Binding dragEndedCommand}"
             Value="{Binding Valuee}"/>
@@ -43,39 +43,24 @@
             <Label 
             FontSize="17"
             FontAttributes="Bold"
-            Text="Graphic:"
+            Text="Generator preference:"
             VerticalOptions="Center" 
              />
             <Button
-                Text="Simplified"
+                Text="SetsGenerator"
                 IsEnabled="{Binding SimplifyEnabled}"
                 Command="{Binding switchGraphicCommand}"
                 MaximumWidthRequest="200"
                 MinimumWidthRequest="200"
                 />
             <Button
-                Text="Textured"
+                Text="HuntAndKill"
                 IsEnabled="{Binding TexturedEnabled}"
                 Command="{Binding switchGraphicCommand}"
                 MaximumWidthRequest="200"
                 MinimumWidthRequest="200"
                 />
         </VerticalStackLayout>
-        <!--<Button
-            x:Name="changeCzech"
-            MaximumWidthRequest="200"
-            Text="Česky"
-            IsEnabled="{Binding CzechLanguage}"
-            Command="{Binding changeCzechCommand}"
-            MinimumWidthRequest="200"/>
-        <Button
-            x:Name="changeEnglish"
-            MaximumWidthRequest="200"
-            Text="English"
-
-            IsEnabled="{Binding EnglishLanguage}"
-            Command="{Binding changeEnglishCommand}"
-            MinimumWidthRequest="200"/>-->
         <VerticalStackLayout HorizontalOptions="Center">
             <Label 
             FontSize="17"
@@ -96,6 +81,7 @@
                 Text="Report Bug"
                 MaximumWidthRequest="200"
                 MinimumWidthRequest="200"
+                Command="{Binding goToReportPageCommand}"
                 />
         </VerticalStackLayout>
     </VerticalStackLayout>

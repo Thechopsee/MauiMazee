@@ -21,7 +21,9 @@ namespace MazeUnitTests.UITests
                 Email = email,
                 Password = password,
                 RePassword = rePassword,
-                Code = code
+                Code = code,
+                First ="first",
+                Last = "last",
             };
 
             await viewModel.register();

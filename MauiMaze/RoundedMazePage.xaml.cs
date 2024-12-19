@@ -14,11 +14,8 @@ public partial class RoundedMazePage : ContentPage
     BaseMazeDrawable mazeDrawable;
     GameDriver driver;
     Timer timer;
-
     void GameView_DragInteraction(System.Object sender, Microsoft.Maui.Controls.TouchEventArgs e)
     {
-
-
         if (driver.ended)
         {
             Navigation.PushAsync(new RecordFullPage(driver.gameRecord, 0));
@@ -29,7 +26,6 @@ public partial class RoundedMazePage : ContentPage
             driver.setPosition(touch.X, touch.Y);
         }
     }
-
     private async void GoBackPop(object sender, EventArgs e)
     {
         AreUSurePopUp areUSurePopUp = new();
@@ -43,7 +39,6 @@ public partial class RoundedMazePage : ContentPage
         }
 
     }
-
     private async void SaveMaze(object sender, EventArgs e)
     {
         ((Button)sender).IsVisible = false;
@@ -58,7 +53,6 @@ public partial class RoundedMazePage : ContentPage
             }
         }
     }
-
     public RoundedMazePage(int size,GeneratorEnum gen)
 	{
 		InitializeComponent();
@@ -71,7 +65,6 @@ public partial class RoundedMazePage : ContentPage
     public RoundedMazePage(RoundedMaze roundedMaze)
     {
         InitializeComponent();
-
         mazeDrawable = this.Resources["MazeDrawable"] as RoundedMazeDrawable;
         mazeDrawable.maze = roundedMaze;
         driver = new GameDriver(mazeDrawable, roundedMaze, Canvas);

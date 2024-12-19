@@ -14,40 +14,35 @@ public partial class ReportBugPage : ContentPage
         string subject = subjectEntry.Text;
         string text = textEditor.Text;
         submitBTn.IsEnabled = false;
-
         if (!IsValidEmail(senderEmail))
         {
             DisplayAlert("Error", "Invalid email format for Sender.", "OK");
             submitBTn.IsEnabled = true;
             return;
         }
-
         if (string.IsNullOrWhiteSpace(subject))
         {
             DisplayAlert("Error", "Subject cannot be empty.", "OK");
             submitBTn.IsEnabled = true;
             return;
         }
-
         if (string.IsNullOrWhiteSpace(text))
         {
             DisplayAlert("Error", "Text cannot be empty.", "OK");
             submitBTn.IsEnabled = true;
             return;
         }
-
-
        bool status= EmailSender.SendEmail(subjectEntry.Text, textEditor.Text, senderEntry.Text);
         if (status)
         {
             Shell.Current.Navigation.PopAsync();
         }
+        submitBTn.IsEnabled = true;
     }
     public bool IsValidEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;
-
         try
         {
             var addr = new System.Net.Mail.MailAddress(email);

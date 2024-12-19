@@ -18,7 +18,6 @@ namespace MauiMaze.Engine
         {
             this.percentagex = percentagex;
             this.percentagey = percentagey;
-
             this.hitWall = hitWall;
             this.deltaTinMilisec = deltaTinMilisec;
             this.cell = cell;

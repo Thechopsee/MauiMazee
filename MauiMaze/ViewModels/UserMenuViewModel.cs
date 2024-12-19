@@ -30,14 +30,9 @@ namespace MauiMaze.ViewModels
             {
                 UserOfflineProcedure();
             }
-            else
-            { 
-                //TODO set Welcome text
-            }
         }
         public void UserOfflineProcedure()
         {
-            //IsHistoryButtonVisible = false;
             IsRecordsButtonVisible = false;
             IsDailyButtonVisible = false;
             ExitText = "Exit 🚪";
@@ -49,9 +44,9 @@ namespace MauiMaze.ViewModels
             await Shell.Current.Navigation.PushAsync(new MazeMenu(login));
         }
         [RelayCommand]
-         static async Task GoToRecords()
+        static async Task GoToRecords()
         {
-            await Shell.Current.Navigation.PushAsync(new GameRecordsPage(UserDataProvider.GetInstance().getUserID()));
+            await Shell.Current.Navigation.PushAsync(new GameRecordsPage());
         }
         [RelayCommand]
         static async Task Logout()

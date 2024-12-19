@@ -11,7 +11,6 @@ public partial class MoveVizualizerPage : ContentPage
     MoveVizualizerViewModel mv;
 	public MoveVizualizerPage(Maze maze, LoginCases lc)
 	{
-        
         InitializeComponent();
         MazeDrawable md = new MazeDrawable();
         md.maze = maze;
@@ -19,10 +18,6 @@ public partial class MoveVizualizerPage : ContentPage
         mv = new MoveVizualizerViewModel(canvas, recordsList, maze, lc, heatmap);
         BindingContext = mv;
         this.Loaded += refreshCanvas;
-        
-        
-
-
     }
     public  void refreshCanvas(object sender, EventArgs es)
     {
@@ -30,7 +25,6 @@ public partial class MoveVizualizerPage : ContentPage
     }
     public void OnItemSelectedChanged(object sender, SelectedItemChangedEventArgs e)
     {
-        
         mv.selectChanged((GameRecord)e.SelectedItem);
     }
 }

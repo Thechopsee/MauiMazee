@@ -11,8 +11,13 @@ namespace MauiMaze.Services
     {
         public static bool SendEmail(string subject,string text,string sender)
         {
+            if (ServiceConfig.SMTP_name.Trim().Length==0 || ServiceConfig.SMTP_pass.Trim().Length==0)
+            {
+               Shell.Current.DisplayAlert("Error","Error:This feature not natively wokr on opensource code ,because SMTP server is not set in ServiceConfig.Update it with smtp name and password or use official release to continue","OK");
+                return false;
+            }
             MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("MS_owVYCj@trial-jy7zpl99kmol5vx6.mlsender.net");
+            mailMessage.From = new MailAddress(ServiceConfig.SMTP_name);
             mailMessage.To.Add("sebastian.walent@gmail.com");
             mailMessage.Subject = subject;
             DeviceData dd = new DeviceData();
@@ -23,7 +28,7 @@ namespace MauiMaze.Services
             smtpClient.Host = "smtp.mailersend.net";
             smtpClient.Port = 587;
             smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential("MS_owVYCj@trial-jy7zpl99kmol5vx6.mlsender.net", "dcZMMwgaTfqMRX5d");
+            smtpClient.Credentials = new NetworkCredential(ServiceConfig.SMTP_name, ServiceConfig.SMTP_pass);
             smtpClient.EnableSsl = true;
 
             try

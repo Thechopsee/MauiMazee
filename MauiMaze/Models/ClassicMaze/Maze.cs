@@ -33,10 +33,6 @@ namespace MauiMaze.Models.ClassicMaze
             Edges = generator.GenerateMaze(height, width).ToArray();
             this.Width= width;
             this.Height= height;
-            //Size = size;
         }
-
-        
-
     }
 }

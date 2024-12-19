@@ -12,20 +12,10 @@
         <Label 
             Text="{Binding WelcomeText}"
             x:Name="welcomelabel"
-            
             VerticalOptions="Center" 
             FontSize="20"
             HorizontalOptions="Center" 
             Margin="0,10,0,10"/>
-        
-        <!--<Button Text="Daily Maze"
-                IsVisible="{Binding IsDailyButtonVisible}"
-                x:Name="DailyMaze"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Command="{Binding GoToMazeCommand}"
-                MinimumWidthRequest="200"
-                Margin="0,0,0,20"/>-->
         <Button Text="Go to Maze"
                 x:Name="GotoMaze"
                 VerticalOptions="Center"
@@ -33,14 +23,6 @@
                 MinimumWidthRequest="200"
                 Command="{Binding GoToMazeCommand}"
                 Margin="0,0,0,20"/>
-        <!--<Button Text="Maze Records"
-                IsVisible="{Binding IsRecordsButtonVisible}"
-                x:Name="MazeRecords"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                MinimumWidthRequest="200"
-                Command="{Binding GoToRecordsCommand}"
-                Margin="0,0,0,20"/>-->
         <Button Text="Saved Mazes"
                 VerticalOptions="Center"
                 x:Name="Saved_Mazes"
@@ -64,9 +46,6 @@
                 HorizontalOptions="Center"
                 BackgroundColor="#a2b223"
                 MinimumWidthRequest="200"
-                
-                Command="{Binding LogoutCommand}"
-                
-                />
+                Command="{Binding LogoutCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

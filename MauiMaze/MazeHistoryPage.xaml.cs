@@ -8,8 +8,6 @@ namespace MauiMaze;
 
 public partial class MazeHistoryPage : ContentPage
 {
-    MazeHistoryViewModel mhvm;
-
     public MazeHistoryPage()
 	{
 		InitializeComponent();
@@ -20,9 +18,5 @@ public partial class MazeHistoryPage : ContentPage
     {
         InitializeComponent();
         BindingContext = mh;
-
     }
-
-
-
 }

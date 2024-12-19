@@ -21,7 +21,7 @@ namespace MazeUnitTests
             GameRecord gr = new(0, 1);
             var gameRecord = gr.GetRecordDTO();
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "saveRecord")
+            mockHttp.When(ServiceConfig.serverAdress + "records")
                 .Respond(HttpStatusCode.OK);
 
             var httpClient = new HttpClient(mockHttp);
@@ -37,7 +37,7 @@ namespace MazeUnitTests
             GameRecord gr = new(0, 1);
             var gameRecord = gr.GetRecordDTO();
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "saveRecord")
+            mockHttp.When(ServiceConfig.serverAdress + "records")
                 .Respond(HttpStatusCode.InternalServerError);
 
             var httpClient = new HttpClient(mockHttp);
@@ -53,7 +53,7 @@ namespace MazeUnitTests
             var expectedRecords = new GameRecord[] { new GameRecord(0,1), new GameRecord(1,2) };
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadRecordByUser")
+            mockHttp.When(ServiceConfig.serverAdress + "users/1/records")
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedRecords));
 
             var httpClient = new HttpClient(mockHttp);
@@ -70,7 +70,7 @@ namespace MazeUnitTests
             int userId = 1;
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadRecordByUser")
+            mockHttp.When(ServiceConfig.serverAdress + "users/1/records")
                 .Respond(HttpStatusCode.InternalServerError);
 
             var httpClient = new HttpClient(mockHttp);
@@ -88,7 +88,7 @@ namespace MazeUnitTests
             var expectedRecords = new GameRecord[] { new GameRecord(0,1), new GameRecord(2,3) };
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadRecordByMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes/1/records")
                 .Respond(HttpStatusCode.OK, "application/json", JsonConvert.SerializeObject(expectedRecords));
 
             var httpClient = new HttpClient(mockHttp);
@@ -105,7 +105,7 @@ namespace MazeUnitTests
             int mazeId = 1;
 
             var mockHttp = new MockHttpMessageHandler();
-            mockHttp.When(ServiceConfig.serverAdress + "loadRecordByMaze")
+            mockHttp.When(ServiceConfig.serverAdress + "mazes/1/records")
                 .Respond(HttpStatusCode.InternalServerError);
 
             var httpClient = new HttpClient(mockHttp);

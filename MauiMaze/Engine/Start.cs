@@ -17,6 +17,5 @@ namespace MauiMaze.Engine
             this.Y = Y;
             this.cell = cell;
         }
-        
     }
 }

@@ -17,8 +17,6 @@ namespace MauiMaze.Services
         public static async Task deleteRecordsByMazeOffline(int mid )
         {
             string data= await SecureStorage.Default.GetAsync("recordsCounts" + mid).ConfigureAwait(false);
-            
-
             if (data is null)
             {
                 return;
@@ -52,7 +50,6 @@ namespace MauiMaze.Services
                 }
             }
             return records;
-
         }
         public static async Task saveRecordByMazeOffline(GameRecord gr)
         {
@@ -68,8 +65,6 @@ namespace MauiMaze.Services
             }
             await SecureStorage.Default.SetAsync("recordsCounts" + gr.mazeID, ""+(len+1));
             string json = JsonConvert.SerializeObject(gr);
-            //SQLiteAsyncConnection Database = new SQLiteAsyncConnection(Constantss.DatabasePath, Constantss.Flags);
-            //var result = await Database.CreateTableAsync<MoveRecord>();
             gr.moves = new List<MoveRecord>();
             await SecureStorage.Default.SetAsync("records+" + gr.mazeID + "+" + (len + 1), JsonConvert.SerializeObject(gr)) ;
             string red = await SecureStorage.Default.GetAsync("records+" + gr.mazeID + "+" + (len + 1));
@@ -97,13 +92,11 @@ namespace MauiMaze.Services
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 return response.IsSuccessStatusCode;
-
             }
         }
         public static async Task<GameRecord[]> loadRecordsByMaze(int mid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "mazes/"+mid+"/records";
-
             if (httpClient is null)
             {
                 httpClient = new HttpClient();
@@ -126,12 +119,10 @@ namespace MauiMaze.Services
                 }
                 return new List<GameRecord>().ToArray();
             }
-
         }
         public static async Task<GameRecord[]> loadRecordsByUser(int uid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "users/"+uid+"/records";
-
             if (httpClient is null)
             {
                 httpClient = new HttpClient();

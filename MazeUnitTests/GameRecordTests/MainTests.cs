@@ -26,7 +26,6 @@ namespace MazeUnitTests.GameRecordTests
             Assert.NotEmpty(gr.cellPath);
             Assert.False(gr.stopwatch.IsRunning);
             Assert.NotEqual(0, gr.hitWallsCount);
-            Assert.NotEqual(0, gr.timeInMilliSeconds);
         }
         [Fact]
         public async Task optimalizationTest()

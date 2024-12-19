@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MauiMaze.Engine;
+﻿using MauiMaze.Engine;
 using MauiMaze.Models.ClassicMaze;
 using MauiMaze.Helpers;
-
-
 
 namespace MauiMaze.Drawables
 {
@@ -50,9 +43,19 @@ namespace MauiMaze.Drawables
                     {
                         if (!player.dummy)
                         {
-                            for (int i = (int)x; i < movefor - 1; i++)
+                            for (int i = (int)x; i < movefor-1; i++)
                             {
                                 walls[i, (int)y] = true;
+                                if (walls.GetLength(1) < y+1 || walls.GetLength(1) == y+2 )
+                                {
+                                    walls[i, (int)y - 1] = true;
+                                    walls[i, (int)y - 2] = true;
+                                }
+                                else
+                                {
+                                walls[i, (int)y+1] = true;
+                                walls[i, (int)y+2] = true;
+                                }
                             }
                         }
                     }
@@ -72,14 +75,23 @@ namespace MauiMaze.Drawables
                     {
                         if (!player.dummy)
                         {
-                            for (int i = (int)y + 1; i < movefor - 1; i++)
+                            for (int i = (int)y; i < movefor-1; i++)
                             {
                                 walls[(int)x, i] = true;
+                                if (walls.GetLength(0) < x + 1 || walls.GetLength(0) == x + 2)
+                                {
+                                    walls[(int)x-1, i] = true;
+                                    walls[(int)x-2, i] = true;
+                                }
+                                else
+                                {
+                                    walls[(int)x + 1, i] = true;
+                                    walls[(int)x + 2, i] = true;
+                                }
                             }
                         }
                     }
                 }
-
                 if (maze.start is not null)
                 {
                     if (maze.end.X == -1)
@@ -104,7 +116,6 @@ namespace MauiMaze.Drawables
                 {
                     if (maze.start is null || maze.end is null)
                     {
-
                         int Start = 0;
                         int dolniHranice = (int)((maze.Width * maze.Height) * 0.75);
                         int horniHranice = maze.Width * maze.Height;
@@ -117,14 +128,11 @@ namespace MauiMaze.Drawables
                         initStartEnd(maze.start.cell, maze.end.cell);
                     }
                 }
-
                 drawStartAndEnd(canvas);
                 drawPlayer(canvas);
                 drawHitbox(canvas);
             }
-
             drawStartAndEnd(canvas);
-            
         }
     }   
 }

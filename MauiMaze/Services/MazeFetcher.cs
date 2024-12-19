@@ -12,10 +12,8 @@ namespace MauiMaze.Services
 {
     public class MazeFetcher
     {
-
         public static async Task<(Maze[], MazeDescription[])> getOfflineMazes()
         {
-
             string data = await SecureStorage.Default.GetAsync("mazelist");
             if (data is null)
             {
@@ -41,7 +39,6 @@ namespace MauiMaze.Services
         }
         public static async Task<GameMaze> getMazeLocalbyID(int id)
         {
-
             string maze = await SecureStorage.Default.GetAsync("maze" + id);
             GameMaze gm = JsonConvert.DeserializeObject<GameMaze>(maze);
             if (gm.mazeType == MazeType.Rounded)
@@ -52,9 +49,7 @@ namespace MauiMaze.Services
             else
             {
                 return gm;
-            }
-
-            
+            }   
         }
         public static async Task saveMazeLocally(GameMaze maze)
         {
@@ -71,7 +66,6 @@ namespace MauiMaze.Services
                     GameMaze gm = (GameMaze)maze.Clone();
                     await SecureStorage.Default.SetAsync("maze1", JsonConvert.SerializeObject(gm));
                 }
-                
             }
             else
             {
@@ -92,7 +86,6 @@ namespace MauiMaze.Services
         public static async Task deleteMazelocaly(int mid)
         {
             string data = await SecureStorage.Default.GetAsync("mazelist");
-            
             string[] splited = data.Split(mid+";");
             if (splited.Length == 1)
             {
@@ -105,9 +98,7 @@ namespace MauiMaze.Services
                 await SecureStorage.Default.SetAsync("mazelist", result);
                 await SecureStorage.Default.SetAsync("maze" + mid, " ");
             }
-
         }
-       
         public static async Task<bool> SaveMazeOnline(int userIDD, MazeDTO maze, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "mazes";
@@ -130,7 +121,6 @@ namespace MauiMaze.Services
                 string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
 
                 return response.IsSuccessStatusCode;
-               
             }
         }
         public static async Task<MazeDescription[]> getMazeList(int userid, HttpClient? httpClient = null)
@@ -175,7 +165,6 @@ namespace MauiMaze.Services
         {
             int rsp = 0;
             string apiUrl = ServiceConfig.serverAdress + "users/" + userid + "/mcount";
-
             var userData = new
             {
                 userID = userid,
@@ -196,9 +185,7 @@ namespace MauiMaze.Services
                     MazeCountDTO mm = JsonConvert.DeserializeObject<MazeCountDTO>(responseContent);
                     rsp = mm.message;
                 }
-
             }
-        
             return rsp;
         }
         public static async Task<int[]> deleteAllMazes()
@@ -216,11 +203,9 @@ namespace MauiMaze.Services
             await SecureStorage.Default.SetAsync("mazelist", " ");
             return deletedIDs.ToArray();
         }
-
         public static async Task<Maze> getMaze(int mazeid, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress +"mazes/"+mazeid;
-
             if (httpClient is null)
             {
                 httpClient = new HttpClient();
@@ -247,7 +232,6 @@ namespace MauiMaze.Services
                 {
                     return new Maze(1, 1, Helpers.GeneratorEnum.Sets);
                 }
-
             }
         }
     }

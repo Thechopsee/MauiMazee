@@ -2,23 +2,25 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiMaze.ReportBugPage"
-             Title="ReportBugPage">
-    <VerticalStackLayout>
-        <StackLayout>
-            <Label Text="Sender:" />
-            <Entry x:Name="senderEntry" Placeholder="Sender" />
-        </StackLayout>
+             Title="">
+    <Grid RowDefinitions="1*,2*,1*,1*,1*,1*,1*,2*,1*,1.5*" ColumnDefinitions="1*,2*,1*">
+        <Label Text="Send report" FontSize="25" Grid.Column="1" Grid.Row="1" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"></Label>
 
-        <StackLayout>
-            <Label Text="Subject:" />
-            <Entry x:Name="subjectEntry" Placeholder="Subject" />
-        </StackLayout>
 
-        <StackLayout>
-            <Label Text="Bug description:" />
-            <Editor x:Name="textEditor" Placeholder="Text" HeightRequest="150" />
-        </StackLayout>
 
-        <Button Text="Submit" Clicked="SubmitButton_Clicked" x:Name="submitBTn" />
-    </VerticalStackLayout>
+        <Label Text="Sender:"  Grid.Column="1" Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+        <Entry x:Name="senderEntry" Placeholder="Sender"  Grid.Column="1" Grid.Row="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+
+
+
+        <Label Text="Subject:"  Grid.Column="1" Grid.Row="4" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Entry x:Name="subjectEntry" Placeholder="Subject"  Grid.Column="1" Grid.Row="5" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+        <Label Text="Bug description:"  Grid.Column="1" Grid.Row="6" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+        <Editor x:Name="textEditor" Placeholder="Text"  WidthRequest="300"  HeightRequest="100" Grid.Column="1" Grid.Row="7" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+
+
+        <Button Text="Submit" Clicked="SubmitButton_Clicked" x:Name="submitBTn"  Grid.Column="1" Grid.Row="8" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+    </Grid>
 </ContentPage>

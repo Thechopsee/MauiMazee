@@ -11,14 +11,10 @@
     <StackLayout Margin="20">
         <Label Text="Maze ID:"/>
         <Label Text="{Binding MazeIDLabel}"/>
-        <!--<Button Text="Set Maze ID" Clicked="SetMazeID_Clicked" Margin="5"/>-->
-
         <Label Text="Hit Walls Count:"/>
         <Label Text="{Binding GameRecord.hitWallsCount}"/>
-        <!--<Button Text="Set Walls Count" Clicked="SetHitWallsCount_Clicked" Margin="5"/>-->
         <Label Text="Traveled Cells:"/>
         <Label Text="{Binding CellPathString}"/>
-        <!--<Button Text="Set Travel Length" Clicked="SetTravelLength_Clicked" Margin="5"/>-->
         <Button Text="Return to menu"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"

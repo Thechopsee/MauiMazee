@@ -28,7 +28,6 @@ namespace MauiMaze.ViewModels
         async Task goToRegister()
         {
             await Shell.Current.Navigation.PushAsync(new RegisterPage());
-
         }
         [RelayCommand]
         public async Task tryToLoginn()
@@ -46,7 +45,6 @@ namespace MauiMaze.ViewModels
                     bool vysl = await UserDataProvider.GetInstance().LoginUser(Email.Trim(), Password.Trim());
                     if (vysl)
                     {
-                        
                         if (Role == RoleEnum.User)
                         {
                             await Shell.Current.Navigation.PushAsync(new UserMenu(LoginCases.Online));
@@ -84,7 +82,7 @@ namespace MauiMaze.ViewModels
                 {
                     await Application.Current.MainPage.DisplayAlert("Upozornění", "Zjistěna chyba při zjišťovaní stavu sítě", "OK");
                 }
-                    ErrorMessage = "Zjistěna chyba při zjišťovaní stavu sítě";
+                ErrorMessage = "Zjistěna chyba při zjišťovaní stavu sítě";
                 Console.WriteLine($"Chyba: {ex.Message}");
                 OfflineButton = true;
             }

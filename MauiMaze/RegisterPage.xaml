@@ -4,15 +4,14 @@
              x:Class="MauiMaze.RegisterPage"
              xmlns:viewmodel="clr-namespace:MauiMaze.ViewModels"
              x:DataType="viewmodel:RegisterPageViewModel"
-             Title="RegisterPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Label
-            Text="Email:"
+             Title="">
+
+
+    <Grid RowDefinitions="1*,5*,1*,1*,1*" ColumnDefinitions="1*,2*,1*">
+        <Grid RowDefinitions="1*, 1*, 1*, 1*, 1*, 1*" ColumnDefinitions="1*,1*" Grid.Row="1" Grid.Column="1">
+            <Label  Text="Email:" Grid.Column="0" Grid.Row="0" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
             />
+        
         <Entry
              x:Name="EmailEntry"
              Text="{Binding Email}"
@@ -20,9 +19,29 @@
              MinimumWidthRequest="200"
              MaximumWidthRequest="350"
              MinimumHeightRequest="50"
-             HorizontalOptions="FillAndExpand" />
+             Grid.Column="1" Grid.Row="0" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
         <Label
-            Text="Password:"
+            Text="First Name:"  Grid.Column="0" Grid.Row="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Entry
+             Text="{Binding First}"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+
+             Placeholder="Enter first name"
+             Grid.Column="1" Grid.Row="1" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Label
+            Text="Last Name:"  Grid.Column="0" Grid.Row="2" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
+            />
+        <Entry
+             Text="{Binding Last}"
+             MinimumWidthRequest="200"
+             MaximumWidthRequest="350"
+             MinimumHeightRequest="50"
+             Placeholder="Enter last name"
+             Grid.Column="1" Grid.Row="2" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+        <Label
+            Text="Password:"  Grid.Column="0" Grid.Row="3" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
             />
         <Entry
              x:Name="PassEntry"
@@ -32,9 +51,9 @@
              MinimumHeightRequest="50"
              IsPassword="true"
              Placeholder="Enter your password"
-             HorizontalOptions="FillAndExpand" />
+             Grid.Column="1" Grid.Row="3" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
         <Label
-            Text="Password Re-type:"
+            Text="Password Re-type:"  Grid.Column="0" Grid.Row="4" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
             />
         <Entry
              x:Name="PassAgainEntry"
@@ -44,9 +63,9 @@
              MinimumHeightRequest="50"
              IsPassword="true"
              Placeholder="Re-type password"
-             HorizontalOptions="FillAndExpand" />
+             Grid.Column="1" Grid.Row="4" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
         <Label
-            Text="Registration Code:"
+            Text="Registration Code:"  Grid.Column="0" Grid.Row="5" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"
             />
         <Entry
              x:Name="CodeEntry"
@@ -56,22 +75,18 @@
              MinimumHeightRequest="50"
              IsPassword="true"
              Placeholder="Enter Code"
-             HorizontalOptions="FillAndExpand" />
-
-        <Label
-            Text="{Binding ErrorMessage}"
-            />
+             Grid.Column="1" Grid.Row="5" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
+        </Grid>
+        <Label Text="{Binding ErrorMessage}" Grid.Column="1" Grid.Row="2" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
 
         <ActivityIndicator IsRunning="{Binding Loading}"
-                           x:Name="loading"
-                           />
-
+                           x:Name="loading"/>
         <Button
              x:Name="SubmitButton"
              MinimumWidthRequest="200"
              Text="Submit"
              Command="{Binding registerCommand}"
-             HorizontalOptions="Center" />
+             Grid.Column="1" Grid.Row="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
 
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

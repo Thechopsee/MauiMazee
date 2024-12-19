@@ -55,20 +55,25 @@ namespace MauiMaze.ViewModels
             EnglishLanguage = false;
         }
         [RelayCommand]
+        public void goToReportPage()
+        {
+            Shell.Current.Navigation.PushAsync(new ReportBugPage());
+        }
+        [RelayCommand]
         public void switchGraphic()
         {
             if (SimplifyEnabled)
             {
                 TexturedEnabled = true;
                 SimplifyEnabled = false;
-                SettingsData.SimplyfiedGraphic = true;
+                SettingsData.SetsGenerator = true;
                 saveSettings();
             }
             else if (TexturedEnabled)
             {
                 TexturedEnabled = false;
                 SimplifyEnabled = true;
-                SettingsData.SimplyfiedGraphic = false;
+                SettingsData.SetsGenerator = false;
                 saveSettings();
             }
         }
@@ -85,7 +90,6 @@ namespace MauiMaze.ViewModels
                     await RecordFetcher.deleteRecordsByMazeOffline(deletedIDs[i]);
                 }
             }
-            
         }
         public SettingViewModel() {
             CzechLanguage = false;
@@ -95,7 +99,7 @@ namespace MauiMaze.ViewModels
         public async void tryToLoadSetting(object sender, EventArgs e)
         {
             SettingsData = await SettingsDataFetcher.getSettings();
-            if (SettingsData.SimplyfiedGraphic)
+            if (SettingsData.SetsGenerator)
             {
                 SimplifyEnabled = false;
                 TexturedEnabled = true;

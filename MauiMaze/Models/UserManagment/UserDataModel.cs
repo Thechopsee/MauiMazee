@@ -32,7 +32,6 @@ namespace MauiMaze.Models
         {
             MazeHistoryViewModel mv = new MazeHistoryViewModel();
             mv.loadRecordByuser(id);
-            
             await Shell.Current.Navigation.PushAsync(new MazeHistoryPage(mv));
         }
     }

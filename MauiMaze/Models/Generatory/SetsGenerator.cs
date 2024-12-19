@@ -11,7 +11,6 @@ namespace MauiMaze.Models.Generatory
     {
         public List<Edge> GenerateMaze(int rows, int cols)
         {
-            //Size size=new Size(width,height);
             var edgesToCheck = Generate(cols, rows);
             var sets = InitializeSets(cols, rows);
 
@@ -34,10 +33,8 @@ namespace MauiMaze.Models.Generatory
                 {
                     mazeEdges.Add(edge);
                 }
-
                 edgesToCheck.RemoveAt(edgeIndex);
             }
-
             return edgesToCheck.Concat(mazeEdges).ToList();
         }
 
@@ -63,7 +60,6 @@ namespace MauiMaze.Models.Generatory
                     cell++;
                 }
             }
-
             return edges;
         }
 

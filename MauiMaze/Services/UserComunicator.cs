@@ -15,7 +15,6 @@ namespace MauiMaze.Services
         public static async Task<UserDataDTO> tryToLogin(string emaill,string pas,HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "login";
-
             var userData = new
             {
                 email = emaill,
@@ -25,31 +24,28 @@ namespace MauiMaze.Services
             {
                 httpClient = new HttpClient();
             }
-                using (httpClient)
-                {
-                    string jsonUserData = JsonConvert.SerializeObject(userData);
+            using (httpClient)
+            {
+                string jsonUserData = JsonConvert.SerializeObject(userData);
                     var content = new StringContent(jsonUserData, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(false);
-                    string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    UserDataDTO dto = JsonConvert.DeserializeObject<UserDataDTO>(responseContent);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return dto;
-                    }
-                    else
-                    {
-                        UserDataDTO tmp = new();
-                        tmp.id = -1;
-                        return tmp;
-                    }
+                HttpResponseMessage response = await httpClient.PostAsync(apiUrl, content).ConfigureAwait(false);
+                string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                UserDataDTO dto = JsonConvert.DeserializeObject<UserDataDTO>(responseContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    return dto;
                 }
-            
-            
+                else
+                {
+                    UserDataDTO tmp = new();
+                    tmp.id = -1;
+                    return tmp;
+                }
+            }
         }
         public static async Task<UserDataDTO[]> getUsers( HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "users";
-
             var userData = new
             {
                 AT = UserDataProvider.GetInstance().getUserAT()
@@ -78,7 +74,7 @@ namespace MauiMaze.Services
             }
         }
 
-        public static async Task<int> tryToRegister(string email,string pas ,string code, HttpClient? httpClient = null)
+        public static async Task<int> tryToRegister(string email,string pas ,string code,string first,string last, HttpClient? httpClient = null)
         {
             string apiUrl = ServiceConfig.serverAdress + "register";
 
@@ -87,6 +83,8 @@ namespace MauiMaze.Services
                 email = email,
                 password = pas,
                 code=code,
+                first=first,
+                last=last,
             };
 
             if (httpClient is null)

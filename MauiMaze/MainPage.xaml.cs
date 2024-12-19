@@ -12,7 +12,5 @@ public partial class MainPage : ContentPage
         MainPageViewModel mpvm=new MainPageViewModel();
         BindingContext = mpvm;
     }
-
-    
 }
 

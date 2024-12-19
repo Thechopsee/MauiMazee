@@ -25,8 +25,6 @@ namespace MauiMaze.Drawables
             }
         }
         public RoundedMazeDrawable() { maze = new RoundedMaze(new Microsoft.Maui.Graphics.Size(10, 10), GeneratorEnum.Sets); }
-
-
     public void Draw(ICanvas canvas, RectF dirtyRect)
         {
             if (canvas is null)
@@ -85,9 +83,9 @@ namespace MauiMaze.Drawables
 
             if (player is null ||player.positionX<=0)
             {
-                cellHeight = 20;
-                cellWidth = 20;
-               player = new Player((int)(maze.start.X-cellWidth), (int)(maze.start.Y-cellHeight), cellWidth, cellHeight);
+               cellHeight = 20;
+               cellWidth = 20;
+               player = new Player((int)(maze.start.X), (int)(maze.start.Y), cellWidth, cellHeight);
             }
             else
             {

@@ -4,6 +4,7 @@ using MauiMaze.Drawables;
 using MauiMaze.Helpers;
 using MauiMaze.Models;
 using MauiMaze.Models.ClassicMaze;
+using MauiMaze.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace MauiMaze.ViewModels
         {
             this.login = login;
             this.canvas = canvas;
-            Mazesize = 10;
+            Loader_settings();
             this.classic = classic;
             this.rounded = rounded;
             clicked = classic.BackgroundColor;
@@ -52,6 +53,20 @@ namespace MauiMaze.ViewModels
             this.canvas.Drawable = md;
             this.canvas.Invalidate();
         }
+        private async Task Loader_settings()
+        {
+            SettingsData data = await SettingsDataFetcher.getSettings();
+            Mazesize = data.test;
+            if (data.SetsGenerator)
+            {
+                setsClick();
+            }
+            else
+            {
+                huntClick();
+            }
+        }
+       
         [RelayCommand]
         public void roundedClick()
         {
@@ -137,7 +152,6 @@ namespace MauiMaze.ViewModels
                 canvas.Drawable = new RoundedMazeDrawable(generator);
                 canvas.Invalidate();
             }
-            
         }
     }
 }

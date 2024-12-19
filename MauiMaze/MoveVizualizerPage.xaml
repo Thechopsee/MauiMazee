@@ -21,22 +21,34 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            
-
-                <Grid Grid.Column="0" RowDefinitions="1*,4*,2*,1*" ColumnDefinitions="1*">
+            <Grid Grid.Column="0" RowDefinitions="1*,4*,2*,1*" ColumnDefinitions="1*">
 
 
                 <Label Text="Records:" FontSize="16" Margin="0,20,0,0" Grid.Column="0" Grid.Row="0"/>
-                <ScrollView  Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Always">
-                    <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200" VerticalScrollBarVisibility="Always">
+                <ScrollView  Grid.Column="0" Grid.Row="1" VerticalScrollBarVisibility="Always" MaximumHeightRequest="200">
+                    <ListView ItemsSource="{Binding Records}" x:Name="recordsList" SelectedItem="{Binding ActualGamerecord}" VerticalOptions="FillAndExpand" ItemSelected="OnItemSelectedChanged" WidthRequest="200" VerticalScrollBarVisibility="Always" >
                     <ListView.ItemTemplate x:DataType="mdls:GameRecord" >
-                        <DataTemplate  >
-                                <ViewCell >
+                        <DataTemplate>
+                             <ViewCell>
+                                   
+                                    <Grid  RowDefinitions="1*" ColumnDefinitions="1*" Padding="3" BackgroundColor="{Binding color}" Margin="1">
+                                        
 
-                                    <Button Text="{Binding grID}" TextColor="White"  BackgroundColor="{Binding color}" WidthRequest="200" HorizontalOptions="CenterAndExpand"/> 
-                            </ViewCell>
+
+                                        <Label Text="{Binding grID}" Grid.Column="0" Grid.Row="0" 
+                                                 HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" 
+                                               FontSize="20"
+                                               >
+
+
+                                        </Label>
+
+
+
+                                    </Grid>
+                             </ViewCell>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
+                    </ListView.ItemTemplate> 
                 </ListView>
                 </ScrollView>
                 <Grid  Grid.Column="0" Grid.Row="2" RowDefinitions="1*,1*" ColumnDefinitions="1*,1*" IsVisible="{Binding Vizualizershow}">
